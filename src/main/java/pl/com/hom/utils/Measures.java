@@ -12,12 +12,26 @@ public final class Measures {
 	public static int lineDistance  = 25;
 	public static int firstDistance = 25;
 
-	public static ArrayList<Potential> order = new ArrayList<Potential>(Arrays.asList(
+	private static ArrayList<Potential> linesOrder = new ArrayList<Potential>(Arrays.asList(
 		Potential.DCPLC,
 		Potential.DC24,
 		Potential.L1,
 		Potential.L2,
 		Potential.L3,
+		Potential.N,
+		Potential.DC0,
+		Potential.PE
+	));
+
+	private static ArrayList<Potential> upLinesOrder = new ArrayList<Potential>(Arrays.asList(
+		Potential.L1,
+		Potential.L2,
+		Potential.L3,
+		Potential.DCPLC,
+		Potential.DC24
+	));
+
+	private static ArrayList<Potential> downLinesOrder = new ArrayList<Potential>(Arrays.asList(
 		Potential.N,
 		Potential.DC0,
 		Potential.PE
@@ -35,12 +49,20 @@ public final class Measures {
 		lineSizes.put(Potential.PE,    new Pair(10, Color.BLACK));
 	}
 
-	private static int getPotentialOrder(Potential p) {
-		return order.indexOf(p);
+	private static int getPotentialOrder(ArrayList<Potential> array, Potential p) {
+		return array.indexOf(p);
 	}
 
-	public static int getColumnRow(Potential p) {
-		return firstDistance + getPotentialOrder(p)*lineDistance;
+	public static int getColumnPotentialOrder(Potential p) {
+		return firstDistance + getPotentialOrder(linesOrder, p)*lineDistance;
+	}
+
+	public static int getUpLinePotentialOrder(Potential p) {
+		return firstDistance + getPotentialOrder(upLinesOrder, p)*lineDistance;
+	}
+
+	public static int getDownLinePotentialOrder(Potential p) {
+		return firstDistance + getPotentialOrder(downLinesOrder, p)*lineDistance;
 	}
 
 	public static int getThickness(Potential p) {

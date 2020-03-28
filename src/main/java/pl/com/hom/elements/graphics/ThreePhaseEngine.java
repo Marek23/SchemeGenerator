@@ -1,17 +1,17 @@
-package pl.com.hom.graphics.elements;
+package pl.com.hom.elements.graphics;
 
 import java.util.HashSet;
 
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.electric.Potential;
-import pl.com.hom.elements.ElectricElement;
-import pl.com.hom.utils.ColLevel;
+import pl.com.hom.elements.ColumnRow;
+import pl.com.hom.utils.Role;
 
 import static pl.com.hom.utils.Resource.getImage;
 import static pl.com.hom.utils.Resource.ThreePhaseEngine;
 
-public class ThreePhaseEngine extends ElectricElement {
+public class ThreePhaseEngine extends ColumnRow {
 	
 	public ThreePhaseEngine () {
 		this.visibility = true;
@@ -23,6 +23,6 @@ public class ThreePhaseEngine extends ElectricElement {
 		points.add(new Point(Potential.L2, Direction.Up));
 		points.add(new Point(Potential.L3, Direction.Up));
 
-		columnLevel = ColLevel.Receiver;
+		role = Role.Receiver;
 	}
 }

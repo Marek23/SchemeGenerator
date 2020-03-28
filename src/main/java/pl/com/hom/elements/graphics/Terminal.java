@@ -1,4 +1,4 @@
-package pl.com.hom.elements;
+package pl.com.hom.elements.graphics;
 
 import com.itextpdf.kernel.pdf.canvas.wmf.WmfImageData;
 

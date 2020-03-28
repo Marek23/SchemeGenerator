@@ -1,5 +1,6 @@
 package pl.com.hom.fpsdrawer;
 
+import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument; 
 import com.itextpdf.kernel.pdf.PdfPage; 
@@ -38,6 +39,7 @@ public class Main {
       PdfFormXObject xObject1 = new PdfFormXObject(imageData1, pdfDoc);
       canvas.addXObject(xObject1, 0, 0);
       canvas.moveTo(5, 5);
+      canvas.setColor(Color., fill)
       imageData1 = new WmfImageData("rysunek.wmf");
       xObject1 = new PdfFormXObject(imageData1, pdfDoc);
 

@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.com.hom.electric.Potential;
+import pl.com.hom.elements.graphics.Terminal;
 
-public class Conjugation extends ElectricElement {
+public class Conjugation extends ColumnRow {
 	List<Terminal> terminals;
 
 
