@@ -1,60 +1,52 @@
 package pl.com.hom.fpsdrawer;
 
 import com.itextpdf.kernel.color.Color;
-import com.itextpdf.kernel.geom.Rectangle;
-import com.itextpdf.kernel.pdf.PdfDocument; 
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfPage; 
-import com.itextpdf.kernel.pdf.PdfWriter; 
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
-import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
-import com.itextpdf.kernel.pdf.canvas.wmf.WmfImageData;
-import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
-import com.itextpdf.layout.Document;
+import com.itextpdf.text.BaseColor;
+
+import pl.com.hom.Configuration;
+import pl.com.hom.elements.graphics.Contactor;
+import pl.com.hom.scheme.Column;
+import pl.com.hom.scheme.ColumnLine;
+
+import static pl.com.hom.Document.getPdfDocument;
 
 public class Main {     
-   public static void main(String args[]) throws Exception {            
-      // Creating a PdfWriter       
-      String name = "RWG1.pdf";
+	public static void main(String args[]) throws Exception {				
+		System.out.println("Start");
 
-      PdfWriter writer = new PdfWriter(name);           
-      
-      // Creating a PdfDocument object       
-      PdfDocument pdfDoc = new PdfDocument(writer);                   
-      
-      // Creating a Document object       
-      Document doc = new Document(pdfDoc);   
-     
-      
-      // Creating a new page       
-      PdfPage pdfPage = pdfDoc.addNewPage();
-      
-      
-      // Creating a PdfCanvas object       
-      PdfCanvas canvas = new PdfCanvas(pdfPage);
-      SolidLine l = new SolidLine(10);
-      // Initial point of the line
-      l.draw(canvas, new Rectangle (0, 100));
-      canvas.moveTo(0, 0);
-      WmfImageData imageData1 = new WmfImageData("rysunek.wmf");
-      PdfFormXObject xObject1 = new PdfFormXObject(imageData1, pdfDoc);
-      canvas.addXObject(xObject1, 0, 0);
-      canvas.moveTo(5, 5);
-      canvas.setColor(Color., fill)
-      imageData1 = new WmfImageData("rysunek.wmf");
-      xObject1 = new PdfFormXObject(imageData1, pdfDoc);
+		Configuration.initialize();
 
-      System.out.println(pdfPage.getPageSize().getHeight());
-      System.out.println(pdfPage.getPageSize().getWidth());
-      canvas.addXObject(xObject1, 5, 5);
+		Column    column    = new Column(0);
+		Contactor contactor = new Contactor();
 
+		column.addElement(contactor);
 
-      // Drawing the line
-      
-      // Closing the path stroke       
-      canvas.closePathStroke();              
-      // Closing the document       
-      doc.close();  
-      
-      System.out.println("Object drawn on pdf successfully");             
-   }     
+		column.showSupplierPointsLines();
+		System.out.println("---");
+		contactor.showPoints();
+
+		column.showLines();
+		System.out.println("Stop");
+
+		System.out.println("---");
+
+		PdfPage   pdfPage = getPdfDocument().addNewPage(PageSize.A4.rotate());
+		PdfCanvas canvas  = new PdfCanvas(pdfPage);
+
+		for (ColumnLine line :column.getLines()) {
+			canvas.setLineWidth(0.5f);
+			canvas.setStrokeColorRgb(1f, 0f, 0f);
+			canvas.moveTo(line.getBeginWidth(), line.getBeginHeight());
+			canvas.lineTo(line.getEndWidth(), line.getEndHeight());
+			canvas.stroke(); //IMPORTANT
+		}
+
+		canvas.closePathStroke();				  		 
+		getPdfDocument().close();  
+		
+		System.out.println("Object drawn on pdf successfully");
+   }
 }

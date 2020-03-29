@@ -6,46 +6,79 @@ import java.util.Iterator;
 
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.PotentialsSuplier;
+import pl.com.hom.utils.Measures;
 import pl.com.hom.elements.ColumnRow;
 
-import static pl.com.hom.utils.ColumnRowRoles.getColumnRowLevel;
-import static pl.com.hom.utils.ColumnRowRoles.lastLevel;
+import static pl.com.hom.utils.ColumnLevels.getRowLevel;
+import static pl.com.hom.utils.ColumnLevels.lastRowLevel;
 
 public class Column {
 	private HashSet<Integer>     controller;
 	private ArrayList<ColumnRow> columnRows;
-	private HashSet<ColumnLine>  lines;
+	private ArrayList<ColumnLine>  lines;
+
+	private int   index;
+	private float x;
 
 	private PotentialsSuplier suplier;
 
-	public Column() {
+	public Column(int index) {
 		suplier = new PotentialsSuplier();
+
+		controller = new HashSet<Integer>();
+		columnRows = new ArrayList<ColumnRow>();
 		columnRows.add(suplier);
+
+		this.index = index;
+		this.x     = Measures.countColumnWidth(index);
+	}
+
+	//TEST
+	public void showLines() {
+		for (ColumnLine cl : lines) {
+			System.out.println(cl.toString());
+		}
+	}
+
+	public ArrayList<ColumnLine> getLines() {
+		return this.lines;
+	}
+
+	//TEST
+	public void showSupplierPointsLines() {
+		suplier.showPoints();
 	}
 
 	public void addElement(ColumnRow element)
 	{
-		if (controller.contains(getColumnRowLevel(element)))
+		if (controller.contains(getRowLevel(element)))
 			throw new RuntimeException("Column has doubled row");
 
-		suplier.fetchPointsToSupply(element);
 		columnRows.add(element);
+		suplier.fetchPointsToSupply(element);
+
+		element.setColumnIndex(this.index);
+		suplier.setColumnIndex(this.index);
+
 		produceColumnLines();
 	}
 
 	private ColumnRow getColumnRowFromLevel(Integer i) {
-		for(ColumnRow e : columnRows)
-			if(getColumnRowLevel(e) == i)
+		for (ColumnRow e : columnRows)
+			if (getRowLevel(e).equals(i))
 				return e;
 
 		return null;
 	}
 
-	private void linkPoints(HashSet<Point> up, HashSet<Point> down) {
-		for (Point f : up) {
+	private void linkColumnRows(ColumnRow from, ColumnRow to) {
+		ArrayList<Point> fPoints = from.getPointsTargetingDown();
+		ArrayList<Point> tPoints = to.getPointsTargetingUp();
+
+		for (Point f : fPoints) {
 			Point t = null;
 
-			Iterator<Point> i = down.iterator();
+			Iterator<Point> i = tPoints.iterator();
 			while (i.hasNext()) {
 				t = i.next();
 				if (f.getPotential() == t.getPotential())
@@ -64,18 +97,16 @@ public class Column {
 		ColumnRow from;
 		ColumnRow to;
 
-		lines = new HashSet<ColumnLine>();
-		for (Integer i = 0; i <= lastLevel(); i++) {
+		lines = new ArrayList<ColumnLine>();
+		for (Integer i = 0; i <= lastRowLevel(); i++) {
 			from = getColumnRowFromLevel(i);
 			if (from == null) continue;
-			HashSet<Point> fPoints = from.getPointsTargetingDown();
 
-			for (Integer j = i + 1; j <= lastLevel(); j++) {
+			for (Integer j = i + 1; j <= lastRowLevel(); j++) {
 				to = getColumnRowFromLevel(j);
 				if (to == null) continue;
-				HashSet<Point> tPoints = from.getPointsTargetingUp();
 
-				linkPoints(fPoints, tPoints);
+				linkColumnRows(from, to);
 			}
 		}
 	}

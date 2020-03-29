@@ -1,11 +1,12 @@
 package pl.com.hom.elements.graphics;
-import java.util.HashSet;
+import java.util.EnumSet;
+import java.util.ArrayList;
 
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.electric.Potential;
+import pl.com.hom.electric.Role;
 import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.utils.Role;
 
 import static pl.com.hom.utils.Resource.getImage;
 import static pl.com.hom.utils.Resource.ThreePhaseFuse;
@@ -15,12 +16,12 @@ public class ThreePhaseFuse extends ColumnRow {
 		visibility = true; 
 		image      = getImage(ThreePhaseFuse);
 
-		points = new HashSet<Point>();
+		points = new ArrayList<Point>();
 
-		HashSet<Direction> downDirection = new HashSet<Direction>();
+		EnumSet<Direction> downDirection = EnumSet.noneOf(Direction.class);
 		downDirection.add(Direction.Down);
 
-		HashSet<Direction> upDirection = new HashSet<Direction>();
+		EnumSet<Direction> upDirection = EnumSet.noneOf(Direction.class);
 		upDirection.add(Direction.Up);
 
 		points.add(new Point(Potential.L1, Direction.Down));
@@ -34,4 +35,9 @@ public class ThreePhaseFuse extends ColumnRow {
 		role = Role.Fuse;
 	}
 
+	@Override
+	protected void countCoordinates() {
+		// TODO Auto-generated method stub
+		
+	}
 }

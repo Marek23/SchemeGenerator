@@ -6,6 +6,11 @@ import pl.com.hom.electric.Potential;
 public abstract class Line {
 	private Potential potential;
 
+	//TEST
+	public String toString() {
+		return "Line [potential=" + potential + ", startPoint=" + startPoint + ", endPoint=" + endPoint + "]";
+	}
+
 	private Point startPoint;
 	private Point endPoint;
 
@@ -18,6 +23,22 @@ public abstract class Line {
 
 	public Potential getPotential() {
 		return this.potential;
+	}
+
+	public float getBeginHeight() {
+		return startPoint.getHeight();
+	}
+
+	public float getBeginWidth() {
+		return startPoint.getWidth();
+	}
+
+	public float getEndHeight() {
+		return endPoint.getHeight();
+	}
+
+	public float getEndWidth() {
+		return endPoint.getWidth();
 	}
 
     public boolean equals(Object o) { 

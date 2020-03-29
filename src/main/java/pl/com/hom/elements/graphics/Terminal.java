@@ -1,6 +1,6 @@
 package pl.com.hom.elements.graphics;
 
-import com.itextpdf.kernel.pdf.canvas.wmf.WmfImageData;
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.electric.Potential;
 
@@ -15,7 +15,7 @@ public class Terminal {
 	private String  group;
 	private boolean groupVisibility;
 
-	protected WmfImageData image;
+	protected PdfFormXObject image;
 	
     public Potential getPotental() {
 		return potental;

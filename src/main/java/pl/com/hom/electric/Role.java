@@ -1,4 +1,4 @@
-package pl.com.hom.utils;
+package pl.com.hom.electric;
 
 public enum Role {
 	UpLines,

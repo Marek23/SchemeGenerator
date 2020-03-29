@@ -21,4 +21,10 @@ public class Conjugation extends ColumnRow {
 
 		return out;
 	}
+
+	@Override
+	protected void countCoordinates() {
+		// TODO Auto-generated method stub
+		
+	}	
 }
