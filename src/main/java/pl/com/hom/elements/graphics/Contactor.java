@@ -18,9 +18,7 @@ public class Contactor extends ColumnRow {
 		visibility = true;
 		image      = getImage(Contactor);
 		role       = Role.Launcher;
-		y          = Measures.countColumnRowHeight(this);
 
-		System.out.println(image.getHeight());
 		points = new ArrayList<Point>();
 
 		points.add(new Point(Potential.L1, Direction.Down));
@@ -34,6 +32,9 @@ public class Contactor extends ColumnRow {
 
 	@Override
 	protected void countCoordinates() {
+		x = Measures.countColumnWidth(0);
+		y = Measures.countColumnRowHeight(this);
+
 		ArrayList<Point> u = getPointsTargetingUp();
 		ArrayList<Point> d = getPointsTargetingDown();
 

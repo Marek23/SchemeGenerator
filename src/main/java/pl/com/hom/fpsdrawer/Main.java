@@ -1,10 +1,9 @@
 package pl.com.hom.fpsdrawer;
 
-import com.itextpdf.kernel.color.Color;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfPage; 
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
-import com.itextpdf.text.BaseColor;
 
 import pl.com.hom.Configuration;
 import pl.com.hom.elements.graphics.Contactor;
@@ -42,8 +41,10 @@ public class Main {
 			canvas.moveTo(line.getBeginWidth(), line.getBeginHeight());
 			canvas.lineTo(line.getEndWidth(), line.getEndHeight());
 			canvas.stroke(); //IMPORTANT
+			canvas.addXObject(contactor.image(), new Rectangle(contactor.getWidth(), contactor.getHeight(),5f,2f));
 		}
 
+		
 		canvas.closePathStroke();				  		 
 		getPdfDocument().close();  
 		

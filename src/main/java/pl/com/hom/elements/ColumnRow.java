@@ -75,5 +75,8 @@ public abstract class ColumnRow {
 		this.x = Measures.countColumnWidth(index);
 	}
 
+	public PdfFormXObject image() {
+		return this.image;
+	}
 	protected abstract void countCoordinates();
 }

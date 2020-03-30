@@ -20,7 +20,7 @@ public final class Measures {
 	private static int downLineMargin   = 3;
 
 	private static int colWidth  = 120;
-	private static int colMargin = 0;
+	private static int colMargin = 50;
 
 	private static int colLevelHeigth = 120;
 	private static int colLevelMargin = 5;

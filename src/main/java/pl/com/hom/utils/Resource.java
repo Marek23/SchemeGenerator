@@ -35,7 +35,8 @@ public final class Resource {
 		graphics = new HashMap<String, WmfImageData>();
 		for (String img : imageNames) {
 			try { try {
-				graphics.put(img, new WmfImageData("src/main/resources/" + img));
+				WmfImageData wmf = new WmfImageData("src/main/resources/" + img);
+				graphics.put(img, wmf);
 				} catch (MalformedURLException canHappen) {
 					System.out.println("MalformedURLException");
 			} } catch (PdfException e) {
