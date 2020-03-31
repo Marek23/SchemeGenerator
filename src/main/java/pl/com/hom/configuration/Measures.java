@@ -1,4 +1,4 @@
-package pl.com.hom.utils;
+package pl.com.hom.configuration;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -7,23 +7,27 @@ import java.util.ArrayList;
 import com.itextpdf.kernel.color.Color;
 
 import pl.com.hom.electric.Potential;
-import pl.com.hom.elements.ColumnRow;
 
 public final class Measures {
-	private static int commonLineDistance = 7;
-	private static int commonLineMargin   = 3;
 
-	private static int upLineDistance = 6;
-	private static int upLineMargin   = 2;
+	public final static float SCALE = 0.1f;
 
-	private static int downLineDistance = 5;
-	private static int downLineMargin   = 3;
+	private final static float commonLineDistance =  100 * SCALE;
 
-	private static int colWidth  = 120;
-	private static int colMargin = 50;
+	public final static float PAGE_WIDTH  = 842.0f;
+	public final static float PAGE_HEIGHT = 595.0f;
 
-	private static int colLevelHeigth = 120;
-	private static int colLevelMargin = 5;
+	public final static float COL_LEV_MARGIN = 20;
+	public final static float COL_LEV_HEIGHT = 30;
+
+	public final static float COL_WIDTH        = 120;
+	public final static float COL_WIDTH_MARGIN = 120;
+
+	private static float upLineDistance = 6;
+	private static float upLineMargin   = 2;
+
+	private static float downLineDistance = 5;
+	private static float downLineMargin   = 3;
 
 	private static ArrayList<Potential> commonLineOrder = new ArrayList<Potential>(Arrays.asList(
 		Potential.DCPLC,
@@ -68,7 +72,7 @@ public final class Measures {
 	}
 
 	public static float countCommonWidth(Potential p) {
-		return commonLineMargin + getPotentialOrder(commonLineOrder, p) * commonLineDistance;
+		return (getPotentialOrder(commonLineOrder, p) + 1) * commonLineDistance;
 	}
 
 	public static float countUpHeight(Potential p) {
@@ -86,15 +90,8 @@ public final class Measures {
 	public static Color getColor(Potential p) {
 		return lineParams.get(p).color;
 	}
-
-	public static float countColumnWidth(int index) {
-		return colMargin + index*colWidth;
-	}
-
-	public static float countColumnRowHeight(ColumnRow element) {
-		return colLevelMargin + ColumnLevels.getRowLevel(element)*colLevelHeigth;
-	}
 }
+
 class Param {
 	int   size;
 	Color color;

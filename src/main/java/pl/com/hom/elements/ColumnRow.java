@@ -7,20 +7,23 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.electric.Role;
-import pl.com.hom.utils.Measures;
+import pl.com.hom.scheme.Column;
 
 public abstract class ColumnRow {
+	protected Column parent;
 	protected ArrayList<Point>  points;
 
 	protected String id;
 	protected String desc;
 
 	protected PdfFormXObject image;
-	protected boolean      visibility;
+	protected boolean        visibility;
 
-	protected int   columnIndex;
+	protected int columnIndex;
+
 	protected float x;
 	protected float y;
+
 	protected Role role;
 
 	public Role getRole() {
@@ -59,11 +62,6 @@ public abstract class ColumnRow {
 		return out;
 	}
 
-	public void setColumnIndex(int index) {
-		this.columnIndex = index;
-		countCoordinates();
-	}
-
 	public float getWidth() {
 		return x;
 	}
@@ -71,12 +69,8 @@ public abstract class ColumnRow {
 	public float getHeight() {
 		return y;
 	}
-	public void setColumnWidth(int index) {
-		this.x = Measures.countColumnWidth(index);
-	}
 
 	public PdfFormXObject image() {
 		return this.image;
 	}
-	protected abstract void countCoordinates();
 }

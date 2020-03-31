@@ -1,36 +1,41 @@
 package pl.com.hom.scheme;
 
+import static pl.com.hom.configuration.Level.getRoleLevel;
+import static pl.com.hom.configuration.Level.lastRowLevel;
+
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Iterator;
 
+import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
+import pl.com.hom.electric.Role;
 import pl.com.hom.elements.PotentialsSuplier;
-import pl.com.hom.utils.Measures;
 import pl.com.hom.elements.ColumnRow;
 
-import static pl.com.hom.utils.ColumnLevels.getRowLevel;
-import static pl.com.hom.utils.ColumnLevels.lastRowLevel;
-
 public class Column {
-	private HashSet<Integer>     controller;
+	private EnumSet<Role>     controller;
 	private ArrayList<ColumnRow> columnRows;
 	private ArrayList<ColumnLine>  lines;
 
 	private int   index;
 	private float x;
+	private float y;
 
 	private PotentialsSuplier suplier;
 
+	//TODO Page parent
 	public Column(int index) {
-		suplier = new PotentialsSuplier();
+		this.index = index;
+		this.x     = Measures.COL_WIDTH_MARGIN + Measures.COL_WIDTH * index;
+		this.y     = Measures.PAGE_HEIGHT - Measures.COL_LEV_MARGIN;
 
-		controller = new HashSet<Integer>();
+		suplier = new PotentialsSuplier(this);
+
+		controller = EnumSet.noneOf(Role.class);
 		columnRows = new ArrayList<ColumnRow>();
 		columnRows.add(suplier);
 
-		this.index = index;
-		this.x     = Measures.countColumnWidth(index);
 	}
 
 	//TEST
@@ -51,21 +56,27 @@ public class Column {
 
 	public void addElement(ColumnRow element)
 	{
-		if (controller.contains(getRowLevel(element)))
+		if (controller.contains(element.getRole()))
 			throw new RuntimeException("Column has doubled row");
 
 		columnRows.add(element);
-		suplier.fetchPointsToSupply(element);
 
-		element.setColumnIndex(this.index);
-		suplier.setColumnIndex(this.index);
+		suplier.fetchPointsToSupply(element);
 
 		produceColumnLines();
 	}
 
+	public float getWidth() {
+		return this.x;
+	}
+
+	public float getHeight() {
+		return this.y;
+	}
+
 	private ColumnRow getColumnRowFromLevel(Integer i) {
 		for (ColumnRow e : columnRows)
-			if (getRowLevel(e).equals(i))
+			if (getRoleLevel(e.getRole()).equals(i))
 				return e;
 
 		return null;

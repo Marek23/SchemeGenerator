@@ -1,11 +1,10 @@
-package pl.com.hom.utils;
+package pl.com.hom.configuration;
 
 import java.util.EnumMap;
 
 import pl.com.hom.electric.Role;
-import pl.com.hom.elements.ColumnRow;
 
-public final class ColumnLevels {
+public final class Level {
 	private static final Integer rowsAmount = 6;
 
 	private static EnumMap<Role, Integer> levels;
@@ -32,8 +31,8 @@ public final class ColumnLevels {
 		levels.put(Role.Receiver, new Integer(6));
 	}
 
-	public static Integer getRowLevel(ColumnRow e) {
-		return levels.get(e.getRole());
+	public static Integer getRoleLevel(Role r) {
+		return levels.get(r);
 	}
 
 	public static Integer lastRowLevel() {

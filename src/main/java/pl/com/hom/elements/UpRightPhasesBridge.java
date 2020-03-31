@@ -25,10 +25,4 @@ public class UpRightPhasesBridge extends ColumnRow {
 
 		role = Role.Connection;
 	}
-
-	@Override
-	protected void countCoordinates() {
-		// TODO Auto-generated method stub
-		
-	}
 }

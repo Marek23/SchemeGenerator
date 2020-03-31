@@ -1,10 +1,10 @@
-package pl.com.hom.utils;
+package pl.com.hom.configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static pl.com.hom.Document.getPdfDocument;
+import static pl.com.hom.configuration.Document.getPdfDocument;
 
 import java.net.MalformedURLException;
 

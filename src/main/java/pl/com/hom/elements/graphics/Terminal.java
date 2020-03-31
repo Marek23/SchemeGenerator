@@ -1,10 +1,10 @@
 package pl.com.hom.elements.graphics;
 
+import static pl.com.hom.configuration.Resource.getImage;
+
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.electric.Potential;
-
-import static pl.com.hom.utils.Resource.getImage;
 
 public class Terminal {
 	private Potential potental;

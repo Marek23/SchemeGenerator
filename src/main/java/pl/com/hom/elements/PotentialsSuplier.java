@@ -3,23 +3,29 @@ package pl.com.hom.elements;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.electric.Potential;
 import pl.com.hom.electric.Role;
-import pl.com.hom.utils.Measures;
+import pl.com.hom.scheme.Column;
 
 public class PotentialsSuplier extends ColumnRow {
-	public PotentialsSuplier () {
+	private Column parent;
+
+	public PotentialsSuplier (Column parent) {
+		this.parent = parent;
 		this.points = new ArrayList<Point>();
 		this.role   = Role.UpLines;
-		this.y      = Measures.countColumnRowHeight(this);
+
+		this.x = parent.getWidth(); 
+		this.y = Measures.PAGE_HEIGHT;
 	}
 
 	public void fetchPointsToSupply(ColumnRow element) {
 		for (Point p : element.getPoints())
 			if (!hasPotential(p.getPotential()) && p.hasDirections(Direction.Up))
-				this.points.add(Point.newSupplierPoint(p));
+				this.points.add(Point.newSupplierPoint(this, p));
 	}
 
 	private boolean hasPotential(Potential pot) {
@@ -29,16 +35,5 @@ public class PotentialsSuplier extends ColumnRow {
 				return true;
 
 		return false;
-	}
-
-	@Override
-	protected void countCoordinates() {
-		for (Point p : this.points) {
-			p.setHeight(
-				Measures.countUpHeight(p.getPotential()) +
-				this.getHeight()
-			);
-			p.setWidth(this.columnIndex);
-		}
 	}
 }

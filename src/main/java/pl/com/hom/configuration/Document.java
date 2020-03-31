@@ -1,4 +1,4 @@
-package pl.com.hom;
+package pl.com.hom.configuration;
 
 import java.io.FileNotFoundException;
 

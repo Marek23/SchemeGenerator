@@ -1,16 +1,18 @@
 package pl.com.hom.fpsdrawer;
 
 import com.itextpdf.kernel.geom.Rectangle;
+
+import static pl.com.hom.configuration.Document.getPdfDocument;
+
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfPage; 
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 
-import pl.com.hom.Configuration;
+import pl.com.hom.configuration.Configuration;
+import pl.com.hom.configuration.Measures;
 import pl.com.hom.elements.graphics.Contactor;
 import pl.com.hom.scheme.Column;
 import pl.com.hom.scheme.ColumnLine;
-
-import static pl.com.hom.Document.getPdfDocument;
 
 public class Main {     
 	public static void main(String args[]) throws Exception {				
@@ -19,7 +21,10 @@ public class Main {
 		Configuration.initialize();
 
 		Column    column    = new Column(0);
-		Contactor contactor = new Contactor();
+		Contactor contactor = new Contactor(column);
+
+		System.out.println("C: " + contactor.getWidth());
+		System.out.println("C: " + contactor.getHeight());
 
 		column.addElement(contactor);
 
@@ -35,13 +40,19 @@ public class Main {
 		PdfPage   pdfPage = getPdfDocument().addNewPage(PageSize.A4.rotate());
 		PdfCanvas canvas  = new PdfCanvas(pdfPage);
 
+		System.out.println("C: " + contactor.getWidth());
+		System.out.println("C: " + contactor.getHeight());
+
+		System.out.println("P: " + pdfPage.getPageSize().getHeight());
+		System.out.println("P: " + pdfPage.getPageSize().getWidth());
+
 		for (ColumnLine line :column.getLines()) {
 			canvas.setLineWidth(0.5f);
 			canvas.setStrokeColorRgb(1f, 0f, 0f);
 			canvas.moveTo(line.getBeginWidth(), line.getBeginHeight());
 			canvas.lineTo(line.getEndWidth(), line.getEndHeight());
+			canvas.addXObject(contactor.image(), new Rectangle(contactor.getWidth(), contactor.getHeight(),Measures.SCALE,Measures.SCALE));
 			canvas.stroke(); //IMPORTANT
-			canvas.addXObject(contactor.image(), new Rectangle(contactor.getWidth(), contactor.getHeight(),5f,2f));
 		}
 
 		

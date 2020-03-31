@@ -1,5 +1,8 @@
 package pl.com.hom.elements.graphics;
 
+import static pl.com.hom.configuration.Resource.UVWBridge;
+import static pl.com.hom.configuration.Resource.getImage;
+
 import java.util.ArrayList;
 
 import pl.com.hom.connections.Direction;
@@ -7,9 +10,6 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.electric.Potential;
 import pl.com.hom.electric.Role;
 import pl.com.hom.elements.ColumnRow;
-
-import static pl.com.hom.utils.Resource.getImage;
-import static pl.com.hom.utils.Resource.UVWBridge;
 
 public class UVWJetBridge extends ColumnRow {
 	public UVWJetBridge () {
@@ -23,11 +23,5 @@ public class UVWJetBridge extends ColumnRow {
 		points.add(new Point(Potential.L3, Direction.Down));
 
 		role = Role.JetBridge;
-	}
-
-	@Override
-	protected void countCoordinates() {
-		// TODO Auto-generated method stub
-		
 	}
 }
