@@ -4,38 +4,32 @@ import static pl.com.hom.configuration.Level.getRoleLevel;
 import static pl.com.hom.configuration.Level.lastRowLevel;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.Iterator;
 
 import pl.com.hom.configuration.Measures;
+import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.electric.Role;
-import pl.com.hom.elements.PotentialsSuplier;
+import pl.com.hom.electric.Potential;
 import pl.com.hom.elements.ColumnRow;
 
 public class Column {
-	private EnumSet<Role>     controller;
-	private ArrayList<ColumnRow> columnRows;
+	private ArrayList<ColumnRow>   columnRows;
 	private ArrayList<ColumnLine>  lines;
 
-	private int   index;
 	private float x;
-	private float y;
+	private float width;
 
-	private PotentialsSuplier suplier;
+	private ArrayList<Point> supplyPoints;
 
 	//TODO Page parent
-	public Column(int index) {
-		this.index = index;
-		this.x     = Measures.COL_WIDTH_MARGIN + Measures.COL_WIDTH * index;
-		this.y     = Measures.PAGE_HEIGHT - Measures.COL_LEV_MARGIN;
+	public Column(Page parent, float width) {
+		this.width = width;
+		this.x     = parent.getWidthPos() + Measures.COL_WIDTH_MARGIN + width;
 
-		suplier = new PotentialsSuplier(this);
+		this.columnRows   = new ArrayList<ColumnRow>();
+		this.supplyPoints = new ArrayList<Point>();
 
-		controller = EnumSet.noneOf(Role.class);
-		columnRows = new ArrayList<ColumnRow>();
-		columnRows.add(suplier);
-
+		System.out.println("Column width: " + x);
 	}
 
 	//TEST
@@ -51,27 +45,28 @@ public class Column {
 
 	//TEST
 	public void showSupplierPointsLines() {
-		suplier.showPoints();
+		for (Point p : supplyPoints)
+			System.out.println(p);
 	}
 
 	public void addElement(ColumnRow element)
 	{
-		if (controller.contains(element.getRole()))
-			throw new RuntimeException("Column has doubled row");
+		for (ColumnRow r : columnRows)
+			if (r.getRole() == element.getRole())
+				throw new RuntimeException("Column has doubled row");
 
 		columnRows.add(element);
-
-		suplier.fetchPointsToSupply(element);
+		fetchPointsToSupply(element);
 
 		produceColumnLines();
 	}
 
 	public float getWidth() {
-		return this.x;
+		return this.width;
 	}
 
-	public float getHeight() {
-		return this.y;
+	public float getWidthPos() {
+		return this.x;
 	}
 
 	private ColumnRow getColumnRowFromLevel(Integer i) {
@@ -82,9 +77,17 @@ public class Column {
 		return null;
 	}
 
-	private void linkColumnRows(ColumnRow from, ColumnRow to) {
-		ArrayList<Point> fPoints = from.getPointsTargetingDown();
-		ArrayList<Point> tPoints = to.getPointsTargetingUp();
+	private void createLines(ArrayList<Point> from, ArrayList<Point> to) {
+		ArrayList<Point> fPoints = new ArrayList<Point>();
+		ArrayList<Point> tPoints = new ArrayList<Point>();
+
+		for (Point p : from)
+			if (p.hasDirection(Direction.Down))
+				fPoints.add(p);
+
+		for (Point p : to)
+			if (p.hasDirection(Direction.Up))
+				tPoints.add(p);
 
 		for (Point f : fPoints) {
 			Point t = null;
@@ -109,6 +112,14 @@ public class Column {
 		ColumnRow to;
 
 		lines = new ArrayList<ColumnLine>();
+
+		for (Integer i = 0; i <= lastRowLevel(); i++)
+		{
+			to = getColumnRowFromLevel(i);
+			if (to != null)
+				createLines(supplyPoints, to.getPoints());
+		}
+
 		for (Integer i = 0; i <= lastRowLevel(); i++) {
 			from = getColumnRowFromLevel(i);
 			if (from == null) continue;
@@ -117,8 +128,27 @@ public class Column {
 				to = getColumnRowFromLevel(j);
 				if (to == null) continue;
 
-				linkColumnRows(from, to);
+				createLines(from.getPoints(), to.getPoints());
 			}
 		}
+	}
+
+	private void fetchPointsToSupply(ColumnRow element) {
+		for (Point point : element.getPoints())
+		{
+			Potential pot = point.getPotential();
+
+			if (!hasElementPotential(pot) && point.hasDirection(Direction.Up))
+				this.supplyPoints.add(new Point(this,pot));
+		}
+	}
+
+	private boolean hasElementPotential(Potential pot) {
+		Iterator<Point> i = supplyPoints.iterator();
+		while (i.hasNext())
+			if (i.next().getPotential() == pot)
+				return true;
+
+		return false;
 	}
 }	

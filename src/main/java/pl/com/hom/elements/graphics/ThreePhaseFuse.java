@@ -8,9 +8,10 @@ import java.util.ArrayList;
 
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.electric.Potential;
 import pl.com.hom.electric.Role;
 import pl.com.hom.elements.ColumnRow;
+
+import static pl.com.hom.configuration.Potentials.getPotential;
 
 public class ThreePhaseFuse extends ColumnRow {
 	public ThreePhaseFuse () {
@@ -25,13 +26,13 @@ public class ThreePhaseFuse extends ColumnRow {
 		EnumSet<Direction> upDirection = EnumSet.noneOf(Direction.class);
 		upDirection.add(Direction.Up);
 
-		points.add(new Point(Potential.L1, Direction.Down));
-		points.add(new Point(Potential.L2, Direction.Down));
-		points.add(new Point(Potential.L3, Direction.Down));
+		points.add(new Point(getPotential("L1"), Direction.Down));
+		points.add(new Point(getPotential("L2"), Direction.Down));
+		points.add(new Point(getPotential("L3"), Direction.Down));
 
-		points.add(new Point(Potential.L1, Direction.Up));
-		points.add(new Point(Potential.L2, Direction.Up));
-		points.add(new Point(Potential.L3, Direction.Up));
+		points.add(new Point(getPotential("L1"), Direction.Up));
+		points.add(new Point(getPotential("L2"), Direction.Up));
+		points.add(new Point(getPotential("L3"), Direction.Up));
 
 		role = Role.Fuse;
 	}

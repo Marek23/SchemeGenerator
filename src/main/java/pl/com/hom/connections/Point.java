@@ -12,38 +12,40 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Resource;
 import pl.com.hom.electric.Potential;
 import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.elements.PotentialsSuplier;
+import pl.com.hom.elements.graphics.Coil;
 import pl.com.hom.elements.graphics.Contactor;
+import pl.com.hom.scheme.Column;
 
 public class Point {
-
-	@Override
-	public String toString() {
-		return "Point [x=" + x + ", y=" + y + ", visibility=" + visibility + ", image=" + image + ", directions="
-				+ directions + ", potential=" + potential + "]";
-	}
-
 	private ColumnRow parent;
 
 	private float x;
 	private float y;
 
-	private boolean      visibility;
+	private boolean        visibility;
 	private PdfFormXObject image;
+
+	@Override
+	public String toString() {
+		return "Point [parent=" + parent + ", x=" + x + ", y=" + y + ", visibility=" + visibility + ", image=" + image
+				+ ", directions=" + directions + ", potential=" + potential + "]";
+	}
 
 	private EnumMap<Direction, Boolean> directions;
 	private Potential potential;
 
 	public Point(Contactor parent, Potential potential, Direction direction)
 	{
-		this.parent = parent;
+		this.parent    = parent;
+		this.potential = potential;
 
-		this.x = parent.getWidth() + Measures.countCommonWidth(potential);
+		this.x = parent.getWidthPos() + parent.getWidth() + potential.getWidth();
 
 		if (direction == Direction.Up)
-			this.y = parent.getHeight() + parent.image().getHeight() * Measures.SCALE;
-		else
-			this.y = parent.getHeight();
+			this.y = parent.getHeightPos();
+
+		if (direction == Direction.Down)
+			this.y = parent.getHeightPos() + parent.image().getHeight() * Measures.SCALE;
 
 		this.visibility = false;
 		this.image      = null;
@@ -53,7 +55,29 @@ public class Point {
 
 		this.directions.put(direction, false);
 	}
-	
+
+	public Point(Coil parent, Potential potential, Direction direction)
+	{
+		this.parent    = parent;
+		this.potential = potential;
+
+		this.x = parent.getWidthPos() + parent.getWidth() + potential.getWidth();
+
+		if (direction == Direction.Up)
+			this.y = parent.getHeight();
+
+		if (direction == Direction.Down)
+			this.y = parent.getHeight() + parent.image().getHeight() * Measures.SCALE;
+
+		this.visibility = false;
+		this.image      = null;
+
+		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
+		this.potential  = potential;
+
+		this.directions.put(direction, false);
+	}
+
 	public Point(Potential potential, Direction direction)
 	{
 		this.visibility = false;
@@ -77,23 +101,17 @@ public class Point {
 		    this.directions.put(e.getKey(), false);
 	}
 
-	public static Point newSupplierPoint(PotentialsSuplier colRow, Point p) {
-		return new Point(colRow, p);
-	}
-
-	private Point(ColumnRow colRow, Point p) {
+	public Point(Column column, Potential potential) {
 		this.visibility = true;
 		this.image      = getImage(Resource.Point);
 
 		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
-		this.potential  = p.getPotential();
+		this.potential  = potential;
 
-		for (Entry<Direction, Boolean> e : p.directions.entrySet())
-			if (e.getKey() == Direction.Up)
-				this.directions.put(Direction.getPair(e.getKey()), e.getValue());
+		this.directions.put(Direction.Down, false);
 
-		this.x = colRow.getWidth()  + Measures.countCommonWidth(this.potential);
-		this.y = colRow.getHeight() - Measures.countUpHeight(this.potential);
+		this.x = column.getWidthPos()  + potential.getWidth();
+		this.y = potential.getMainLineHeight();
 	}
 
 	public Potential getPotential() {
@@ -109,7 +127,7 @@ public class Point {
 		return out;
 	}
 
-	public boolean hasDirections(Direction d) {
+	public boolean hasDirection(Direction d) {
 		return directions.containsKey(d);
 	}
 
@@ -152,11 +170,11 @@ public class Point {
     			directions.put(e.getKey(), false);
     }
 
-    public float getHeight() {
+    public float getHeightPos() {
     	return y;
     }
 
-    public float getWidth() {
+    public float getWidthPos() {
     	return x;
     }
 

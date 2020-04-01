@@ -11,18 +11,19 @@ import pl.com.hom.scheme.Column;
 
 public abstract class ColumnRow {
 	protected Column parent;
-	protected ArrayList<Point>  points;
-
 	protected String id;
 	protected String desc;
 
 	protected PdfFormXObject image;
 	protected boolean        visibility;
-
-	protected int columnIndex;
+	
+	protected ArrayList<Point> points;
 
 	protected float x;
 	protected float y;
+
+	protected float width;
+	protected float height;
 
 	protected Role role;
 
@@ -39,34 +40,25 @@ public abstract class ColumnRow {
 			p.unlinkColumnDirections();
 	}
 
-	public ArrayList<Point> getPointsTargetingDown() {
-		ArrayList<Point> out = new ArrayList<Point>(); 
-		for (Point p : points)
-			if (p.getDirections().containsKey(Direction.Down))
-				out.add(p);
-
-		return out;
-	}
 	public void showPoints() {
 		for (Point p : points) {
 			System.out.println(p.toString());
 		}
 	}
 
-	public ArrayList<Point> getPointsTargetingUp() {
-		ArrayList<Point> out = new ArrayList<Point>(); 
-		for (Point p : points)
-			if (p.getDirections().containsKey(Direction.Up))
-				out.add(p);
-
-		return out;
-	}
-
 	public float getWidth() {
-		return x;
+		return width;
 	}
 
 	public float getHeight() {
+		return height;
+	}
+
+	public float getWidthPos() {
+		return x;
+	}
+
+	public float getHeightPos() {
 		return y;
 	}
 

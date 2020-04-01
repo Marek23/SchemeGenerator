@@ -5,15 +5,4 @@ public enum Direction {
 	Down,
 	Left,
 	Right;
-
-	public static Direction getPair(Direction d) {
-		if (d == Up)
-			return Down;
-		else if (d == Down)
-			return Up;
-		else if (d == Left)
-			return Right;
-		else 
-			return Left;
-	}
 }

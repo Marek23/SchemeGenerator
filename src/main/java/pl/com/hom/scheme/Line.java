@@ -26,19 +26,19 @@ public abstract class Line {
 	}
 
 	public float getBeginHeight() {
-		return startPoint.getHeight();
+		return startPoint.getHeightPos();
 	}
 
 	public float getBeginWidth() {
-		return startPoint.getWidth();
+		return startPoint.getWidthPos();
 	}
 
 	public float getEndHeight() {
-		return endPoint.getHeight();
+		return endPoint.getHeightPos();
 	}
 
 	public float getEndWidth() {
-		return endPoint.getWidth();
+		return endPoint.getWidthPos();
 	}
 
     public boolean equals(Object o) { 

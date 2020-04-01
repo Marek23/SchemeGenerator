@@ -1,16 +1,15 @@
 package pl.com.hom.elements.graphics;
 
-import static pl.com.hom.configuration.Resource.ThreePhaseEngine;
-import static pl.com.hom.configuration.Resource.getImage;
-
 import java.util.ArrayList;
 
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.electric.Potential;
 import pl.com.hom.electric.Role;
 import pl.com.hom.elements.ColumnRow;
 
+import static pl.com.hom.configuration.Resource.ThreePhaseEngine;
+import static pl.com.hom.configuration.Resource.getImage;
+import static pl.com.hom.configuration.Potentials.getPotential;
 public class ThreePhaseEngine extends ColumnRow {
 	
 	public ThreePhaseEngine () {
@@ -19,9 +18,9 @@ public class ThreePhaseEngine extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(new Point(Potential.L1, Direction.Up));
-		points.add(new Point(Potential.L2, Direction.Up));
-		points.add(new Point(Potential.L3, Direction.Up));
+		points.add(new Point(getPotential("L1"), Direction.Up));
+		points.add(new Point(getPotential("L2"), Direction.Up));
+		points.add(new Point(getPotential("L3"), Direction.Up));
 
 		role = Role.Receiver;
 	}

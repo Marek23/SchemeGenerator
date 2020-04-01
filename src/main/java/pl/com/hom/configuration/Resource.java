@@ -19,6 +19,7 @@ public final class Resource {
 	public final static String ThreePhaseEngine = "ThreePhaseEngine.wmf";
 	public final static String Point            = "Point.wmf";
 	public final static String UVWBridge        = "UVWBridge.wmf";
+	public final static String Coil             = "Coil.wmf";
 
 	private static ArrayList<String> imageNames = new ArrayList<String>(Arrays.asList(
 		Contactor,
@@ -26,7 +27,8 @@ public final class Resource {
 		ThreePhaseFuse,
 		ThreePhaseEngine,
 		Point,
-		UVWBridge
+		UVWBridge,
+		Coil
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

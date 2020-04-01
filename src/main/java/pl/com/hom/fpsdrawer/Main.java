@@ -13,6 +13,7 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.elements.graphics.Contactor;
 import pl.com.hom.scheme.Column;
 import pl.com.hom.scheme.ColumnLine;
+import pl.com.hom.scheme.Page;
 
 public class Main {     
 	public static void main(String args[]) throws Exception {				
@@ -20,11 +21,9 @@ public class Main {
 
 		Configuration.initialize();
 
-		Column    column    = new Column(0);
+		Page      page      = new Page();
+		Column    column    = new Column(page, 100f);
 		Contactor contactor = new Contactor(column);
-
-		System.out.println("C: " + contactor.getWidth());
-		System.out.println("C: " + contactor.getHeight());
 
 		column.addElement(contactor);
 
@@ -32,10 +31,8 @@ public class Main {
 		System.out.println("---");
 		contactor.showPoints();
 
+		System.out.println("--- Lines ---");
 		column.showLines();
-		System.out.println("Stop");
-
-		System.out.println("---");
 
 		PdfPage   pdfPage = getPdfDocument().addNewPage(PageSize.A4.rotate());
 		PdfCanvas canvas  = new PdfCanvas(pdfPage);
@@ -51,11 +48,10 @@ public class Main {
 			canvas.setStrokeColorRgb(1f, 0f, 0f);
 			canvas.moveTo(line.getBeginWidth(), line.getBeginHeight());
 			canvas.lineTo(line.getEndWidth(), line.getEndHeight());
-			canvas.addXObject(contactor.image(), new Rectangle(contactor.getWidth(), contactor.getHeight(),Measures.SCALE,Measures.SCALE));
+			canvas.addXObject(contactor.image(), new Rectangle(contactor.getWidthPos(), contactor.getHeightPos(),Measures.SCALE,Measures.SCALE));
 			canvas.stroke(); //IMPORTANT
 		}
 
-		
 		canvas.closePathStroke();				  		 
 		getPdfDocument().close();  
 		

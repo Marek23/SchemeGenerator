@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.electric.Potential;
 import pl.com.hom.electric.Role;
+
+import static pl.com.hom.configuration.Potentials.getPotential;
 
 public class UpRightPhasesBridge extends ColumnRow {
 	public UpRightPhasesBridge () {
@@ -19,9 +20,9 @@ public class UpRightPhasesBridge extends ColumnRow {
 		directions.put(Direction.Up, false);
 		directions.put(Direction.Right, false);
 
-		points.add(new Point(Potential.L1, directions));
-		points.add(new Point(Potential.L2, directions));
-		points.add(new Point(Potential.L3, directions));
+		points.add(new Point(getPotential("L1"), directions));
+		points.add(new Point(getPotential("L2"), directions));
+		points.add(new Point(getPotential("L3"), directions));
 
 		role = Role.Connection;
 	}
