@@ -4,7 +4,7 @@ import static pl.com.hom.configuration.Resource.getImage;
 
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
-import pl.com.hom.electric.Potential;
+import pl.com.hom.connections.Potential;
 
 public class Terminal {
 	private Potential potental;
@@ -22,6 +22,6 @@ public class Terminal {
 	}
 
 	public Terminal() {
-		image = getImage("Terminal.wmf");
+		image = getImage("Terminal");
     }
 }

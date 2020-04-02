@@ -1,7 +1,7 @@
 package pl.com.hom.scheme;
 
 import pl.com.hom.connections.Point;
-import pl.com.hom.electric.Potential;
+import pl.com.hom.connections.Potential;
 
 public abstract class Line {
 	private Potential potential;

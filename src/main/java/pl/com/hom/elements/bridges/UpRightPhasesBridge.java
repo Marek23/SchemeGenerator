@@ -1,11 +1,12 @@
-package pl.com.hom.elements;
+package pl.com.hom.elements.bridges;
 
 import java.util.EnumMap;
 import java.util.ArrayList;
 
+import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.electric.Role;
+import pl.com.hom.elements.ColumnRow;
 
 import static pl.com.hom.configuration.Potentials.getPotential;
 
@@ -24,6 +25,6 @@ public class UpRightPhasesBridge extends ColumnRow {
 		points.add(new Point(getPotential("L2"), directions));
 		points.add(new Point(getPotential("L3"), directions));
 
-		role = Role.Connection;
+		role = Roles.getRole("UnderContactorBridge");
 	}
 }

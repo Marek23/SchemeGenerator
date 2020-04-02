@@ -3,7 +3,7 @@ package pl.com.hom.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.com.hom.electric.Potential;
+import pl.com.hom.connections.Potential;
 import pl.com.hom.elements.graphics.Terminal;
 
 public class Conjugation extends ColumnRow {

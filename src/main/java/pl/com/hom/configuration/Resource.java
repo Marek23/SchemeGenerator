@@ -13,22 +13,15 @@ import com.itextpdf.kernel.pdf.canvas.wmf.WmfImageData;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 public final class Resource {
-	public final static String Contactor        = "Contactor.wmf";
-	public final static String Terminal         = "Terminal.wmf";
-	public final static String ThreePhaseFuse   = "ThreePhaseFuse.wmf";
-	public final static String ThreePhaseEngine = "ThreePhaseEngine.wmf";
-	public final static String Point            = "Point.wmf";
-	public final static String UVWBridge        = "UVWBridge.wmf";
-	public final static String Coil             = "Coil.wmf";
-
 	private static ArrayList<String> imageNames = new ArrayList<String>(Arrays.asList(
-		Contactor,
-		Terminal,
-		ThreePhaseFuse,
-		ThreePhaseEngine,
-		Point,
-		UVWBridge,
-		Coil
+		"Contactor.wmf",
+		"Terminal.wmf",
+		"ThreePhaseFuse.wmf",
+		"ThreePhaseEngine.wmf",
+		"Point.wmf",
+		"AboveContactorBridge.wmf",
+		"UnderContactorBridge.wmf",
+		"Coil.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;
@@ -38,7 +31,7 @@ public final class Resource {
 		for (String img : imageNames) {
 			try { try {
 				WmfImageData wmf = new WmfImageData("src/main/resources/" + img);
-				graphics.put(img, wmf);
+				graphics.put(img.replaceAll("\\.wmf", ""), wmf);
 				} catch (MalformedURLException canHappen) {
 					System.out.println("MalformedURLException");
 			} } catch (PdfException e) {

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
-import pl.com.hom.connections.Direction;
+import pl.com.hom.configuration.Measures;
+import pl.com.hom.configuration.Role;
 import pl.com.hom.connections.Point;
-import pl.com.hom.electric.Role;
 import pl.com.hom.scheme.Column;
 
 public abstract class ColumnRow {
@@ -31,6 +31,10 @@ public abstract class ColumnRow {
 		return this.role;
 	}
 
+	public boolean visible() {
+		return visibility;
+	}
+
 	public ArrayList<Point> getPoints() {
 		return this.points;
 	}
@@ -51,7 +55,7 @@ public abstract class ColumnRow {
 	}
 
 	public float getHeight() {
-		return height;
+		return height * Measures.SCALE;
 	}
 
 	public float getWidthPos() {

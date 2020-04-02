@@ -1,15 +1,13 @@
 package pl.com.hom.scheme;
 
-import static pl.com.hom.configuration.Level.getRoleLevel;
-import static pl.com.hom.configuration.Level.lastRowLevel;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import pl.com.hom.configuration.Measures;
+import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.electric.Potential;
+import pl.com.hom.connections.Potential;
 import pl.com.hom.elements.ColumnRow;
 
 public class Column {
@@ -22,20 +20,27 @@ public class Column {
 	private ArrayList<Point> supplyPoints;
 
 	//TODO Page parent
-	public Column(Page parent, float width) {
+	public Column(JetPage parent, float width) {
 		this.width = width;
 		this.x     = parent.getWidthPos() + Measures.COL_WIDTH_MARGIN + width;
 
 		this.columnRows   = new ArrayList<ColumnRow>();
 		this.supplyPoints = new ArrayList<Point>();
 
-		System.out.println("Column width: " + x);
+		parent.addColumn(this);
 	}
 
 	//TEST
 	public void showLines() {
 		for (ColumnLine cl : lines) {
 			System.out.println(cl.toString());
+		}
+	}
+
+	//TEST
+	public void showElements() {
+		for (ColumnRow r : columnRows) {
+			System.out.println(r.toString());
 		}
 	}
 
@@ -52,7 +57,7 @@ public class Column {
 	public void addElement(ColumnRow element)
 	{
 		for (ColumnRow r : columnRows)
-			if (r.getRole() == element.getRole())
+			if (r.getRole().getLevel() == element.getRole().getLevel())
 				throw new RuntimeException("Column has doubled row");
 
 		columnRows.add(element);
@@ -69,9 +74,13 @@ public class Column {
 		return this.x;
 	}
 
-	private ColumnRow getColumnRowFromLevel(Integer i) {
+	public ArrayList<ColumnRow> getColumnElements() {
+		return this.columnRows;
+	}
+
+	private ColumnRow getColumnRowFromLevel(int i) {
 		for (ColumnRow e : columnRows)
-			if (getRoleLevel(e.getRole()).equals(i))
+			if (e.getRole().getLevel() == i)
 				return e;
 
 		return null;
@@ -82,11 +91,11 @@ public class Column {
 		ArrayList<Point> tPoints = new ArrayList<Point>();
 
 		for (Point p : from)
-			if (p.hasDirection(Direction.Down))
+			if (p.hasUnlinkedDirection(Direction.Down))
 				fPoints.add(p);
 
 		for (Point p : to)
-			if (p.hasDirection(Direction.Up))
+			if (p.hasUnlinkedDirection(Direction.Up))
 				tPoints.add(p);
 
 		for (Point f : fPoints) {
@@ -99,7 +108,8 @@ public class Column {
 					break;
 			}
 
-			lines.add(new ColumnLine(f, t));
+			if (t != null)
+				lines.add(new ColumnLine(f, t));
 		}
 	}
 
@@ -113,24 +123,25 @@ public class Column {
 
 		lines = new ArrayList<ColumnLine>();
 
-		for (Integer i = 0; i <= lastRowLevel(); i++)
-		{
+		for (Integer i = Roles.rolesNumber(); i >= 1; i--) {
 			to = getColumnRowFromLevel(i);
-			if (to != null)
-				createLines(supplyPoints, to.getPoints());
-		}
+			if (to == null) continue;
 
-		for (Integer i = 0; i <= lastRowLevel(); i++) {
-			from = getColumnRowFromLevel(i);
-			if (from == null) continue;
-
-			for (Integer j = i + 1; j <= lastRowLevel(); j++) {
-				to = getColumnRowFromLevel(j);
-				if (to == null) continue;
+			for (Integer j = i - 1; j >= 0 ; j--) {
+				from = getColumnRowFromLevel(j);
+				if (from == null) continue;
 
 				createLines(from.getPoints(), to.getPoints());
 			}
 		}
+
+		for (Integer i = Roles.rolesNumber(); i >= 0; i--) {
+			to = getColumnRowFromLevel(i);
+			if (to == null) continue;
+
+			createLines(supplyPoints, to.getPoints());
+		}
+		
 	}
 
 	private void fetchPointsToSupply(ColumnRow element) {

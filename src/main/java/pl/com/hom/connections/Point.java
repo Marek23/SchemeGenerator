@@ -10,8 +10,9 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Resource;
-import pl.com.hom.electric.Potential;
 import pl.com.hom.elements.ColumnRow;
+import pl.com.hom.elements.bridges.AboveContactorBridge;
+import pl.com.hom.elements.bridges.ToMKSBridge;
 import pl.com.hom.elements.graphics.Coil;
 import pl.com.hom.elements.graphics.Contactor;
 import pl.com.hom.scheme.Column;
@@ -39,7 +40,7 @@ public class Point {
 		this.parent    = parent;
 		this.potential = potential;
 
-		this.x = parent.getWidthPos() + parent.getWidth() + potential.getWidth();
+		this.x = parent.getWidthPos() + potential.getWidth();
 
 		if (direction == Direction.Up)
 			this.y = parent.getHeightPos();
@@ -56,12 +57,49 @@ public class Point {
 		this.directions.put(direction, false);
 	}
 
-	public Point(Coil parent, Potential potential, Direction direction)
+	public Point(AboveContactorBridge parent, Potential potential, Direction direction)
 	{
 		this.parent    = parent;
 		this.potential = potential;
 
 		this.x = parent.getWidthPos() + parent.getWidth() + potential.getWidth();
+		this.y = parent.getHeightPos() + parent.image().getHeight() * Measures.SCALE;
+
+		this.visibility = false;
+		this.image      = null;
+
+		this.x = parent.getWidthPos()  + potential.getWidth();
+		this.y = parent.getHeightPos() + parent.image().getHeight() * Measures.SCALE;
+
+		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
+		this.potential  = potential;
+
+		this.directions.put(direction, false);
+	}
+
+	public Point(ToMKSBridge parent, Potential potential, Direction direction)
+	{
+		this.parent    = parent;
+		this.potential = potential;
+
+		this.x = parent.getWidthPos()  + potential.getWidth();
+		this.y = parent.getHeightPos() + parent.getHeight() * Measures.SCALE;
+
+		this.visibility = false;
+		this.image      = null;
+
+		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
+		this.potential  = potential;
+
+		this.directions.put(direction, false);
+	}
+
+	public Point(Coil parent, Potential potential, Direction direction)
+	{
+		this.parent    = parent;
+		this.potential = potential;
+
+		this.x = parent.getWidthPos()  + potential.getWidth();
 
 		if (direction == Direction.Up)
 			this.y = parent.getHeight();
@@ -92,7 +130,7 @@ public class Point {
 	public Point(Potential potential, EnumMap<Direction, Boolean> directions)
 	{
 		this.visibility = true;
-		this.image      = getImage(Resource.Point);
+		this.image      = getImage("Point");
 
 		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
 		this.potential  = potential;
@@ -103,7 +141,7 @@ public class Point {
 
 	public Point(Column column, Potential potential) {
 		this.visibility = true;
-		this.image      = getImage(Resource.Point);
+		this.image      = getImage("Point");
 
 		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
 		this.potential  = potential;
@@ -131,6 +169,13 @@ public class Point {
 		return directions.containsKey(d);
 	}
 
+	public boolean hasUnlinkedDirection(Direction d) {
+		if (directions.containsKey(d))
+			return !directions.get(d);
+
+		return false; 
+	}
+
 	public EnumMap<Direction, Boolean> getDirections() {
 		return this.directions;
 	}
@@ -141,7 +186,7 @@ public class Point {
 
 	public void setDirectionLinked(Direction direction) {
 		if (!this.directions.containsKey(direction))
-			throw new RuntimeException("Direction " + direction +" does not exist in point.");
+			throw new RuntimeException("Direction " + direction + " does not exist in point.");
 
 		this.directions.put(direction, true);
 	}

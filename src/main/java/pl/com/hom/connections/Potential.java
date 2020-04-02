@@ -1,4 +1,4 @@
-package pl.com.hom.electric;
+package pl.com.hom.connections;
 
 import pl.com.hom.configuration.Measures;
 
