@@ -6,5 +6,6 @@ public class Configuration {
 		Resource.initializeImages();
 		Roles.initialize();
 		Potentials.initialize();
+		MainPotentialHeight.initialize();
 	}
 }

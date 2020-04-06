@@ -9,21 +9,24 @@ public final class Roles {
 		roles = new HashMap<String, Role>();
 
 		add(new Role("Fuse", 1));
+		add(new Role("ThreePhaseFuse", 1));
 
 		add(new Role("AboveContactorBridge", 2));
 		
 		add(new Role("Contactor", 3));
 		add(new Role("Steering",  3));
 		
-		add(new Role("UnderContactorBridge", 4));
+		add(new Role("ToJetBridge", 4));
 		add(new Role("Coil", 4));
 		add(new Role("MKS", 4));
+		add(new Role("UpRightPhasesBridge", 4));
 
 		add(new Role("DownLines", 5));
 
 		add(new Role("Conjugation", 6));
 
 		add(new Role("Receiver", 7));
+		add(new Role("ThreePhaseEngine", 7));
 	}
 
 	public static void add(Role role) {

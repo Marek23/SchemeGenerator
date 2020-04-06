@@ -20,8 +20,8 @@ public final class Resource {
 		"ThreePhaseEngine.wmf",
 		"Point.wmf",
 		"AboveContactorBridge.wmf",
-		"UnderContactorBridge.wmf",
-		"Coil.wmf"
+		"Coil.wmf",
+		"Point.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

@@ -10,9 +10,11 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.elements.ColumnRow;
 
+import static pl.com.hom.configuration.MainPotentialHeight.getHeight;
+
 public class Column {
 	private ArrayList<ColumnRow>   columnRows;
-	private ArrayList<ColumnLine>  lines;
+	private ArrayList<VerticalLine>  lines;
 
 	private float x;
 	private float width;
@@ -32,7 +34,7 @@ public class Column {
 
 	//TEST
 	public void showLines() {
-		for (ColumnLine cl : lines) {
+		for (VerticalLine cl : lines) {
 			System.out.println(cl.toString());
 		}
 	}
@@ -44,7 +46,11 @@ public class Column {
 		}
 	}
 
-	public ArrayList<ColumnLine> getLines() {
+	public ArrayList<ColumnRow> getColumnRows() {
+		return this.columnRows;
+	}
+
+	public ArrayList<VerticalLine> getLines() {
 		return this.lines;
 	}
 
@@ -62,8 +68,6 @@ public class Column {
 
 		columnRows.add(element);
 		fetchPointsToSupply(element);
-
-		produceColumnLines();
 	}
 
 	public float getWidth() {
@@ -78,7 +82,7 @@ public class Column {
 		return this.columnRows;
 	}
 
-	private ColumnRow getColumnRowFromLevel(int i) {
+	public ColumnRow getColumnRowFromLevel(int i) {
 		for (ColumnRow e : columnRows)
 			if (e.getRole().getLevel() == i)
 				return e;
@@ -86,7 +90,7 @@ public class Column {
 		return null;
 	}
 
-	private void createLines(ArrayList<Point> from, ArrayList<Point> to) {
+	private void createVerticalLines(ArrayList<Point> from, ArrayList<Point> to) {
 		ArrayList<Point> fPoints = new ArrayList<Point>();
 		ArrayList<Point> tPoints = new ArrayList<Point>();
 
@@ -104,24 +108,24 @@ public class Column {
 			Iterator<Point> i = tPoints.iterator();
 			while (i.hasNext()) {
 				t = i.next();
-				if (f.getPotential() == t.getPotential())
+				if (f.getPotential() == t.getPotential() && f.getWidthPos() == t.getWidthPos())
 					break;
 			}
 
 			if (t != null)
-				lines.add(new ColumnLine(f, t));
+				lines.add(new VerticalLine(f, t));
 		}
 	}
 
-	public void produceColumnLines() {
+	public void createVerticalLines() {
+		this.lines = new ArrayList<VerticalLine>();
+
 		for (ColumnRow elem : columnRows)
 			for (Point p : elem.getPoints())
-				p.unlinkColumnDirections();
+				p.unlinkVerticalDirections();
 
 		ColumnRow from;
 		ColumnRow to;
-
-		lines = new ArrayList<ColumnLine>();
 
 		for (Integer i = Roles.rolesNumber(); i >= 1; i--) {
 			to = getColumnRowFromLevel(i);
@@ -131,7 +135,7 @@ public class Column {
 				from = getColumnRowFromLevel(j);
 				if (from == null) continue;
 
-				createLines(from.getPoints(), to.getPoints());
+				createVerticalLines(from.getPoints(), to.getPoints());
 			}
 		}
 
@@ -139,26 +143,39 @@ public class Column {
 			to = getColumnRowFromLevel(i);
 			if (to == null) continue;
 
-			createLines(supplyPoints, to.getPoints());
+			createVerticalLines(supplyPoints, to.getPoints());
 		}
 		
 	}
 
 	private void fetchPointsToSupply(ColumnRow element) {
+		this.supplyPoints = new ArrayList<Point>();
+
 		for (Point point : element.getPoints())
 		{
-			Potential pot = point.getPotential();
+			Potential pointPot  = point.getPotential();
+			float pointWidthPos = point.getWidthPos();
 
-			if (!hasElementPotential(pot) && point.hasDirection(Direction.Up))
-				this.supplyPoints.add(new Point(this,pot));
+			if (point.hasDirection(Direction.Up))
+				if (!hasPotentialInWidthPos(pointPot, pointWidthPos)) 
+				{
+					float mainHeight = getHeight(pointPot.getPotential());
+					this.supplyPoints.add(
+						new Point(this, pointPot.getPotential(), pointWidthPos, mainHeight)
+					);
+				}
 		}
 	}
 
-	private boolean hasElementPotential(Potential pot) {
+	private boolean hasPotentialInWidthPos(Potential potential, float widthPos) {
 		Iterator<Point> i = supplyPoints.iterator();
 		while (i.hasNext())
-			if (i.next().getPotential() == pot)
+		{
+			Point supplyPoint = i.next();
+
+			if (supplyPoint.getPotential() == potential && supplyPoint.getWidthPos() == widthPos)
 				return true;
+		}
 
 		return false;
 	}

@@ -10,19 +10,19 @@ public final class Potentials {
 	public static void initialize() {
 		potentials = new HashMap<String, Potential>();
 
-		add(new Potential("L1", 100f, 100f, 100f));
-		add(new Potential("L2", 200f, 200f, 200f));
-		add(new Potential("L3", 300f, 300f, 300f));
-		add(new Potential("DC24",  400f, 400f, 400f));
-		add(new Potential("DCPLC", 500f, 500f, 500f));
+		add(new Potential("L1____"));
+		add(new Potential("L2____"));
+		add(new Potential("L3____"));
+		add(new Potential("DC24__"));
+		add(new Potential("DCPLC_"));
 
-		add(new Potential("N",   100f, 100f, 100f));
-		add(new Potential("PE",  200f, 200f, 200f));
-		add(new Potential("DC0", 300f, 300f, 300f));
+		add(new Potential("N_____"));
+		add(new Potential("PE____"));
+		add(new Potential("DC0___"));
 	}
 
 	public static void add(Potential potential) {
-		potentials.put(potential.getName(), potential);
+		potentials.put(potential.getPotential(), potential);
 	}
 
 	public static Potential getPotential(String name) {

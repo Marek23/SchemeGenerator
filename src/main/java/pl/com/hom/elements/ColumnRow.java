@@ -13,6 +13,7 @@ public abstract class ColumnRow {
 	protected Column parent;
 	protected String id;
 	protected String desc;
+	protected String name;
 
 	protected PdfFormXObject image;
 	protected boolean        visibility;
@@ -41,7 +42,7 @@ public abstract class ColumnRow {
 
 	public void unlinkColumnPoints() {
 		for (Point p : points)
-			p.unlinkColumnDirections();
+			p.unlinkVerticalDirections();
 	}
 
 	public void showPoints() {
@@ -55,7 +56,7 @@ public abstract class ColumnRow {
 	}
 
 	public float getHeight() {
-		return height * Measures.SCALE;
+		return height;
 	}
 
 	public float getWidthPos() {

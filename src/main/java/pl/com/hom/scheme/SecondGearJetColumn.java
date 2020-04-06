@@ -6,6 +6,6 @@ import pl.com.hom.connections.Potential;
 import pl.com.hom.elements.ColumnRow;
 
 public class SecondGearJetColumn {
-	List<Potential>       potentials;
+	List<Potential> potentials;
 	List<ColumnRow> elements;
 }	

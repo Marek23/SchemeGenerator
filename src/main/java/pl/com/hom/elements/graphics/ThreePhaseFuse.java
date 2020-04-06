@@ -1,38 +1,44 @@
 package pl.com.hom.elements.graphics;
-import java.util.EnumSet;
-
-import static pl.com.hom.configuration.Resource.getImage;
 
 import java.util.ArrayList;
 
+import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.ColumnRow;
+import pl.com.hom.scheme.Column;
 
-import static pl.com.hom.configuration.Potentials.getPotential;
+import static pl.com.hom.configuration.Resource.getImage;
 
 public class ThreePhaseFuse extends ColumnRow {
-	public ThreePhaseFuse () {
-		visibility = true; 
-		image      = getImage("ThreePhaseFuse");
+	public static float L1WIDTH = 100f * Measures.SCALE;
+	public static float L2WIDTH = 200f * Measures.SCALE;
+	public static float L3WIDTH = 300f * Measures.SCALE;
+
+	public ThreePhaseFuse(Column parent) {
+		this.parent = parent;
+
+		this.name       = "ThreePhaseFuse";
+		this.visibility = true;
+		this.image      = getImage(name);
+		this.role       = Roles.getRole(name);
+		this.x = parent.getWidthPos();
+		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
+
+		this.width  = image.getWidth()  * Measures.SCALE;
+		this.height = image.getHeight() * Measures.SCALE;
 
 		points = new ArrayList<Point>();
 
-		EnumSet<Direction> downDirection = EnumSet.noneOf(Direction.class);
-		downDirection.add(Direction.Down);
+		points.add(new Point(this, "L1____", Direction.Down, L1WIDTH));
+		points.add(new Point(this, "L2____", Direction.Down, L2WIDTH));
+		points.add(new Point(this, "L3____", Direction.Down, L3WIDTH));
 
-		EnumSet<Direction> upDirection = EnumSet.noneOf(Direction.class);
-		upDirection.add(Direction.Up);
+		points.add(new Point(this, "L1____", Direction.Up, L1WIDTH));
+		points.add(new Point(this, "L2____", Direction.Up, L2WIDTH));
+		points.add(new Point(this, "L3____", Direction.Up, L3WIDTH));
 
-		points.add(new Point(getPotential("L1"), Direction.Down));
-		points.add(new Point(getPotential("L2"), Direction.Down));
-		points.add(new Point(getPotential("L3"), Direction.Down));
-
-		points.add(new Point(getPotential("L1"), Direction.Up));
-		points.add(new Point(getPotential("L2"), Direction.Up));
-		points.add(new Point(getPotential("L3"), Direction.Up));
-
-		role = Roles.getRole("Fuse");
+		parent.addElement(this);
 	}
 }
