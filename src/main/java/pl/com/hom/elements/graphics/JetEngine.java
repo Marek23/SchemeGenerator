@@ -11,23 +11,21 @@ import pl.com.hom.scheme.Column;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
-public class Contactor extends ColumnRow {
+public class JetEngine extends ColumnRow {
 	public static float L1WIDTH = 100f * Measures.SCALE;
 	public static float L2WIDTH = 200f * Measures.SCALE;
 	public static float L3WIDTH = 300f * Measures.SCALE;
 
-	public Contactor (Column parent, int pageNr, int number, String techName) {
-		this.name       = "Contactor";
+	public JetEngine(Column parent) {
+		this.name       = "ThreePhaseEngine";
 		this.visibility = true;
 		this.image      = getImage(name);
 		this.role       = Roles.getRole(name);
 		this.x = parent.getWidthPos();
 		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
-		
+
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
-		
-		this.techName = techName;
 
 		points = new ArrayList<Point>();
 

@@ -16,6 +16,7 @@ import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.elements.bridges.AboveContactorBridge;
 import pl.com.hom.elements.bridges.ToJetBridge;
 import pl.com.hom.elements.bridges.UpRightPhasesBridge;
+import pl.com.hom.elements.graphics.CoilContactor;
 import pl.com.hom.elements.graphics.Contactor;
 import pl.com.hom.elements.graphics.ThreePhaseEngine;
 import pl.com.hom.elements.graphics.ThreePhaseFuse;
@@ -32,7 +33,7 @@ public class JetPage extends PdfPage{
 	private HashMap<String, Integer> symbolNumbers;
 	Printer printer;
 
-	public JetPage(String firstGear, String secondGear) {
+	public JetPage(String firstGearPot, String secGearPot) {
 		super(getPdfDocument(), PageSize.A4.rotate());
 		getPdfDocument().addPage(this);
 
@@ -46,16 +47,30 @@ public class JetPage extends PdfPage{
 
 		this.x = 0f;
 
-		Column bridgeCol = new Column(this, 120.0f);
-		Contactor            cont1  = new Contactor(bridgeCol, pageNr, getNumerForTechSymbol(Contactor.techSymbol));
-		AboveContactorBridge bridge = new AboveContactorBridge(bridgeCol);
-		UpRightPhasesBridge  urpb   = new UpRightPhasesBridge(bridgeCol);
+		Column jetBridgeCol = new Column(this, 90.0f);
+		Column firstGearCol = new Column(this, 90.0f);
+		Column secGearCol   = new Column(this, 90.0f);
 
-		Column mainCol = new Column(this, 120.0f);
-		ThreePhaseFuse   tpf = new ThreePhaseFuse(mainCol, pageNr, getNumerForTechSymbol(ThreePhaseFuse.techSymbol));
-		ThreePhaseEngine tpe = new ThreePhaseEngine(mainCol);
-		ToJetBridge      tjb = new ToJetBridge(mainCol);
-		Contactor        cont2 = new Contactor(mainCol, pageNr, getNumerForTechSymbol(Contactor.techSymbol));
+		Column mksCol    = new Column(this, 90.0f);
+
+		Column firstGearCoilCol = new Column(this, 90.0f);
+		Column secGearCoilCol   = new Column(this, 90.0f);
+
+		CoilContactor firstGear = new CoilContactor(firstGearCoilCol, this.pageNr, getNumerForTechSymbol(CoilContactor.techSymbol), "L1____");
+		CoilContactor secGear   = new CoilContactor(secGearCoilCol,   this.pageNr, getNumerForTechSymbol(CoilContactor.techSymbol), "L1____");
+
+		secGear.addJetBridgeContactor(jetBridgeCol);
+		firstGear.addFirstGearContactor(firstGearCol);
+		secGear.addSecGearContactor(secGearCol);
+
+		AboveContactorBridge bridge = new AboveContactorBridge(jetBridgeCol);
+		UpRightPhasesBridge  urpb   = new UpRightPhasesBridge(jetBridgeCol);
+		ToJetBridge          tjb    = new ToJetBridge(firstGearCol);
+
+//		ThreePhaseFuse   tpf   = new ThreePhaseFuse(mainCol, pageNr, getNumerForTechSymbol(ThreePhaseFuse.techSymbol));
+
+		ThreePhaseEngine tpe   = new ThreePhaseEngine(firstGearCol);
+
 	}
 
 	private void createLines() {
@@ -135,7 +150,6 @@ public class JetPage extends PdfPage{
 				tPoints.add(p);
 
 		for (Point f : fPoints) {
-			System.out.println("tytytyty");
 			Point t = null;
 
 			Iterator<Point> i = tPoints.iterator();
@@ -145,8 +159,6 @@ public class JetPage extends PdfPage{
 					break;
 			}
 
-
-			System.out.println(t);
 			if (t != null)
 				horizontalLines.add(new HorizontalLine(f, t));
 		}

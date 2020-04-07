@@ -20,6 +20,8 @@ public abstract class ColumnRow {
 	
 	protected ArrayList<Point> points;
 
+	protected ArrayList<ColumnRow> childs;
+
 	protected float x;
 	protected float y;
 

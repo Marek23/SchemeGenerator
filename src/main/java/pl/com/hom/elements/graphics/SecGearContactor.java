@@ -11,13 +11,13 @@ import pl.com.hom.scheme.Column;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
-public class Contactor extends ColumnRow {
+public class SecGearContactor extends ColumnRow {
 	public static float L1WIDTH = 100f * Measures.SCALE;
 	public static float L2WIDTH = 200f * Measures.SCALE;
 	public static float L3WIDTH = 300f * Measures.SCALE;
 
-	public Contactor (Column parent, int pageNr, int number, String techName) {
-		this.name       = "Contactor";
+	public SecGearContactor (Column parent, String techName) {
+		this.name       = "FirstGearContactor";
 		this.visibility = true;
 		this.image      = getImage(name);
 		this.role       = Roles.getRole(name);

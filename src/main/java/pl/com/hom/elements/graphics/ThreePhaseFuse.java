@@ -25,10 +25,10 @@ public class ThreePhaseFuse extends ColumnRow {
 		this.role       = Roles.getRole(name);
 		this.x = parent.getWidthPos();
 		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
-
+		
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
-
+		
 		this.techName = String.valueOf(pageNr) + techSymbol + String.valueOf(number);
 
 		points = new ArrayList<Point>();

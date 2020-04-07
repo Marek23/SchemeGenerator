@@ -14,13 +14,17 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 public final class Resource {
 	private static ArrayList<String> imageNames = new ArrayList<String>(Arrays.asList(
+		"FirstGearContactor.wmf",
+		"SecGearContactor.wmf",
+		"JetBridgeContactor.wmf",
 		"Contactor.wmf",
+		"BridgeContactor.wmf",
 		"Terminal.wmf",
 		"ThreePhaseFuse.wmf",
 		"ThreePhaseEngine.wmf",
 		"Point.wmf",
 		"AboveContactorBridge.wmf",
-		"Coil.wmf",
+		"CoilContactor.wmf",
 		"Point.wmf"
 	));
 

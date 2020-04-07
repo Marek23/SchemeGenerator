@@ -8,10 +8,9 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
-import pl.com.hom.configuration.Roles;
 import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.elements.bridges.ToMKSBridge;
-import pl.com.hom.elements.graphics.Coil;
+import pl.com.hom.elements.graphics.CoilContactor;
 import pl.com.hom.scheme.Column;
 
 import static pl.com.hom.configuration.Resource.getImage;
@@ -75,7 +74,7 @@ public class Point {
 		this.directions.put(direction, false);
 	}
 
-	public Point(Coil parent, String potential, Direction direction, float width)
+	public Point(CoilContactor parent, String potential, Direction direction, float width)
 	{
 		this.parent    = parent;
 		this.potential = Potentials.getPotential(potential);

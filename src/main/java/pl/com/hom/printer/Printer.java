@@ -18,7 +18,7 @@ public class Printer extends PdfCanvas{
 		super(page);
 
 		try {
-			this.setFontAndSize(PdfFontFactory.createFont(FontConstants.TIMES_ROMAN), 11);
+			this.setFontAndSize(PdfFontFactory.createFont(FontConstants.HELVETICA), 11);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -36,7 +36,7 @@ public class Printer extends PdfCanvas{
 	}
 	public void addColumnRow(ColumnRow row) {
 		this.beginText();
-		this.moveText(row.getWidthPos() - 20, 595.0f - row.getHeightPos() - row.getHeight()/1.5);
+		this.moveText(row.getWidthPos() - 24, 595.0f - row.getHeightPos() - row.getHeight()/1.5);
 		this.showText(row.getTechName());
 		this.endText();
 		this.addXObject(row.image(), new Rectangle(row.getWidthPos(), 595.0f - row.getHeightPos() - row.getHeight(), Measures.SCALE,Measures.SCALE));
