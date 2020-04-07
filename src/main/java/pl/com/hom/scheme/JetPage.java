@@ -3,17 +3,12 @@ package pl.com.hom.scheme;
 import static pl.com.hom.configuration.Document.getPdfDocument;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.RowFilter;
 
 import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfPage;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
@@ -24,6 +19,7 @@ import pl.com.hom.elements.bridges.UpRightPhasesBridge;
 import pl.com.hom.elements.graphics.Contactor;
 import pl.com.hom.elements.graphics.ThreePhaseEngine;
 import pl.com.hom.elements.graphics.ThreePhaseFuse;
+import pl.com.hom.printer.Printer;
 
 public class JetPage extends PdfPage{
 	private static final long serialVersionUID = 7351148506505896070L;
@@ -31,30 +27,35 @@ public class JetPage extends PdfPage{
 	private ArrayList<Column> columns;
 	private ArrayList<HorizontalLine> horizontalLines;
 	private float x;
+	private int pageNr;
 
-	PdfCanvas canvas;
+	private HashMap<String, Integer> symbolNumbers;
+	Printer printer;
 
 	public JetPage(String firstGear, String secondGear) {
 		super(getPdfDocument(), PageSize.A4.rotate());
 		getPdfDocument().addPage(this);
 
-		this.canvas  = new PdfCanvas(this);
+//		TODO
+		this.pageNr  = 10;
+		this.printer = new Printer(this);
 		this.columns = new ArrayList<Column>();
 
 		this.horizontalLines = new ArrayList<HorizontalLine>();
+		this.symbolNumbers   = new HashMap<String, Integer>();
 
 		this.x = 0f;
 
 		Column bridgeCol = new Column(this, 120.0f);
-		Contactor            cont1  = new Contactor(bridgeCol);
+		Contactor            cont1  = new Contactor(bridgeCol, pageNr, getNumerForTechSymbol(Contactor.techSymbol));
 		AboveContactorBridge bridge = new AboveContactorBridge(bridgeCol);
 		UpRightPhasesBridge  urpb   = new UpRightPhasesBridge(bridgeCol);
 
 		Column mainCol = new Column(this, 120.0f);
-		ThreePhaseFuse   tpf = new ThreePhaseFuse(mainCol);
+		ThreePhaseFuse   tpf = new ThreePhaseFuse(mainCol, pageNr, getNumerForTechSymbol(ThreePhaseFuse.techSymbol));
 		ThreePhaseEngine tpe = new ThreePhaseEngine(mainCol);
 		ToJetBridge      tjb = new ToJetBridge(mainCol);
-		Contactor        cont2 = new Contactor(mainCol);
+		Contactor        cont2 = new Contactor(mainCol, pageNr, getNumerForTechSymbol(Contactor.techSymbol));
 	}
 
 	private void createLines() {
@@ -113,9 +114,6 @@ public class JetPage extends PdfPage{
 
 					ColumnRow rFrom = from.getColumnRowFromLevel(r);
 					ColumnRow rTo   = to.getColumnRowFromLevel(r);
-					
-					System.out.println(rFrom);
-					System.out.println(rTo);
 
 					if (rFrom != null && rTo != null)
 						createLines(rFrom.getPoints(), rTo.getPoints());
@@ -157,36 +155,31 @@ public class JetPage extends PdfPage{
 	public void draw() {
 		createLines();
 
-		showHorizontalLines();
-
 		for (Column column : columns) {
-			for (VerticalLine line :column.getLines()) {
-				canvas.setLineWidth(0.5f);
-				canvas.setStrokeColorRgb(0f, 0f, 0f);
-				canvas.moveTo(line.getBeginWidth(), 595.0f - line.getBeginHeight());
-				canvas.lineTo(line.getEndWidth(),   595.0f - line.getEndHeight());
-			}
+			for (VerticalLine line :column.getLines())
+				printer.addLine(line);
 
 			for (ColumnRow row : column.getColumnElements())
 			{
 				if (row.visible())
-					canvas.addXObject(row.image(), new Rectangle(row.getWidthPos(), 595.0f - row.getHeightPos() - row.getHeight(), Measures.SCALE,Measures.SCALE));
+					printer.addColumnRow(row);
 
-				for(Point p: row.getPoints()) {
+				for(Point p: row.getPoints())
 					if (p.isVisibile())
-						canvas.addXObject(p.image(), new Rectangle(p.getWidthPos() - p.getWidth()/2, 595.0f - p.getHeightPos() -  p.getHeigh()/2, Measures.SCALE,Measures.SCALE));
-				}
+						printer.addPoint(p);
 			}
 		}
 
-		for (HorizontalLine line : this.horizontalLines) {
-			canvas.setLineWidth(0.5f);
-			canvas.setStrokeColorRgb(0f, 0f, 0f);
-			canvas.moveTo(line.getBeginWidth(), 595.0f - line.getBeginHeight());
-			canvas.lineTo(line.getEndWidth(),   595.0f - line.getEndHeight());
-		}
+		for (HorizontalLine line : this.horizontalLines)
+			printer.addLine(line);
+	}
 
-		canvas.stroke();
-		canvas.closePathStroke();
+	private int getNumerForTechSymbol(String symbol){
+		if (symbolNumbers.containsKey(symbol))
+			symbolNumbers.put(symbol, symbolNumbers.get(symbol)+1);
+		else
+			symbolNumbers.put(symbol, 1);
+
+		return symbolNumbers.get(symbol);
 	}
 }

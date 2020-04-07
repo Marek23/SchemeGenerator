@@ -10,10 +10,10 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.scheme.Column;
 
 public abstract class ColumnRow {
-	protected Column parent;
 	protected String id;
 	protected String desc;
 	protected String name;
+	protected String techName;
 
 	protected PdfFormXObject image;
 	protected boolean        visibility;
@@ -69,5 +69,9 @@ public abstract class ColumnRow {
 
 	public PdfFormXObject image() {
 		return this.image;
+	}
+
+	public String getTechName() {
+		return this.techName;
 	}
 }

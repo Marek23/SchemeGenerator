@@ -19,6 +19,8 @@ public class Column {
 	private float x;
 	private float width;
 
+	private JetPage parent;
+
 	private ArrayList<Point> supplyPoints;
 
 	//TODO Page parent
@@ -29,6 +31,7 @@ public class Column {
 		this.columnRows   = new ArrayList<ColumnRow>();
 		this.supplyPoints = new ArrayList<Point>();
 
+		this.parent = parent;
 		parent.addColumn(this);
 	}
 
@@ -178,5 +181,9 @@ public class Column {
 		}
 
 		return false;
+	}
+
+	public JetPage getParent() {
+		return this.parent;
 	}
 }	

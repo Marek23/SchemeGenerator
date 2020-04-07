@@ -21,8 +21,6 @@ public class ToJetBridge extends ColumnRow {
 	public static float L3HEIGHT = 300f * Measures.SCALE;
 
 	public ToJetBridge (Column parent) {
-		this.parent = parent;
-
 		this.name       = "ToJetBridge";
 		this.visibility = false;
 		this.image      = null;

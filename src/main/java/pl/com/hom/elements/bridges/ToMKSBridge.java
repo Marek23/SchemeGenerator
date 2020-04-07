@@ -17,8 +17,6 @@ public class ToMKSBridge extends ColumnRow {
 	public static float L3WIDTH = 300f * Measures.SCALE;
 
 	public ToMKSBridge (Column parent) {
-		this.parent = parent;
-
 		this.name       = "ToMKSBridge";
 		this.visibility = true;
 		this.image      = getImage(name);

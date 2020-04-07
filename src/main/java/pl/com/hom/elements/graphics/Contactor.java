@@ -16,18 +16,20 @@ public class Contactor extends ColumnRow {
 	public static float L2WIDTH = 200f * Measures.SCALE;
 	public static float L3WIDTH = 300f * Measures.SCALE;
 
-	public Contactor (Column parent) {
-		this.parent = parent;
+	public static String techSymbol = "Q";
 
+	public Contactor (Column parent, int pageNr, int number) {
 		this.name       = "Contactor";
 		this.visibility = true;
 		this.image      = getImage(name);
 		this.role       = Roles.getRole(name);
 		this.x = parent.getWidthPos();
 		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
-
+		
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
+		
+		this.techName = String.valueOf(pageNr) + techSymbol + String.valueOf(number);
 
 		points = new ArrayList<Point>();
 

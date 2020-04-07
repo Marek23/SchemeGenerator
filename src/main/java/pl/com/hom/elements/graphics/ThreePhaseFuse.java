@@ -16,9 +16,9 @@ public class ThreePhaseFuse extends ColumnRow {
 	public static float L2WIDTH = 200f * Measures.SCALE;
 	public static float L3WIDTH = 300f * Measures.SCALE;
 
-	public ThreePhaseFuse(Column parent) {
-		this.parent = parent;
+	public static String techSymbol = "F";
 
+	public ThreePhaseFuse(Column parent, int pageNr, int number) {
 		this.name       = "ThreePhaseFuse";
 		this.visibility = true;
 		this.image      = getImage(name);
@@ -28,6 +28,8 @@ public class ThreePhaseFuse extends ColumnRow {
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
+
+		this.techName = String.valueOf(pageNr) + techSymbol + String.valueOf(number);
 
 		points = new ArrayList<Point>();
 

@@ -17,8 +17,6 @@ public class ThreePhaseEngine extends ColumnRow {
 	public static float L3WIDTH = 300f * Measures.SCALE;
 
 	public ThreePhaseEngine(Column parent) {
-		this.parent = parent;
-
 		this.name       = "ThreePhaseEngine";
 		this.visibility = true;
 		this.image      = getImage(name);

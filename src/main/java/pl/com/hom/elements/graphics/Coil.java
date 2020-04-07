@@ -14,7 +14,6 @@ import pl.com.hom.scheme.Column;
 public class Coil extends ColumnRow {
 	
 	public Coil (Column parent, Potential potential) {
-		this.parent = parent;
 
 		visibility = true;
 		image      = getImage("Coil");
@@ -27,7 +26,5 @@ public class Coil extends ColumnRow {
 		this.height = image.getHeight() * Measures.SCALE;
 
 		points  = new ArrayList<Point>();
-
-//		points.add(new Point(this, getPotential("N_____"), Direction.Down));
 	}
 }

@@ -18,8 +18,6 @@ public class UpRightPhasesBridge extends ColumnRow {
 	public static float L3HEIGHT = 300f * Measures.SCALE;
 
 	public UpRightPhasesBridge (Column parent) {
-		this.parent = parent;
-
 		this.name       = "UpRightPhasesBridge";
 		this.visibility = false;
 		this.image      = null;

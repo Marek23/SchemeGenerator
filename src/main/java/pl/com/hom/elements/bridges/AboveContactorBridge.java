@@ -17,8 +17,6 @@ public class AboveContactorBridge extends ColumnRow {
 	public static float L3WIDTH = 300f * Measures.SCALE;
 
 	public AboveContactorBridge (Column parent) {
-		this.parent = parent;
-
 		this.name       = "AboveContactorBridge";
 		this.visibility = true;
 		this.image      = getImage(name);
