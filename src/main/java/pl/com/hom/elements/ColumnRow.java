@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Role;
 import pl.com.hom.connections.Point;
-import pl.com.hom.scheme.Column;
 
 public abstract class ColumnRow {
 	protected String id;
@@ -24,6 +22,9 @@ public abstract class ColumnRow {
 
 	protected float x;
 	protected float y;
+
+	protected float nameXPos;
+	protected float nameYPos;
 
 	protected float width;
 	protected float height;
@@ -67,6 +68,14 @@ public abstract class ColumnRow {
 
 	public float getHeightPos() {
 		return y;
+	}
+
+	public float getWidthNamePos() {
+		return nameXPos;
+	}
+
+	public float getHeightNamePos() {
+		return nameYPos;
 	}
 
 	public PdfFormXObject image() {

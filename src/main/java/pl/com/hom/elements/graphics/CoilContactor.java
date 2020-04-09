@@ -12,8 +12,6 @@ import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.scheme.Column;
 
 public class CoilContactor extends ColumnRow {
-	private static float STEERINGWIDTH = 100f * Measures.SCALE;
-
 	public static String techSymbol = "Q";
 
 	public CoilContactor (Column parent, int pageNr, int number, String STEERPOT) {
@@ -29,12 +27,14 @@ public class CoilContactor extends ColumnRow {
 		
 		this.techName = String.valueOf(pageNr) + techSymbol + String.valueOf(number);
 
+		this.nameXPos = this.getWidthPos() - 22f;
+		this.nameYPos = 595.0f - this.getHeightPos() - this.getHeight()/1.5f;
+
 		points = new ArrayList<Point>();
 		childs = new ArrayList<ColumnRow>();
 
-		points.add(new Point(this, "N_____", Direction.Down, STEERINGWIDTH));
-
-		points.add(new Point(this, STEERPOT, Direction.Up, STEERINGWIDTH));
+		points.add(Point.newCoilPoint(this, "LSTER_", Direction.Up));
+		points.add(Point.newCoilPoint(this, "N_____", Direction.Down));
 
 		parent.addElement(this);
 	}

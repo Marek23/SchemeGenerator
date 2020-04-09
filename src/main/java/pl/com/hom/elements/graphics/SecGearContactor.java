@@ -12,10 +12,6 @@ import pl.com.hom.scheme.Column;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class SecGearContactor extends ColumnRow {
-	public static float L1WIDTH = 100f * Measures.SCALE;
-	public static float L2WIDTH = 200f * Measures.SCALE;
-	public static float L3WIDTH = 300f * Measures.SCALE;
-
 	public SecGearContactor (Column parent, String techName) {
 		this.name       = "FirstGearContactor";
 		this.visibility = true;
@@ -29,15 +25,18 @@ public class SecGearContactor extends ColumnRow {
 		
 		this.techName = techName;
 
+		this.nameXPos = this.getWidthPos() - 22f;
+		this.nameYPos = 595.0f - this.getHeightPos() - this.getHeight()/1.5f;
+
 		points = new ArrayList<Point>();
 
-		points.add(new Point(this, "L1____", Direction.Down, L1WIDTH));
-		points.add(new Point(this, "L2____", Direction.Down, L2WIDTH));
-		points.add(new Point(this, "L3____", Direction.Down, L3WIDTH));
+		points.add(Point.newStandardThreePhase(this, "L1____STANDARD__", Direction.Up));
+		points.add(Point.newStandardThreePhase(this, "L2____STANDARD__", Direction.Up));
+		points.add(Point.newStandardThreePhase(this, "L3____STANDARD__", Direction.Up));
 
-		points.add(new Point(this, "L1____", Direction.Up, L1WIDTH));
-		points.add(new Point(this, "L2____", Direction.Up, L2WIDTH));
-		points.add(new Point(this, "L3____", Direction.Up, L3WIDTH));
+		points.add(Point.newStandardThreePhase(this, "L1____STANDARD__", Direction.Down));
+		points.add(Point.newStandardThreePhase(this, "L2____STANDARD__", Direction.Down));
+		points.add(Point.newStandardThreePhase(this, "L3____STANDARD__", Direction.Down));
 
 		parent.addElement(this);
 	}

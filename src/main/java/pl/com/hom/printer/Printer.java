@@ -36,7 +36,8 @@ public class Printer extends PdfCanvas{
 	}
 	public void addColumnRow(ColumnRow row) {
 		this.beginText();
-		this.moveText(row.getWidthPos() - 24, 595.0f - row.getHeightPos() - row.getHeight()/1.5);
+//		TODO addScale
+		this.moveText(row.getWidthNamePos(), row.getHeightNamePos());
 		this.showText(row.getTechName());
 		this.endText();
 		this.addXObject(row.image(), new Rectangle(row.getWidthPos(), 595.0f - row.getHeightPos() - row.getHeight(), Measures.SCALE,Measures.SCALE));

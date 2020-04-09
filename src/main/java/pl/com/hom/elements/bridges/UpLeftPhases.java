@@ -8,21 +8,20 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.scheme.Column;
 
-public class ToMksBridge extends ColumnRow {
-	public ToMksBridge (Column parent) {
-		this.name       = "ToJetBridge";
+public class UpLeftPhases extends ColumnRow {
+	public UpLeftPhases(Column parent, String name) {
+		this.name       = name;
 		this.visibility = false;
 		this.image      = null;
 		this.role       = Roles.getRole(name);
-
 		this.x = parent.getWidthPos();
-		this.y = Measures.COL_LEV_HEIGHT * this.role.getLevel();
+		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
 
-		points = new ArrayList<Point>();
+		this.points = new ArrayList<Point>();
 
-		points.add(Point.newToMksBridge(this, "L1____"));
-		points.add(Point.newToMksBridge(this, "L2____"));
-		points.add(Point.newToMksBridge(this, "L3____"));
+		points.add(Point.newUpLeftJetPoint(this, "L1____"));
+		points.add(Point.newUpLeftJetPoint(this, "L2____"));
+		points.add(Point.newUpLeftJetPoint(this, "L3____"));
 
 		parent.addElement(this);
 	}

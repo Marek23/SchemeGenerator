@@ -9,8 +9,6 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.elements.bridges.ToMKSBridge;
-import pl.com.hom.elements.graphics.CoilContactor;
 import pl.com.hom.scheme.Column;
 
 import static pl.com.hom.configuration.Resource.getImage;
@@ -37,79 +35,143 @@ public class Point {
 	private EnumMap<Direction, Boolean> directions;
 	private Potential potential;
 
-	public Point(ColumnRow parent, String potential, Direction direction, float width)
-	{
-		this.parent    = parent;
-		this.potential = Potentials.getPotential(potential);
+	public static Point newCoilPoint(ColumnRow parent, String potential, Direction direction) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 
-		this.visibility = false;
-		this.image      = null;
+		dirs.put(direction, false);
 
-		this.x = parent.getWidthPos() + width;
+		float x = parent.getWidthPos() + Potentials.getPotential(potential).getWidth();
+		float y;
 
 		if (direction == Direction.Up)
-			this.y = parent.getHeightPos();
+			y = parent.getHeightPos();
+		else
+			y = parent.getHeightPos() + parent.getHeight();
 
-		if (direction == Direction.Down)
-			this.y = parent.getHeightPos() + parent.getHeight();
-
-		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
-
-		this.directions.put(direction, false);
+		return new Point(parent, potential, x, y, dirs, false);		
 	}
 
-	public Point(ToMKSBridge parent, String potential, Direction direction, float width)
-	{
-		this.parent    = parent;
-		this.potential = Potentials.getPotential(potential);
+	public static Point newStandardThreePhase(ColumnRow parent, String potential, Direction direction) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 
-		this.x = parent.getWidthPos()  + width;
-		this.y = parent.getHeightPos() + parent.getHeight();
+		dirs.put(direction, false);
 
-		this.visibility = false;
-		this.image      = null;
-
-		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
-
-		this.directions.put(direction, false);
-	}
-
-	public Point(CoilContactor parent, String potential, Direction direction, float width)
-	{
-		this.parent    = parent;
-		this.potential = Potentials.getPotential(potential);
-
-		this.x = parent.getWidthPos() + width;
+		float x = Potentials.getPotential(potential).getWidth();
+		float y;
 
 		if (direction == Direction.Up)
-			this.y = parent.getHeightPos();
+			y = 0f;
+		else
+			y = parent.getHeight();
 
-		if (direction == Direction.Down)
-			this.y = parent.getHeightPos() + parent.getHeight();
-
-		this.visibility = false;
-		this.image      = null;
-
-		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
-
-		this.directions.put(direction, false);
+		return new Point(parent, potential, x, y, dirs, false);
 	}
 
-	public static Point newToJetBridge(ColumnRow parent, String potential, float x, float y) {
+	public static Point newEnginePoint(ColumnRow parent, String potential) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Up, false);
+
+		float x = Potentials.getPotential(potential).getWidth();
+
+		return new Point(parent, potential, x, 0f, dirs, false);
+	}
+
+	public static Point newAboveContactorBridge(ColumnRow parent, String potential) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Down, false);
+
+		float x = Potentials.getPotential(potential).getWidth();
+		float y = parent.getHeight();
+
+		return new Point(parent, potential, x, y, dirs, false);
+	}
+
+	public static Point newToJetBridge(ColumnRow parent, String potential) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 
 		dirs.put(Direction.Left, false);
+		dirs.put(Direction.Up, false);
+		dirs.put(Direction.Down, false);
+
+		float x = Potentials.getPotential(potential).getWidth();
+		float y = Potentials.getPotential(potential).getHeight();
 
 		return new Point(parent, potential, x, y, dirs, true);	
 	}
 
-	public static Point newUpRightPoint(ColumnRow parent, String potential, float x, float y) {
+	public static Point newToMksBridge(ColumnRow parent, String potential) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+
+		dirs.put(Direction.Right, false);
+		dirs.put(Direction.Up, false);
+		dirs.put(Direction.Down, false);
+
+		float x = Potentials.getPotential(potential).getWidth();
+		float y = Potentials.getPotential(potential).getHeight();
+
+		return new Point(parent, potential, x, y, dirs, true);	
+	}
+
+	public static Point newUpLeftPoint(ColumnRow parent, String potential) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+
+		dirs.put(Direction.Up, false);
+		dirs.put(Direction.Left, false);
+
+		float x = Potentials.getPotential(potential).getWidth();
+		float y = Potentials.getPotential(potential).getHeight();
+
+		return new Point(parent, potential, x, y, dirs, false);	
+	}
+
+	public static Point newUpLeftJetPoint(ColumnRow parent, String potential) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+
+		dirs.put(Direction.Up, false);
+		dirs.put(Direction.Left, false);
+
+		float x = Potentials.getPotential(potential).getWidth();
+		float y = Potentials.getPotential(potential).getHeight();
+
+		return new Point(parent, potential, x, y, dirs, true);	
+	}
+
+	public static Point newUpRightPoint(ColumnRow parent, String potential) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Right, false);
 
+		float x = Potentials.getPotential(potential).getWidth();
+		float y = Potentials.getPotential(potential).getHeight();
+
+		return new Point(parent, potential, x, y, dirs, true);	
+	}
+	
+	public static Point newJetEngine(ColumnRow parent, String potential, Direction direction) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+
+		dirs.put(direction, false);
+
+		float y = Potentials.getPotential(potential).getHeight();
+		float x;
+
+		if (direction == Direction.Left)
+			x = 0f;
+		else
+			x = parent.getWidth();
+
 		return new Point(parent, potential, x, y, dirs, false);	
+	}
+
+	public static Point newMksPoint(ColumnRow parent, String potential) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+
+		dirs.put(Direction.Left, false);
+
+		float y = Potentials.getPotential(potential).getHeight();
+
+		return new Point(parent, potential, 0f, y, dirs, false);	
 	}
 
 	private Point(ColumnRow parent, String potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
@@ -131,7 +193,6 @@ public class Point {
 	}
 
 	public Point(Column column, String potential, float width, float height) {
-		
 		this.x = width;
 		this.y = height;
 

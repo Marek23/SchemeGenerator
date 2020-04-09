@@ -12,6 +12,8 @@ public final class MainPotentialHeight {
 		heights.put("L2____", new Float(100f) * Measures.SCALE);
 		heights.put("L3____", new Float(150f) * Measures.SCALE);
 
+		heights.put("LSTER_", new Float(500f) * Measures.SCALE);
+
 		heights.put("DC24__", new Float(200f));
 		heights.put("DCPLC_", new Float(250f));
 
@@ -21,7 +23,7 @@ public final class MainPotentialHeight {
 //		add(new Potential("DC0___"));
 	}
 
-	public static float getHeight(String potential) {
+	public static float getMainLineHeight(String potential) {
 		return heights.get(potential);
 	}
 }

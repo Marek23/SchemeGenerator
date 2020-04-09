@@ -10,7 +10,7 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.elements.ColumnRow;
 
-import static pl.com.hom.configuration.MainPotentialHeight.getHeight;
+import static pl.com.hom.configuration.MainPotentialHeight.getMainLineHeight;
 
 public class Column {
 	private ArrayList<ColumnRow>   columnRows;
@@ -111,8 +111,11 @@ public class Column {
 			Iterator<Point> i = tPoints.iterator();
 			while (i.hasNext()) {
 				t = i.next();
-				if (f.getPotential() == t.getPotential() && f.getWidthPos() == t.getWidthPos())
+				if (f.getPotential().getName().equals(t.getPotential().getName())
+				&& f.getWidthPos() == t.getWidthPos())
+				{
 					break;
+				}
 			}
 
 			if (t != null)
@@ -162,9 +165,9 @@ public class Column {
 			if (point.hasDirection(Direction.Up))
 				if (!hasPotentialInWidthPos(pointPot, pointWidthPos)) 
 				{
-					float mainHeight = getHeight(pointPot.getPotential());
+					float mainHeight = getMainLineHeight(pointPot.getName());
 					this.supplyPoints.add(
-						new Point(this, pointPot.getPotential(), pointWidthPos, mainHeight)
+						new Point(this, pointPot.getName(), pointWidthPos, mainHeight)
 					);
 				}
 		}
@@ -176,8 +179,11 @@ public class Column {
 		{
 			Point supplyPoint = i.next();
 
-			if (supplyPoint.getPotential() == potential && supplyPoint.getWidthPos() == widthPos)
+			if (supplyPoint.getPotential().getName().equals(potential.getName())
+			&& supplyPoint.getWidthPos() == widthPos)
+			{
 				return true;
+			}
 		}
 
 		return false;

@@ -22,10 +22,12 @@ public final class Resource {
 		"Terminal.wmf",
 		"ThreePhaseFuse.wmf",
 		"ThreePhaseEngine.wmf",
+		"JetEngine.wmf",
 		"Point.wmf",
 		"AboveContactorBridge.wmf",
 		"CoilContactor.wmf",
-		"Point.wmf"
+		"Point.wmf",
+		"Mks.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

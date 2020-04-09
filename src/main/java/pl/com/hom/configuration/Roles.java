@@ -22,11 +22,15 @@ public final class Roles {
 		add(new Role("ToJetBridge", 5));
 		add(new Role("Coil", 5));
 		add(new Role("CoilContactor", 5));
-		add(new Role("MKS", 5));
+		add(new Role("Mks", 5));
 		add(new Role("UpRightPhasesBridge", 5));
+		add(new Role("ToMksBridge", 5));
 
 		add(new Role("Conjugation", 6));
 
+		add(new Role("UpRightPhasesJet", 7));
+		add(new Role("UpLeftPhasesJet", 7));
+		add(new Role("JetEngine", 7));
 		add(new Role("Receiver", 7));
 		add(new Role("ThreePhaseEngine", 7));
 	}

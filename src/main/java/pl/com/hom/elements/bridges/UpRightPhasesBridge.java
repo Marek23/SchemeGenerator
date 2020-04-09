@@ -9,30 +9,19 @@ import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.scheme.Column;
 
 public class UpRightPhasesBridge extends ColumnRow {
-	public static float L1WIDTH = 100f * Measures.SCALE;
-	public static float L2WIDTH = 200f * Measures.SCALE;
-	public static float L3WIDTH = 300f * Measures.SCALE;
-
-	public static float L1HEIGHT = 100f * Measures.SCALE;
-	public static float L2HEIGHT = 200f * Measures.SCALE;
-	public static float L3HEIGHT = 300f * Measures.SCALE;
-
-	public UpRightPhasesBridge (Column parent) {
-		this.name       = "UpRightPhasesBridge";
+	public UpRightPhasesBridge (Column parent, String level) {
+		this.name       = level;
 		this.visibility = false;
 		this.image      = null;
 		this.role       = Roles.getRole(name);
 		this.x = parent.getWidthPos();
 		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
 
-		this.width  = L1WIDTH  * 3;
-		this.height = L1HEIGHT * 3;
-
 		this.points = new ArrayList<Point>();
 
-		points.add(Point.newUpRightPoint(this, "L1____", L1WIDTH, L1HEIGHT));
-		points.add(Point.newUpRightPoint(this, "L2____", L2WIDTH, L2HEIGHT));
-		points.add(Point.newUpRightPoint(this, "L3____", L3WIDTH, L3HEIGHT));
+		points.add(Point.newUpRightPoint(this, "L1____LEFT______"));
+		points.add(Point.newUpRightPoint(this, "L2____LEFT______"));
+		points.add(Point.newUpRightPoint(this, "L3____LEFT______"));
 
 		parent.addElement(this);
 	}
