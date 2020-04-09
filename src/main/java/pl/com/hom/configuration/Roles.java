@@ -19,14 +19,15 @@ public final class Roles {
 		add(new Role("SecGearContactor",  3));
 		add(new Role("Steering",  3));
 		
-		add(new Role("ToJetBridge", 5));
+		add(new Role("ToJetBridge", 4));
+		add(new Role("UpRightPhasesBridge", 4));
+
 		add(new Role("Coil", 5));
 		add(new Role("CoilContactor", 5));
 		add(new Role("Mks", 5));
-		add(new Role("UpRightPhasesBridge", 5));
 		add(new Role("ToMksBridge", 5));
 
-		add(new Role("Conjugation", 6));
+		add(new Role("Terminals", 6));
 
 		add(new Role("UpRightPhasesJet", 7));
 		add(new Role("UpLeftPhasesJet", 7));

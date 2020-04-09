@@ -6,6 +6,7 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Role;
 import pl.com.hom.connections.Point;
+import pl.com.hom.connections.Terminal;
 
 public abstract class ColumnRow {
 	protected String id;
@@ -18,6 +19,7 @@ public abstract class ColumnRow {
 	
 	protected ArrayList<Point> points;
 
+	protected ArrayList<Terminal> terminals;
 	protected ArrayList<ColumnRow> childs;
 
 	protected float x;
@@ -84,5 +86,9 @@ public abstract class ColumnRow {
 
 	public String getTechName() {
 		return this.techName;
+	}
+
+	public ArrayList<Terminal> getTerminals() {
+		return this.terminals;
 	}
 }

@@ -10,6 +10,7 @@ import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
+import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.scheme.Line;
 
@@ -34,13 +35,21 @@ public class Printer extends PdfCanvas{
 		this.closePathStroke();
 		
 	}
+
 	public void addColumnRow(ColumnRow row) {
 		this.beginText();
-//		TODO addScale
 		this.moveText(row.getWidthNamePos(), row.getHeightNamePos());
 		this.showText(row.getTechName());
 		this.endText();
 		this.addXObject(row.image(), new Rectangle(row.getWidthPos(), 595.0f - row.getHeightPos() - row.getHeight(), Measures.SCALE,Measures.SCALE));
+	}
+
+	public void addTerminal(Terminal t) {
+//		this.beginText();
+//		this.moveText(row.getWidthNamePos(), row.getHeightNamePos());
+//		this.showText(row.getTechName());
+//		this.endText();
+		this.addXObject(t.image(), new Rectangle(t.getWidthPos()- Measures.TERMINAL_MARGIN, 595.0f - t.getHeightPos() - t.getHeight(), Measures.SCALE,Measures.SCALE));
 	}
 
 	public void addPoint(Point p) {

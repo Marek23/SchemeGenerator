@@ -21,6 +21,7 @@ public class JetBridgeContactor extends ColumnRow {
 		this.visibility = true;
 		this.image      = getImage(name);
 		this.role       = Roles.getRole(name);
+
 		this.x = parent.getWidthPos();
 		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
 		

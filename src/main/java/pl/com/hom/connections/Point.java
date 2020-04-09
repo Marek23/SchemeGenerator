@@ -13,8 +13,6 @@ import pl.com.hom.scheme.Column;
 
 import static pl.com.hom.configuration.Resource.getImage;
 public class Point {
-	private ColumnRow parent;
-
 	private float x;
 	private float y;
 
@@ -26,14 +24,31 @@ public class Point {
 	private boolean        visibility;
 	private PdfFormXObject image;
 
+	private EnumMap<Direction, Boolean> directions;
+	private Potential potential;
+
 	@Override
 	public String toString() {
-		return "Point [parent=" + parent + ", x=" + x + ", y=" + y + ", visibility=" + visibility + ", image=" + image
+		return "Point [ x=" + x + ", y=" + y + ", visibility=" + visibility + ", image=" + image
 				+ ", directions=" + directions + ", potential=" + potential + "]";
 	}
 
-	private EnumMap<Direction, Boolean> directions;
-	private Potential potential;
+	public static Point newTerminalPoint(ColumnRow parent, Terminal terminal, Direction direction) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+
+		dirs.put(direction, false);
+
+		String potential = terminal.getPotential().getFullName();
+		float x = Potentials.getPotential(potential).getWidth();
+		float y;
+
+		if (direction == Direction.Up)
+			y = 0f;
+		else
+			y = terminal.getHeight();
+
+		return new Point(parent, potential, x, y, dirs, false);		
+	}
 
 	public static Point newCoilPoint(ColumnRow parent, String potential, Direction direction) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
@@ -133,7 +148,7 @@ public class Point {
 		float x = Potentials.getPotential(potential).getWidth();
 		float y = Potentials.getPotential(potential).getHeight();
 
-		return new Point(parent, potential, x, y, dirs, true);	
+		return new Point(parent, potential, x, y, dirs, false);	
 	}
 
 	public static Point newUpRightPoint(ColumnRow parent, String potential) {
@@ -145,7 +160,7 @@ public class Point {
 		float x = Potentials.getPotential(potential).getWidth();
 		float y = Potentials.getPotential(potential).getHeight();
 
-		return new Point(parent, potential, x, y, dirs, true);	
+		return new Point(parent, potential, x, y, dirs, false);	
 	}
 	
 	public static Point newJetEngine(ColumnRow parent, String potential, Direction direction) {

@@ -3,14 +3,13 @@ package pl.com.hom.scheme;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.elements.ColumnRow;
 
-import static pl.com.hom.configuration.MainPotentialHeight.getMainLineHeight;
+import static pl.com.hom.configuration.MainPotentials.getMainLineHeight;
 
 public class Column {
 	private ArrayList<ColumnRow>   columnRows;
@@ -26,7 +25,7 @@ public class Column {
 	//TODO Page parent
 	public Column(JetPage parent, float width) {
 		this.width = width;
-		this.x     = parent.getWidthPos() + Measures.COL_WIDTH_MARGIN + width;
+		this.x     = parent.getWidthPos() + width;
 
 		this.columnRows   = new ArrayList<ColumnRow>();
 		this.supplyPoints = new ArrayList<Point>();

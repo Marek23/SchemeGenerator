@@ -10,7 +10,7 @@ import pl.com.hom.scheme.Column;
 
 public class ToMksBridge extends ColumnRow {
 	public ToMksBridge (Column parent) {
-		this.name       = "ToJetBridge";
+		this.name       = "ToMksBridge";
 		this.visibility = false;
 		this.image      = null;
 		this.role       = Roles.getRole(name);

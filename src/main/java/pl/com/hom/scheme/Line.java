@@ -6,11 +6,6 @@ import pl.com.hom.connections.Potential;
 public abstract class Line {
 	private Potential potential;
 
-	//TEST
-	public String toString() {
-		return "Line [potential=" + potential + ", startPoint=" + startPoint + ", endPoint=" + endPoint + "]";
-	}
-
 	private Point startPoint;
 	private Point endPoint;
 

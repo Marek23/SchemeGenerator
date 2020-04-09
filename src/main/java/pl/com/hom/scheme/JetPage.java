@@ -12,6 +12,7 @@ import com.itextpdf.kernel.pdf.PdfPage;
 import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
+import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.elements.bridges.AboveContactorBridge;
 import pl.com.hom.elements.bridges.ToJetBridge;
@@ -49,11 +50,11 @@ public class JetPage extends PdfPage{
 
 		this.x = 0f;
 
-		Column jet1Col = new Column(this, 90.0f);
-		Column jet2Col = new Column(this, 90.0f);
-		Column engeCol = new Column(this, 40.0f);
-		Column jet3Col = new Column(this, 90.0f);
-		Column mksCol  = new Column(this, 120.0f);
+		Column jet1Col = new Column(this, 80.0f);
+		Column jet2Col = new Column(this, 80.0f);
+		Column engeCol = new Column(this, 80.0f);
+		Column jet3Col = new Column(this, 80.0f);
+		Column mksCol  = new Column(this, 90.0f);
 		Column firstCoilCol = new Column(this, 90.0f);
 		Column secCoilCol   = new Column(this, 90.0f);
 
@@ -188,6 +189,10 @@ public class JetPage extends PdfPage{
 				for(Point p: row.getPoints())
 					if (p.isVisibile())
 						printer.addPoint(p);
+
+				if (row.getTerminals() != null)
+					for(Terminal t: row.getTerminals())
+						printer.addTerminal(t);
 			}
 		}
 

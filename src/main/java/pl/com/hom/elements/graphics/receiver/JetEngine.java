@@ -7,6 +7,7 @@ import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.ColumnRow;
+import pl.com.hom.elements.Terminals;
 import pl.com.hom.scheme.Column;
 
 import static pl.com.hom.configuration.Resource.getImage;
@@ -20,11 +21,11 @@ public class JetEngine extends ColumnRow {
 		this.image      = getImage(name);
 		this.role       = Roles.getRole(name);
 
-		this.x = parent.getWidthPos() + parent.getWidth()/2f;
-		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
-
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
+
+		this.x = parent.getWidthPos();
+		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
 
 		this.techName = techSymbol + String.valueOf(pageNr);
 

@@ -7,6 +7,7 @@ import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.ColumnRow;
+import pl.com.hom.elements.Terminals;
 import pl.com.hom.scheme.Column;
 
 import static pl.com.hom.configuration.Resource.getImage;
@@ -17,6 +18,7 @@ public class FirstGearContactor extends ColumnRow {
 		this.visibility = true;
 		this.image      = getImage(name);
 		this.role       = Roles.getRole(name);
+
 		this.x = parent.getWidthPos();
 		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
 		

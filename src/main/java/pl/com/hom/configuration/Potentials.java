@@ -16,7 +16,7 @@ public final class Potentials {
 		add(new Potential("DC24__", 100f, 400f));
 		add(new Potential("DCPLC_", 100f, 500f));
 		add(new Potential("L10___", 100f, 600f));
-		add(new Potential("LSTER_", 100f, 800f));
+		add(new Potential("LSTER_", 100f, 100f));
 
 		add(new Potential("DC0___", 100f, 100f));
 		add(new Potential("N_____", 200f, 100f));
@@ -41,8 +41,6 @@ public final class Potentials {
 
 	public static void add(Potential potential) {
 		potentials.put(potential.getFullName(), potential);
-
-		System.out.println(potential.getFullName() + "added.");
 	}
 
 	public static Potential getPotential(String name) {

@@ -9,11 +9,12 @@ import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.scheme.Column;
 
 public class UpRightPhasesBridge extends ColumnRow {
-	public UpRightPhasesBridge (Column parent, String level) {
-		this.name       = level;
+	public UpRightPhasesBridge (Column parent, String roleName) {
+		this.name       = roleName;
 		this.visibility = false;
 		this.image      = null;
 		this.role       = Roles.getRole(name);
+
 		this.x = parent.getWidthPos();
 		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
 
