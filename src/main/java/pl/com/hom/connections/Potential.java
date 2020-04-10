@@ -14,7 +14,7 @@ public class Potential {
 	}
 
 	public String name() {
-		return potential.substring(0, 6);
+		return potential.substring(0, 10);
 	}
 
 	public String fullName() {
@@ -30,7 +30,7 @@ public class Potential {
 
 	public float height() {
 		if (this.height < 0)
-			throw new RuntimeException("Wrong acces to potential width");
+			throw new RuntimeException("Wrong acces to potential: " + potential + " width");
 
 		return height;
 	}

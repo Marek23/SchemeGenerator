@@ -20,9 +20,9 @@ public class ToMksBridge extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newToMksBridge(this, "L1____"));
-		points.add(Point.newToMksBridge(this, "L2____"));
-		points.add(Point.newToMksBridge(this, "L3____"));
+		points.add(Point.newToMksBridge(this, "L1________"));
+		points.add(Point.newToMksBridge(this, "L2________"));
+		points.add(Point.newToMksBridge(this, "L3________"));
 
 		parent.addElement(this);
 	}

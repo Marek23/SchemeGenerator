@@ -35,8 +35,8 @@ public class CoilContactor extends ColumnRow {
 		points = new ArrayList<Point>();
 		childs = new ArrayList<ColumnRow>();
 
-		points.add(Point.newCoilPoint(this, "LSTER_", Direction.Up));
-		points.add(Point.newCoilPoint(this, "N_____", Direction.Down));
+		points.add(Point.newCoilPoint(this, "LSTER_____", Direction.Up));
+		points.add(Point.newCoilPoint(this, "N_________", Direction.Down));
 
 		parent.addElement(this);
 	}

@@ -9,8 +9,6 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.elements.ColumnRow;
 
-import static pl.com.hom.configuration.MainPotentials.getMainLineHeight;
-
 public class Column {
 	private ArrayList<ColumnRow>   columnRows;
 	private ArrayList<VerticalLine>  lines;
@@ -20,15 +18,21 @@ public class Column {
 
 	private JetPage parent;
 
-	private ArrayList<Point> supplyPoints;
+	private ArrayList<Point> mainPoints;
+
+	public ArrayList<Point> mainPoints() {
+		return mainPoints;
+	}
 
 	//TODO Page parent
 	public Column(JetPage parent, float width) {
 		this.width = width;
 		this.x     = parent.widthPos() + width;
 
-		this.columnRows   = new ArrayList<ColumnRow>();
-		this.supplyPoints = new ArrayList<Point>();
+		this.columnRows = new ArrayList<ColumnRow>();
+		this.mainPoints = new ArrayList<Point>();
+
+		this.mainPoints = new ArrayList<Point>();
 
 		this.parent = parent;
 		parent.addColumn(this);
@@ -58,7 +62,7 @@ public class Column {
 
 	//TEST
 	public void showSupplierPointsLines() {
-		for (Point p : supplyPoints)
+		for (Point p : mainPoints)
 			System.out.println(p);
 	}
 
@@ -148,32 +152,25 @@ public class Column {
 			to = getColumnRowFromLevel(i);
 			if (to == null) continue;
 
-			createVerticalLines(supplyPoints, to.points());
+			createVerticalLines(mainPoints, to.points());
 		}
 		
 	}
 
 	private void fetchPointsToSupply(ColumnRow element) {
-		this.supplyPoints = new ArrayList<Point>();
-
 		for (Point point : element.points())
 		{
-			Potential pointPot  = point.potential();
-			float pointWidthPos = point.widthPos();
+			Potential potential  = point.potential();
+			float widthPos  = point.widthPos();
 
-			if (point.hasDirection(Direction.Up))
-				if (!hasPotentialInWidthPos(pointPot, pointWidthPos)) 
-				{
-					float mainHeight = getMainLineHeight(pointPot.name());
-					this.supplyPoints.add(
-						new Point(this, pointPot.name(), pointWidthPos, mainHeight)
-					);
-				}
+			if (point.hasDirection(Direction.Up) && potential.name().startsWith("MAIN")) 
+				if (!hasPotentialInWidthPos(potential, widthPos)) 
+					this.mainPoints.add(Point.newMainPoint(point));
 		}
 	}
 
 	private boolean hasPotentialInWidthPos(Potential potential, float widthPos) {
-		Iterator<Point> i = supplyPoints.iterator();
+		Iterator<Point> i = mainPoints.iterator();
 		while (i.hasNext())
 		{
 			Point supplyPoint = i.next();

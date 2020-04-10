@@ -180,6 +180,10 @@ public class JetPage extends PdfPage{
 			for (VerticalLine line :column.lines())
 				printer.addLine(line);
 
+			for(Point p: column.mainPoints())
+				printer.addPoint(p);
+
+			column.showSupplierPointsLines();
 			for (ColumnRow row : column.getColumnElements())
 			{
 				printer.addColumnRow(row);

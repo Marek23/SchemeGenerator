@@ -25,9 +25,9 @@ public class AboveContactor extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newAboveContactorBridge(this, "L1____ABVCONBRGE"));
-		points.add(Point.newAboveContactorBridge(this, "L2____ABVCONBRGE"));
-		points.add(Point.newAboveContactorBridge(this, "L3____ABVCONBRGE"));
+		points.add(Point.newAboveContactorBridge(this, "L1________ABVCONBRGE"));
+		points.add(Point.newAboveContactorBridge(this, "L2________ABVCONBRGE"));
+		points.add(Point.newAboveContactorBridge(this, "L3________ABVCONBRGE"));
 
 		parent.addElement(this);
 	}

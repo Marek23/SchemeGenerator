@@ -29,9 +29,9 @@ public class ThreePhaseEngine extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newEnginePoint(this, "L1____"));
-		points.add(Point.newEnginePoint(this, "L2____"));
-		points.add(Point.newEnginePoint(this, "L3____"));
+		points.add(Point.newEnginePoint(this, "L1________"));
+		points.add(Point.newEnginePoint(this, "L2________"));
+		points.add(Point.newEnginePoint(this, "L3________"));
 
 		parent.addElement(this);
 	}

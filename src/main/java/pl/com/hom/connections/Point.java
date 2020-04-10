@@ -82,6 +82,10 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, false);
 	}
 
+	public static Point newMainPoint(Point point) {
+		return new Point(point);
+	}
+
 	public static Point newEnginePoint(ColumnRow parent, String potential) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
@@ -205,6 +209,25 @@ public class Point {
 
 		this.potential  = Potentials.potential(potential);
 		this.directions = dirs;		
+	}
+
+	private Point(Point point) {
+		this.potential  = Potentials.potential(point.potential().name());
+
+		this.x = point.widthPos();
+		this.y = this.potential.height();
+
+		this.name       = "Point";
+		this.visibility = true;
+		this.image      = getImage(name);
+
+		this.width  = image.getWidth()  * Measures.SCALE;
+		this.height = image.getHeight() * Measures.SCALE;
+
+		this.directions = new EnumMap<Direction,Boolean>(Direction.class);
+		this.directions.put(Direction.Down, false);
+
+//		System.out.println(this.toString());
 	}
 
 	public Point(Column column, String potential, float width, float height) {

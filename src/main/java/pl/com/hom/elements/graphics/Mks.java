@@ -32,9 +32,9 @@ public class Mks extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newMksPoint(this, "L1____MKS_______"));
-		points.add(Point.newMksPoint(this, "L2____MKS_______"));
-		points.add(Point.newMksPoint(this, "L3____MKS_______"));
+		points.add(Point.newMksPoint(this, "L1________MKS_______"));
+		points.add(Point.newMksPoint(this, "L2________MKS_______"));
+		points.add(Point.newMksPoint(this, "L3________MKS_______"));
 
 		parent.addElement(this);
 	}

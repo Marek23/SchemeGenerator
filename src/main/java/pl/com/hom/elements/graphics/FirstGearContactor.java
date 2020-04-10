@@ -33,13 +33,13 @@ public class FirstGearContactor extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newStandardThreePhase(this, "L1____STANDARD__", Direction.Up));
-		points.add(Point.newStandardThreePhase(this, "L2____STANDARD__", Direction.Up));
-		points.add(Point.newStandardThreePhase(this, "L3____STANDARD__", Direction.Up));
+		points.add(Point.newStandardThreePhase(this, "L1________STANDARD__", Direction.Up));
+		points.add(Point.newStandardThreePhase(this, "L2________STANDARD__", Direction.Up));
+		points.add(Point.newStandardThreePhase(this, "L3________STANDARD__", Direction.Up));
 
-		points.add(Point.newStandardThreePhase(this, "L1____STANDARD__", Direction.Down));
-		points.add(Point.newStandardThreePhase(this, "L2____STANDARD__", Direction.Down));
-		points.add(Point.newStandardThreePhase(this, "L3____STANDARD__", Direction.Down));
+		points.add(Point.newStandardThreePhase(this, "L1________STANDARD__", Direction.Down));
+		points.add(Point.newStandardThreePhase(this, "L2________STANDARD__", Direction.Down));
+		points.add(Point.newStandardThreePhase(this, "L3________STANDARD__", Direction.Down));
 
 		parent.addElement(this);
 	}
