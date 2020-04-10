@@ -25,7 +25,7 @@ public class Column {
 	//TODO Page parent
 	public Column(JetPage parent, float width) {
 		this.width = width;
-		this.x     = parent.getWidthPos() + width;
+		this.x     = parent.widthPos() + width;
 
 		this.columnRows   = new ArrayList<ColumnRow>();
 		this.supplyPoints = new ArrayList<Point>();
@@ -48,11 +48,11 @@ public class Column {
 		}
 	}
 
-	public ArrayList<ColumnRow> getColumnRows() {
+	public ArrayList<ColumnRow> columnRows() {
 		return this.columnRows;
 	}
 
-	public ArrayList<VerticalLine> getLines() {
+	public ArrayList<VerticalLine> lines() {
 		return this.lines;
 	}
 
@@ -65,18 +65,18 @@ public class Column {
 	public void addElement(ColumnRow element)
 	{
 		for (ColumnRow r : columnRows)
-			if (r.getRole().getLevel() == element.getRole().getLevel())
+			if (r.role().level() == element.role().level())
 				throw new RuntimeException("Column has doubled row");
 
 		columnRows.add(element);
 		fetchPointsToSupply(element);
 	}
 
-	public float getWidth() {
+	public float width() {
 		return this.width;
 	}
 
-	public float getWidthPos() {
+	public float widthPos() {
 		return this.x;
 	}
 
@@ -86,7 +86,7 @@ public class Column {
 
 	public ColumnRow getColumnRowFromLevel(int i) {
 		for (ColumnRow e : columnRows)
-			if (e.getRole().getLevel() == i)
+			if (e.role().level() == i)
 				return e;
 
 		return null;
@@ -110,8 +110,8 @@ public class Column {
 			Iterator<Point> i = tPoints.iterator();
 			while (i.hasNext()) {
 				t = i.next();
-				if (f.getPotential().getName().equals(t.getPotential().getName())
-				&& f.getWidthPos() == t.getWidthPos())
+				if (f.potential().name().equals(t.potential().name())
+				&& f.widthPos() == t.widthPos())
 				{
 					break;
 				}
@@ -126,7 +126,7 @@ public class Column {
 		this.lines = new ArrayList<VerticalLine>();
 
 		for (ColumnRow elem : columnRows)
-			for (Point p : elem.getPoints())
+			for (Point p : elem.points())
 				p.unlinkVerticalDirections();
 
 		ColumnRow from;
@@ -140,7 +140,7 @@ public class Column {
 				from = getColumnRowFromLevel(j);
 				if (from == null) continue;
 
-				createVerticalLines(from.getPoints(), to.getPoints());
+				createVerticalLines(from.points(), to.points());
 			}
 		}
 
@@ -148,7 +148,7 @@ public class Column {
 			to = getColumnRowFromLevel(i);
 			if (to == null) continue;
 
-			createVerticalLines(supplyPoints, to.getPoints());
+			createVerticalLines(supplyPoints, to.points());
 		}
 		
 	}
@@ -156,17 +156,17 @@ public class Column {
 	private void fetchPointsToSupply(ColumnRow element) {
 		this.supplyPoints = new ArrayList<Point>();
 
-		for (Point point : element.getPoints())
+		for (Point point : element.points())
 		{
-			Potential pointPot  = point.getPotential();
-			float pointWidthPos = point.getWidthPos();
+			Potential pointPot  = point.potential();
+			float pointWidthPos = point.widthPos();
 
 			if (point.hasDirection(Direction.Up))
 				if (!hasPotentialInWidthPos(pointPot, pointWidthPos)) 
 				{
-					float mainHeight = getMainLineHeight(pointPot.getName());
+					float mainHeight = getMainLineHeight(pointPot.name());
 					this.supplyPoints.add(
-						new Point(this, pointPot.getName(), pointWidthPos, mainHeight)
+						new Point(this, pointPot.name(), pointWidthPos, mainHeight)
 					);
 				}
 		}
@@ -178,8 +178,8 @@ public class Column {
 		{
 			Point supplyPoint = i.next();
 
-			if (supplyPoint.getPotential().getName().equals(potential.getName())
-			&& supplyPoint.getWidthPos() == widthPos)
+			if (supplyPoint.potential().name().equals(potential.name())
+			&& supplyPoint.widthPos() == widthPos)
 			{
 				return true;
 			}

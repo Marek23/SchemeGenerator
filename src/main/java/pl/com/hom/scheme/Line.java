@@ -10,30 +10,30 @@ public abstract class Line {
 	private Point endPoint;
 
 	Line (Point begin, Point end) {
-		this.potential = begin.getPotential();
+		this.potential = begin.potential();
 
 		this.startPoint = begin;
 		this.endPoint   = end;
 	}
 
-	public Potential getPotential() {
+	public Potential potential() {
 		return this.potential;
 	}
 
 	public float getBeginHeight() {
-		return startPoint.getHeightPos();
+		return startPoint.heightPos();
 	}
 
 	public float getBeginWidth() {
-		return startPoint.getWidthPos();
+		return startPoint.widthPos();
 	}
 
 	public float getEndHeight() {
-		return endPoint.getHeightPos();
+		return endPoint.heightPos();
 	}
 
 	public float getEndWidth() {
-		return endPoint.getWidthPos();
+		return endPoint.widthPos();
 	}
 
     public boolean equals(Object o) { 

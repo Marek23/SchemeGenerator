@@ -19,18 +19,18 @@ public class CoilContactor extends ColumnRow {
 		this.name       = "CoilContactor";
 		this.visibility = true;
 		this.image      = getImage(name);
-		this.role       = Roles.getRole(name);
+		this.role       = Roles.role(name);
 
-		this.x = parent.getWidthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
+		this.x = parent.widthPos();
+		this.y = Measures.COL_LEV_HEIGHT * role.level();
 		
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 		
 		this.techName = String.valueOf(pageNr) + techSymbol + String.valueOf(number);
 
-		this.nameXPos = this.getWidthPos() - 22f;
-		this.nameYPos = 595.0f - this.getHeightPos() - this.getHeight()/1.5f;
+		this.nameXPos = this.widthPos() - 14f;
+		this.nameYPos = 595.0f - this.heightPos() - this.height()/1.5f;
 
 		points = new ArrayList<Point>();
 		childs = new ArrayList<ColumnRow>();

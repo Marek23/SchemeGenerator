@@ -9,11 +9,11 @@ public class Role {
 		this.level = level;
 	}
 
-	public String getName() {
+	public String name() {
 		return name;
 	}
 
-	public int getLevel() {
+	public int level() {
 		return level;
 	}
 }

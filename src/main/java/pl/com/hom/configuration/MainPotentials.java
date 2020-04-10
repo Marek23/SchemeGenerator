@@ -11,8 +11,9 @@ public final class MainPotentials {
 		heights.put("L1____", new Float(50f)  * Measures.SCALE);
 		heights.put("L2____", new Float(100f) * Measures.SCALE);
 		heights.put("L3____", new Float(150f) * Measures.SCALE);
+		heights.put("L10___", new Float(300f) * Measures.SCALE);
 
-		heights.put("LSTER_", new Float(300f) * Measures.SCALE);
+		heights.put("LSTER_", new Float(600f) * Measures.SCALE);
 
 		heights.put("DC24__", new Float(200f) * Measures.SCALE);
 		heights.put("DCPLC_", new Float(250f) * Measures.SCALE);

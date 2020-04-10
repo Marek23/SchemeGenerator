@@ -19,18 +19,13 @@ public class JetEngine extends ColumnRow {
 		this.name       = "JetEngine";
 		this.visibility = true;
 		this.image      = getImage(name);
-		this.role       = Roles.getRole(name);
+		this.role       = Roles.role(name);
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 
-		this.x = parent.getWidthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
-
-		this.techName = techSymbol + String.valueOf(pageNr);
-
-		this.nameXPos = this.getWidthPos() - 30f;
-		this.nameYPos = 595.0f - this.getHeightPos() - 	this.getHeight();
+		this.x = parent.widthPos();
+		this.y = Measures.COL_LEV_HEIGHT * role.level();
 
 		points = new ArrayList<Point>();
 

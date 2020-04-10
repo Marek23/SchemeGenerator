@@ -14,10 +14,10 @@ public class UpLeftPhases extends ColumnRow {
 		this.name       = roleName;
 		this.visibility = false;
 		this.image      = null;
-		this.role       = Roles.getRole(name);
+		this.role       = Roles.role(name);
 
-		this.x = parent.getWidthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
+		this.x = parent.widthPos();
+		this.y = Measures.COL_LEV_HEIGHT * role.level();
 
 		this.points = new ArrayList<Point>();
 
@@ -26,8 +26,10 @@ public class UpLeftPhases extends ColumnRow {
 		points.add(Point.newUpLeftJetPoint(this, "L3____"));
 
 		int ROLE_REVEIVER_LEVEL = 7;
-		if (this.role.getLevel() == ROLE_REVEIVER_LEVEL)
+		if (this.role.level() == ROLE_REVEIVER_LEVEL) {
+			this.terminalGroup = "X2";
 			new Terminals(parent,this);
+		}
 			
 		parent.addElement(this);
 	}

@@ -19,10 +19,10 @@ public class ThreePhaseEngine extends ColumnRow {
 		this.name       = "ThreePhaseEngine";
 		this.visibility = true;
 		this.image      = getImage(name);
-		this.role       = Roles.getRole(name);
+		this.role       = Roles.role(name);
 
-		this.x = parent.getWidthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
+		this.x = parent.widthPos();
+		this.y = Measures.COL_LEV_HEIGHT * role.level();
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;

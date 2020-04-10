@@ -10,15 +10,15 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.scheme.Column;
 
-public class AboveContactorBridge extends ColumnRow {
-	public AboveContactorBridge (Column parent) {
+public class AboveContactor extends ColumnRow {
+	public AboveContactor (Column parent) {
 		this.name       = "AboveContactorBridge";
 		this.visibility = true;
 		this.image      = getImage(name);
-		this.role       = Roles.getRole(name);
+		this.role       = Roles.role(name);
 
-		this.x = parent.getWidthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.getLevel();
+		this.x = parent.widthPos();
+		this.y = Measures.COL_LEV_HEIGHT * role.level();
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;

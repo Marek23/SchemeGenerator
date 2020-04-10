@@ -40,10 +40,10 @@ public final class Potentials {
 	}
 
 	public static void add(Potential potential) {
-		potentials.put(potential.getFullName(), potential);
+		potentials.put(potential.fullName(), potential);
 	}
 
-	public static Potential getPotential(String name) {
+	public static Potential potential(String name) {
 		if (!potentials.containsKey(name))
 			throw new RuntimeException("Potential: " + name + " is not declared.");
 

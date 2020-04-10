@@ -18,7 +18,6 @@ public final class Resource {
 		"SecGearContactor.wmf",
 		"JetBridgeContactor.wmf",
 		"Contactor.wmf",
-		"BridgeContactor.wmf",
 		"Terminal.wmf",
 		"ThreePhaseFuse.wmf",
 		"ThreePhaseEngine.wmf",

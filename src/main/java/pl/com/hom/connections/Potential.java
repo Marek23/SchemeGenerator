@@ -13,22 +13,22 @@ public class Potential {
 		this.height    = height * Measures.SCALE;
 	}
 
-	public String getName() {
+	public String name() {
 		return potential.substring(0, 6);
 	}
 
-	public String getFullName() {
+	public String fullName() {
 		return potential;
 	}
 
-	public float getWidth() {
+	public float width() {
 		if (this.width < 0)
 			throw new RuntimeException("Wrong acces to potential: " + this.potential +" width");
 
 		return width;
 	}
 
-	public float getHeight() {
+	public float height() {
 		if (this.height < 0)
 			throw new RuntimeException("Wrong acces to potential width");
 

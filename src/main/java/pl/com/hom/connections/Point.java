@@ -38,14 +38,14 @@ public class Point {
 
 		dirs.put(direction, false);
 
-		String potential = terminal.getPotential().getFullName();
-		float x = Potentials.getPotential(potential).getWidth();
+		String potential = terminal.potential().fullName();
+		float x = Potentials.potential(potential).width();
 		float y;
 
 		if (direction == Direction.Up)
 			y = 0f;
 		else
-			y = terminal.getHeight();
+			y = terminal.height();
 
 		return new Point(parent, potential, x, y, dirs, false);		
 	}
@@ -55,13 +55,13 @@ public class Point {
 
 		dirs.put(direction, false);
 
-		float x = parent.getWidthPos() + Potentials.getPotential(potential).getWidth();
+		float x = parent.widthPos() + Potentials.potential(potential).width();
 		float y;
 
 		if (direction == Direction.Up)
-			y = parent.getHeightPos();
+			y = parent.heightPos();
 		else
-			y = parent.getHeightPos() + parent.getHeight();
+			y = parent.heightPos() + parent.height();
 
 		return new Point(parent, potential, x, y, dirs, false);		
 	}
@@ -71,13 +71,13 @@ public class Point {
 
 		dirs.put(direction, false);
 
-		float x = Potentials.getPotential(potential).getWidth();
+		float x = Potentials.potential(potential).width();
 		float y;
 
 		if (direction == Direction.Up)
 			y = 0f;
 		else
-			y = parent.getHeight();
+			y = parent.height();
 
 		return new Point(parent, potential, x, y, dirs, false);
 	}
@@ -86,7 +86,7 @@ public class Point {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 
-		float x = Potentials.getPotential(potential).getWidth();
+		float x = Potentials.potential(potential).width();
 
 		return new Point(parent, potential, x, 0f, dirs, false);
 	}
@@ -95,8 +95,8 @@ public class Point {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Down, false);
 
-		float x = Potentials.getPotential(potential).getWidth();
-		float y = parent.getHeight();
+		float x = Potentials.potential(potential).width();
+		float y = parent.height();
 
 		return new Point(parent, potential, x, y, dirs, false);
 	}
@@ -108,8 +108,8 @@ public class Point {
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Down, false);
 
-		float x = Potentials.getPotential(potential).getWidth();
-		float y = Potentials.getPotential(potential).getHeight();
+		float x = Potentials.potential(potential).width();
+		float y = Potentials.potential(potential).height();
 
 		return new Point(parent, potential, x, y, dirs, true);	
 	}
@@ -121,8 +121,8 @@ public class Point {
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Down, false);
 
-		float x = Potentials.getPotential(potential).getWidth();
-		float y = Potentials.getPotential(potential).getHeight();
+		float x = Potentials.potential(potential).width();
+		float y = Potentials.potential(potential).height();
 
 		return new Point(parent, potential, x, y, dirs, true);	
 	}
@@ -133,8 +133,8 @@ public class Point {
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Left, false);
 
-		float x = Potentials.getPotential(potential).getWidth();
-		float y = Potentials.getPotential(potential).getHeight();
+		float x = Potentials.potential(potential).width();
+		float y = Potentials.potential(potential).height();
 
 		return new Point(parent, potential, x, y, dirs, false);	
 	}
@@ -145,8 +145,8 @@ public class Point {
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Left, false);
 
-		float x = Potentials.getPotential(potential).getWidth();
-		float y = Potentials.getPotential(potential).getHeight();
+		float x = Potentials.potential(potential).width();
+		float y = Potentials.potential(potential).height();
 
 		return new Point(parent, potential, x, y, dirs, false);	
 	}
@@ -157,8 +157,8 @@ public class Point {
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Right, false);
 
-		float x = Potentials.getPotential(potential).getWidth();
-		float y = Potentials.getPotential(potential).getHeight();
+		float x = Potentials.potential(potential).width();
+		float y = Potentials.potential(potential).height();
 
 		return new Point(parent, potential, x, y, dirs, false);	
 	}
@@ -168,13 +168,13 @@ public class Point {
 
 		dirs.put(direction, false);
 
-		float y = Potentials.getPotential(potential).getHeight();
+		float y = Potentials.potential(potential).height();
 		float x;
 
 		if (direction == Direction.Left)
 			x = 0f;
 		else
-			x = parent.getWidth();
+			x = parent.width();
 
 		return new Point(parent, potential, x, y, dirs, false);	
 	}
@@ -184,14 +184,14 @@ public class Point {
 
 		dirs.put(Direction.Left, false);
 
-		float y = Potentials.getPotential(potential).getHeight();
+		float y = Potentials.potential(potential).height();
 
 		return new Point(parent, potential, 0f, y, dirs, false);	
 	}
 
 	private Point(ColumnRow parent, String potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
-		this.x = parent.getWidthPos()  + x;
-		this.y = parent.getHeightPos() + y;
+		this.x = parent.widthPos()  + x;
+		this.y = parent.heightPos() + y;
 
 		this.visibility = visibility;
 		if (visibility) {
@@ -203,7 +203,7 @@ public class Point {
 			this.height = image.getHeight() * Measures.SCALE;
 		}
 
-		this.potential  = Potentials.getPotential(potential);
+		this.potential  = Potentials.potential(potential);
 		this.directions = dirs;		
 	}
 
@@ -215,16 +215,16 @@ public class Point {
 		this.image      = getImage("Point");
 
 		this.directions = new EnumMap<Direction, Boolean>(Direction.class);
-		this.potential  = Potentials.getPotential(potential);
+		this.potential  = Potentials.potential(potential);
 
 		this.directions.put(Direction.Down, false);
 	}
 
-	public Potential getPotential() {
+	public Potential potential() {
 		return this.potential;
 	}
 
-	public EnumSet<Direction> getOnlyDirections() {
+	public EnumSet<Direction> onlyDirections() {
 		EnumSet<Direction> out = EnumSet.noneOf(Direction.class);
 
 		for (Entry<Direction,Boolean> e : directions.entrySet())
@@ -244,7 +244,7 @@ public class Point {
 		return false; 
 	}
 
-	public EnumMap<Direction, Boolean> getDirections() {
+	public EnumMap<Direction, Boolean> directions() {
 		return this.directions;
 	}
 
@@ -289,19 +289,19 @@ public class Point {
     			directions.put(e.getKey(), false);
     }
     
-    public float getHeightPos() {
+    public float heightPos() {
     	return y;
     }
 
-    public float getWidthPos() {
+    public float widthPos() {
     	return x;
     }
 
-    public float getHeigh() {
+    public float height() {
     	return height;
     }
 
-    public float getWidth() {
+    public float width() {
     	return width;
     }
 
@@ -312,11 +312,11 @@ public class Point {
 
     	Point p = (Point) o; 
 
-    	boolean potEqual = this.potential == p.getPotential();
+    	boolean potEqual = this.potential == p.potential();
     	boolean dirEqual = true;
 
     	for(Entry<Direction,Boolean> d : this.directions.entrySet())
-    		if (!p.getDirections().entrySet().contains(d))
+    		if (!p.directions().entrySet().contains(d))
     			dirEqual = false;
 
     	return potEqual && dirEqual;  

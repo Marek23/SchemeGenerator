@@ -11,7 +11,7 @@ public class Main {
 
 		Configuration.initialize();
 
-		JetPage page = new JetPage("L1", "L2");
+		JetPage page = new JetPage("L1", "L2", 1);
 		page.draw();
 			  		 
 		getPdfDocument().close();  

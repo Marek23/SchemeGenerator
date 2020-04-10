@@ -13,10 +13,10 @@ public class ToJetBridge extends ColumnRow {
 		this.name       = "ToJetBridge";
 		this.visibility = false;
 		this.image      = null;
-		this.role       = Roles.getRole(name);
+		this.role       = Roles.role(name);
 
-		this.x = parent.getWidthPos();
-		this.y = Measures.COL_LEV_HEIGHT * this.role.getLevel();
+		this.x = parent.widthPos();
+		this.y = Measures.COL_LEV_HEIGHT * this.role.level();
 
 		points = new ArrayList<Point>();
 

@@ -14,18 +14,18 @@ public final class Roles {
 		add(new Role("AboveContactorBridge", 2));
 		
 		add(new Role("Contactor", 3));
-		add(new Role("JetBridgeContactor",  3));
-		add(new Role("FirstGearContactor",  3));
-		add(new Role("SecGearContactor",  3));
-		add(new Role("Steering",  3));
+		add(new Role("JetBridgeContactor", 3));
+		add(new Role("FirstGearContactor", 3));
+		add(new Role("SecGearContactor", 3));
+		add(new Role("Steering", 3));
 		
 		add(new Role("ToJetBridge", 4));
 		add(new Role("UpRightPhasesBridge", 4));
+		add(new Role("Mks", 4));
+		add(new Role("ToMksBridge", 4));
 
 		add(new Role("Coil", 5));
 		add(new Role("CoilContactor", 5));
-		add(new Role("Mks", 5));
-		add(new Role("ToMksBridge", 5));
 
 		add(new Role("Terminals", 6));
 
@@ -37,10 +37,10 @@ public final class Roles {
 	}
 
 	public static void add(Role role) {
-		roles.put(role.getName(), role);
+		roles.put(role.name(), role);
 	}
 
-	public static Role getRole(String name) {
+	public static Role role(String name) {
 		return roles.get(name);
 	}
 

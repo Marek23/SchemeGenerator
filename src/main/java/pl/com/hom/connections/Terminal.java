@@ -10,6 +10,8 @@ import static pl.com.hom.configuration.Resource.getImage;
 public class Terminal {
 	PdfFormXObject image;
 	String name;
+
+	int    number;
 	String group;
 
 	Potential potential;
@@ -24,39 +26,55 @@ public class Terminal {
 	float width;
 	float height;
 
-	public Terminal(ColumnRow parent, Potential potential) {
+	public Terminal(ColumnRow parent, Potential potential, int id) {
 		this.name  = "Terminal";
 		this.image = getImage(name);
 
 		this.potential = potential;
 
-		this.x = parent.getWidthPos() + potential.getWidth();
-		this.y = parent.getHeightPos();
+		this.x = parent.widthPos() + potential.width();
+		this.y = parent.heightPos();
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 
-		this.nameXPos = this.getWidthPos() - 30f;
-		this.nameYPos = 595.0f - this.getHeightPos();
+		this.id = id;
+		this.nameXPos = this.widthPos() + 60f * Measures.SCALE;
+		this.nameYPos = this.heightPos();
+
+		this.group = parent.terminalGroup();
 	}
 
-	public float getWidthPos() {
+	public float widthPos() {
 		return x;
 	}
 
-	public float getHeightPos() {
+	public float heightPos() {
 		return y;
 	}
 
-	public float getWidth() {
+	public float width() {
 		return width;
 	}
 
-	public float getHeight() {
+	public float height() {
 		return height;
 	}
 
-	public Potential getPotential() {
+	public float widthNamePos() {
+		return nameXPos;
+	}
+
+	public float heightNamePos() {
+		return nameYPos;
+	}
+
+	public String fullName() {
+		return String.valueOf(id);
+	}
+
+	
+	public Potential potential() {
 		return potential;
 	}
 

@@ -14,11 +14,11 @@ import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.elements.bridges.AboveContactorBridge;
+import pl.com.hom.elements.bridges.AboveContactor;
 import pl.com.hom.elements.bridges.ToJetBridge;
 import pl.com.hom.elements.bridges.ToMksBridge;
 import pl.com.hom.elements.bridges.UpLeftPhases;
-import pl.com.hom.elements.bridges.UpRightPhasesBridge;
+import pl.com.hom.elements.bridges.UpRightPhases;
 import pl.com.hom.elements.graphics.CoilContactor;
 import pl.com.hom.elements.graphics.Mks;
 import pl.com.hom.elements.graphics.ThreePhaseFuse;
@@ -31,17 +31,16 @@ public class JetPage extends PdfPage{
 	private ArrayList<Column> columns;
 	private ArrayList<HorizontalLine> horizontalLines;
 	private float x;
-	private int pageNr;
+	private int nr;
 
 	private HashMap<String, Integer> symbolNumbers;
 	Printer printer;
 
-	public JetPage(String firstGearPot, String secGearPot) {
+	public JetPage(String firstGearPot, String secGearPot, int nr) {
 		super(getPdfDocument(), PageSize.A4.rotate());
 		getPdfDocument().addPage(this);
 
-//		TODO
-		this.pageNr  = 10;
+		this.nr  = nr;
 		this.printer = new Printer(this);
 		this.columns = new ArrayList<Column>();
 
@@ -58,26 +57,26 @@ public class JetPage extends PdfPage{
 		Column firstCoilCol = new Column(this, 90.0f);
 		Column secCoilCol   = new Column(this, 90.0f);
 
-		CoilContactor firstCoil = new CoilContactor(firstCoilCol, this.pageNr, getNumerForTechSymbol(CoilContactor.techSymbol), "L1____");
-		CoilContactor secCoil   = new CoilContactor(secCoilCol,   this.pageNr, getNumerForTechSymbol(CoilContactor.techSymbol), "L1____");
+		CoilContactor firstCoil = new CoilContactor(firstCoilCol, nr, getNumerForTechSymbol(CoilContactor.techSymbol), "L1____");
+		CoilContactor secCoil   = new CoilContactor(secCoilCol,   nr, getNumerForTechSymbol(CoilContactor.techSymbol), "L1____");
 
-		ThreePhaseFuse   tpf1 = new ThreePhaseFuse(jet2Col, pageNr, getNumerForTechSymbol(ThreePhaseFuse.techSymbol));
-		ThreePhaseFuse   tpf2 = new ThreePhaseFuse(jet3Col, pageNr, getNumerForTechSymbol(ThreePhaseFuse.techSymbol));
+		new ThreePhaseFuse(jet2Col, nr, getNumerForTechSymbol(ThreePhaseFuse.techSymbol));
+		new ThreePhaseFuse(jet3Col, nr, getNumerForTechSymbol(ThreePhaseFuse.techSymbol));
 
 		firstCoil.addFirstGearContactor(jet2Col);
 		secCoil.addJetBridgeContactor(jet1Col);
 		secCoil.addSecGearContactor(jet3Col);
 
-		AboveContactorBridge bridge = new AboveContactorBridge(jet1Col);
-		UpRightPhasesBridge  urpb   = new UpRightPhasesBridge(jet1Col, "ToJetBridge");
-		ToJetBridge          tjb    = new ToJetBridge(jet2Col);
-		ToMksBridge          tmb    = new ToMksBridge(jet3Col);
+		new AboveContactor(jet1Col);
+		new UpRightPhases(jet1Col, "ToJetBridge");
+		new ToJetBridge(jet2Col);
+		new ToMksBridge(jet3Col);
 
-		Mks mks = new Mks(mksCol, this.pageNr, getNumerForTechSymbol(Mks.techSymbol));
+		new Mks(mksCol, nr, getNumerForTechSymbol(Mks.techSymbol));
 
-		JetEngine           tpe  = new JetEngine(engeCol, this.pageNr);
-		UpRightPhasesBridge urpj = new UpRightPhasesBridge(jet2Col, "Receiver");
-		UpLeftPhases        ulpj = new UpLeftPhases(jet3Col, "Receiver");
+		new JetEngine(engeCol, nr);
+		new UpRightPhases(jet2Col, "Receiver");
+		new UpLeftPhases(jet3Col, "Receiver");
 	}
 
 	private void createLines() {
@@ -88,20 +87,20 @@ public class JetPage extends PdfPage{
 		createHorizontalLines();
 	}
 
-	public float getWidth() {
+	public float width() {
 		float out = 0f;
 		for (Column c : columns)
-			out += c.getWidth();
+			out += c.width();
 
 		return out;
 	}
 
-	public float getWidthPos() {
+	public float widthPos() {
 		return x;
 	}
 
 	public void addColumn(Column c) {
-		this.x = this.x + c.getWidth();
+		this.x = this.x + c.width();
 		columns.add(c);
 	}
 
@@ -117,8 +116,8 @@ public class JetPage extends PdfPage{
 		this.horizontalLines = new ArrayList<HorizontalLine>();
 
 		for (Column c: columns)
-			for (ColumnRow r: c.getColumnRows())
-				for (Point p : r.getPoints())
+			for (ColumnRow r: c.columnRows())
+				for (Point p : r.points())
 					p.unlinkHorizontalDirections();
 
 		Column from;
@@ -138,7 +137,7 @@ public class JetPage extends PdfPage{
 					ColumnRow rTo   = to.getColumnRowFromLevel(r);
 
 					if (rFrom != null && rTo != null)
-						createLines(rFrom.getPoints(), rTo.getPoints());
+						createLines(rFrom.points(), rTo.points());
 				}
 			}
 		}
@@ -162,8 +161,8 @@ public class JetPage extends PdfPage{
 			Iterator<Point> i = tPoints.iterator();
 			while (i.hasNext()) {
 				t = i.next();
-				if (f.getPotential().getName().equals(t.getPotential().getName())
-				&& f.getHeightPos() == t.getHeightPos())
+				if (f.potential().name().equals(t.potential().name())
+				&& f.heightPos() == t.heightPos())
 				{
 					break;
 				}
@@ -178,20 +177,19 @@ public class JetPage extends PdfPage{
 		createLines();
 
 		for (Column column : columns) {
-			for (VerticalLine line :column.getLines())
+			for (VerticalLine line :column.lines())
 				printer.addLine(line);
 
 			for (ColumnRow row : column.getColumnElements())
 			{
-				if (row.visible())
-					printer.addColumnRow(row);
+				printer.addColumnRow(row);
 
-				for(Point p: row.getPoints())
+				for(Point p: row.points())
 					if (p.isVisibile())
 						printer.addPoint(p);
 
-				if (row.getTerminals() != null)
-					for(Terminal t: row.getTerminals())
+				if (row.terminals() != null)
+					for(Terminal t: row.terminals())
 						printer.addTerminal(t);
 			}
 		}

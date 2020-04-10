@@ -7,6 +7,5 @@ public class Configuration {
 		Roles.initialize();
 		Potentials.initialize();
 		MainPotentials.initialize();
-		TerminalGroups.initialize();
 	}
 }

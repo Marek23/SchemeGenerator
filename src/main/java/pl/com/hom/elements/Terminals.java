@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Roles;
+import pl.com.hom.configuration.TerminalGroups;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
@@ -14,21 +15,25 @@ public class Terminals extends ColumnRow {
 		this.name       = "Terminals";
 		this.visibility = false;
 		this.image      = null;
-		this.role       = Roles.getRole(name);
+		this.role       = Roles.role(name);
 
-		this.x = parent.getWidthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.getLevel() + Measures.COL_LEV_HEIGHT/2f;
+		this.x = parent.widthPos();
+		this.y = Measures.COL_LEV_HEIGHT * role.level() + Measures.COL_LEV_HEIGHT/2f;
 
-		this.nameXPos = this.getWidthPos() - 22f;
-		this.nameYPos = 595.0f - this.getHeightPos() - this.getHeight()/1.5f;
+		this.nameXPos = this.widthPos() - 80f * Measures.SCALE;
+		this.nameYPos = 595.0f - this.heightPos() - this.height();
+
+		this.techName = receiver.terminalGroup + ":";
 
 		points    = new ArrayList<Point>();
 		terminals = new ArrayList<Terminal>();
 
-		for (Point p: receiver.getPoints())
-			if(p.getDirections().containsKey(Direction.Up))
+		this.terminalGroup = receiver.terminalGroup();
+
+		for (Point p: receiver.points())
+			if(p.directions().containsKey(Direction.Up))
 			{
-				Terminal t = new Terminal(this, p.getPotential());
+				Terminal t = new Terminal(this, p.potential(), TerminalGroups.sequence(this.terminalGroup()));
 				terminals.add(t);
 				points.add(Point.newTerminalPoint(this, t, Direction.Up));
 				points.add(Point.newTerminalPoint(this, t, Direction.Down));

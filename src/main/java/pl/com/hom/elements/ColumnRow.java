@@ -19,6 +19,8 @@ public abstract class ColumnRow {
 	
 	protected ArrayList<Point> points;
 
+	protected String terminalGroup;
+
 	protected ArrayList<Terminal> terminals;
 	protected ArrayList<ColumnRow> childs;
 
@@ -33,7 +35,7 @@ public abstract class ColumnRow {
 
 	protected Role role;
 
-	public Role getRole() {
+	public Role role() {
 		return this.role;
 	}
 
@@ -41,7 +43,7 @@ public abstract class ColumnRow {
 		return visibility;
 	}
 
-	public ArrayList<Point> getPoints() {
+	public ArrayList<Point> points() {
 		return this.points;
 	}
 
@@ -56,27 +58,27 @@ public abstract class ColumnRow {
 		}
 	}
 
-	public float getWidth() {
+	public float width() {
 		return width;
 	}
 
-	public float getHeight() {
+	public float height() {
 		return height;
 	}
 
-	public float getWidthPos() {
+	public float widthPos() {
 		return x;
 	}
 
-	public float getHeightPos() {
+	public float heightPos() {
 		return y;
 	}
 
-	public float getWidthNamePos() {
+	public float widthNamePos() {
 		return nameXPos;
 	}
 
-	public float getHeightNamePos() {
+	public float heightNamePos() {
 		return nameYPos;
 	}
 
@@ -84,11 +86,15 @@ public abstract class ColumnRow {
 		return this.image;
 	}
 
-	public String getTechName() {
+	public String techName() {
 		return this.techName;
 	}
 
-	public ArrayList<Terminal> getTerminals() {
+	public ArrayList<Terminal> terminals() {
 		return this.terminals;
+	}
+
+	public String terminalGroup() {
+		return terminalGroup;
 	}
 }
