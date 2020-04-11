@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Roles;
+import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.scheme.Column;
@@ -29,9 +30,9 @@ public class ThreePhaseEngine extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newEnginePoint(this, "L1________"));
-		points.add(Point.newEnginePoint(this, "L2________"));
-		points.add(Point.newEnginePoint(this, "L3________"));
+		points.add(Point.upOrDownPotential(this, "L1________", Direction.Up));
+		points.add(Point.upOrDownPotential(this, "L2________", Direction.Up));
+		points.add(Point.upOrDownPotential(this, "L3________", Direction.Up));
 
 		parent.addElement(this);
 	}

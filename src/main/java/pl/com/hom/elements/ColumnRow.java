@@ -49,7 +49,7 @@ public abstract class ColumnRow {
 
 	public void unlinkColumnPoints() {
 		for (Point p : points)
-			p.unlinkVerticalDirections();
+			p.unlinkVertical();
 	}
 
 	public void showPoints() {

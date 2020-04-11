@@ -9,7 +9,6 @@ import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.elements.Terminals;
 import pl.com.hom.scheme.Column;
 
 public class CoilContactor extends ColumnRow {
@@ -35,8 +34,8 @@ public class CoilContactor extends ColumnRow {
 		points = new ArrayList<Point>();
 		childs = new ArrayList<ColumnRow>();
 
-		points.add(Point.newCoilPoint(this, "LSTER_____", Direction.Up));
-		points.add(Point.newCoilPoint(this, "N_________", Direction.Down));
+		points.add(Point.upOrDownPotential(this, "LSTER_____", Direction.Up));
+		points.add(Point.upOrDownPotential(this, "N_________", Direction.Down));
 
 		parent.addElement(this);
 	}

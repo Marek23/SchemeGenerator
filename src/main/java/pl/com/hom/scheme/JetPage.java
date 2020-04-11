@@ -118,7 +118,7 @@ public class JetPage extends PdfPage{
 		for (Column c: columns)
 			for (ColumnRow r: c.columnRows())
 				for (Point p : r.points())
-					p.unlinkHorizontalDirections();
+					p.unlinkHorizontal();
 
 		Column from;
 		Column to;
@@ -148,11 +148,11 @@ public class JetPage extends PdfPage{
 		ArrayList<Point> tPoints = new ArrayList<Point>();
 
 		for (Point p : from)
-			if (p.hasUnlinkedDirection(Direction.Right))
+			if (p.hasUnlinked(Direction.Right))
 				fPoints.add(p);
 
 		for (Point p : to)
-			if (p.hasUnlinkedDirection(Direction.Left))
+			if (p.hasUnlinked(Direction.Left))
 				tPoints.add(p);
 
 		for (Point f : fPoints) {

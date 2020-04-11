@@ -31,13 +31,13 @@ public class SecGearContactor extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newStandardThreePhase(this, "L1________INHORLINE", Direction.Up));
-		points.add(Point.newStandardThreePhase(this, "L2________INHORLINE", Direction.Up));
-		points.add(Point.newStandardThreePhase(this, "L3________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Up));
 
-		points.add(Point.newStandardThreePhase(this, "L1________INHORLINE", Direction.Down));
-		points.add(Point.newStandardThreePhase(this, "L2________INHORLINE", Direction.Down));
-		points.add(Point.newStandardThreePhase(this, "L3________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Down));
 
 		parent.addElement(this);
 	}

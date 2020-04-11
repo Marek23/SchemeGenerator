@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Roles;
+import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.ColumnRow;
 import pl.com.hom.scheme.Column;
@@ -25,9 +26,9 @@ public class AboveContactor extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newAboveContactorBridge(this, "L1________INHORLINE"));
-		points.add(Point.newAboveContactorBridge(this, "L2________INHORLINE"));
-		points.add(Point.newAboveContactorBridge(this, "L3________INHORLINE"));
+		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Down));
 
 		parent.addElement(this);
 	}

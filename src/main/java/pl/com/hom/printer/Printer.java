@@ -18,6 +18,7 @@ import pl.com.hom.scheme.Line;
 
 import static pl.com.hom.configuration.Document.getPdfDocument;
 public class Printer extends PdfCanvas{
+	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
 
 	public Printer(PdfPage page){

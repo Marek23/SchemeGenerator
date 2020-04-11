@@ -101,11 +101,11 @@ public class Column {
 		ArrayList<Point> tPoints = new ArrayList<Point>();
 
 		for (Point p : from)
-			if (p.hasUnlinkedDirection(Direction.Down))
+			if (p.hasUnlinked(Direction.Down))
 				fPoints.add(p);
 
 		for (Point p : to)
-			if (p.hasUnlinkedDirection(Direction.Up))
+			if (p.hasUnlinked(Direction.Up))
 				tPoints.add(p);
 
 		for (Point f : fPoints) {
@@ -131,7 +131,7 @@ public class Column {
 
 		for (ColumnRow elem : columnRows)
 			for (Point p : elem.points())
-				p.unlinkVerticalDirections();
+				p.unlinkVertical();
 
 		ColumnRow from;
 		ColumnRow to;
@@ -163,9 +163,9 @@ public class Column {
 			Potential potential  = point.potential();
 			float widthPos  = point.widthPos();
 
-			if (point.hasDirection(Direction.Up) && potential.name().startsWith("MAIN")) 
+			if (point.has(Direction.Up) && potential.name().startsWith("MAIN")) 
 				if (!hasPotentialInWidthPos(potential, widthPos)) 
-					this.mainPoints.add(Point.newMainPoint(point));
+					this.mainPoints.add(Point.mainPoint(point));
 		}
 	}
 

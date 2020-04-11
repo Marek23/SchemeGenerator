@@ -21,9 +21,9 @@ public class UpRightPhases extends ColumnRow {
 
 		this.points = new ArrayList<Point>();
 
-		points.add(Point.newUpRightPoint(this, "L1________LEFT"));
-		points.add(Point.newUpRightPoint(this, "L2________LEFT"));
-		points.add(Point.newUpRightPoint(this, "L3________LEFT"));
+		points.add(Point.upRightPoint(this, "L1________LEFT"));
+		points.add(Point.upRightPoint(this, "L2________LEFT"));
+		points.add(Point.upRightPoint(this, "L3________LEFT"));
 
 		int ROLE_REVEIVER_LEVEL = 7;
 		if (this.role.level() == ROLE_REVEIVER_LEVEL) {

@@ -33,10 +33,11 @@ public class Terminals extends ColumnRow {
 		for (Point p: receiver.points())
 			if(p.directions().containsKey(Direction.Up))
 			{
-				Terminal t = new Terminal(this, p.potential(), TerminalGroups.sequence(this.terminalGroup()));
-				terminals.add(t);
-				points.add(Point.newTerminalPoint(this, t, Direction.Up));
-				points.add(Point.newTerminalPoint(this, t, Direction.Down));
+				Terminal terminal = new Terminal(this, p.potential(), TerminalGroups.sequence(this.terminalGroup()));
+				terminals.add(terminal);
+
+				points.add(Point.upOrDownPotential(this, p.potential().fullName(), Direction.Up));
+				points.add(Point.upOrDownPotential(this, p.potential().fullName(), Direction.Down));
 			}
 
 		parent.addElement(this);
