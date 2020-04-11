@@ -29,9 +29,9 @@ public class JetEngine extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newJetEngine(this, "L1________LEFT______", Direction.Left));
-		points.add(Point.newJetEngine(this, "L2________LEFT______", Direction.Left));
-		points.add(Point.newJetEngine(this, "L3________LEFT______", Direction.Left));
+		points.add(Point.newJetEngine(this, "L1________LEFT", Direction.Left));
+		points.add(Point.newJetEngine(this, "L2________LEFT", Direction.Left));
+		points.add(Point.newJetEngine(this, "L3________LEFT", Direction.Left));
 
 		points.add(Point.newJetEngine(this, "L1________", Direction.Right));
 		points.add(Point.newJetEngine(this, "L2________", Direction.Right));

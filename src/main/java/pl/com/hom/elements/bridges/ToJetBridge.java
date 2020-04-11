@@ -20,9 +20,9 @@ public class ToJetBridge extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newToJetBridge(this, "L1________LEFT______"));
-		points.add(Point.newToJetBridge(this, "L2________LEFT______"));
-		points.add(Point.newToJetBridge(this, "L3________LEFT______"));
+		points.add(Point.newToJetBridge(this, "L1________LEFT"));
+		points.add(Point.newToJetBridge(this, "L2________LEFT"));
+		points.add(Point.newToJetBridge(this, "L3________LEFT"));
 
 		parent.addElement(this);
 	}

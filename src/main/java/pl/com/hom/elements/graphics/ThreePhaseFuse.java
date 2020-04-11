@@ -33,13 +33,13 @@ public class ThreePhaseFuse extends ColumnRow {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.newStandardThreePhase(this, "MAINL1____STANDARD__", Direction.Up));
-		points.add(Point.newStandardThreePhase(this, "MAINL2____STANDARD__", Direction.Up));
-		points.add(Point.newStandardThreePhase(this, "MAINL3____STANDARD__", Direction.Up));
+		points.add(Point.newStandardThreePhase(this, "MAINL1____INHORLINE", Direction.Up));
+		points.add(Point.newStandardThreePhase(this, "MAINL2____INHORLINE", Direction.Up));
+		points.add(Point.newStandardThreePhase(this, "MAINL3____INHORLINE", Direction.Up));
 
-		points.add(Point.newStandardThreePhase(this, "L1________STANDARD__", Direction.Down));
-		points.add(Point.newStandardThreePhase(this, "L2________STANDARD__", Direction.Down));
-		points.add(Point.newStandardThreePhase(this, "L3________STANDARD__", Direction.Down));
+		points.add(Point.newStandardThreePhase(this, "L1________INHORLINE", Direction.Down));
+		points.add(Point.newStandardThreePhase(this, "L2________INHORLINE", Direction.Down));
+		points.add(Point.newStandardThreePhase(this, "L3________INHORLINE", Direction.Down));
 
 		parent.addElement(this);
 	}
