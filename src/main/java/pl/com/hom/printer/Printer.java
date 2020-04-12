@@ -13,7 +13,7 @@ import com.itextpdf.layout.property.VerticalAlignment;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
-import pl.com.hom.elements.ColumnRow;
+import pl.com.hom.elements.Element;
 import pl.com.hom.scheme.Line;
 
 import static pl.com.hom.configuration.Document.getPdfDocument;
@@ -45,7 +45,7 @@ public class Printer extends PdfCanvas{
 		
 	}
 
-	public void addColumnRow(ColumnRow row) {
+	public void addElement(Element row) {
 		if (row.techName() != null) {
 			this.beginText();
 			this.moveText(row.widthNamePos(), row.heightNamePos());
@@ -65,6 +65,7 @@ public class Printer extends PdfCanvas{
 	}
 
 	public void addPoint(Point p) {
-		this.addXObject(p.image(), new Rectangle(p.widthPos() - p.width()/2, 595.0f - p.heightPos() -  p.height()/2, Measures.SCALE,Measures.SCALE));
+		if (p.isVisibile())
+			this.addXObject(p.image(), new Rectangle(p.widthPos() - p.width()/2, 595.0f - p.heightPos() -  p.height()/2, Measures.SCALE,Measures.SCALE));
 	}
 }

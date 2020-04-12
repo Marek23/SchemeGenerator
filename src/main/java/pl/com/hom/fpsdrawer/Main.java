@@ -3,7 +3,7 @@ package pl.com.hom.fpsdrawer;
 import static pl.com.hom.configuration.Document.getPdfDocument;
 
 import pl.com.hom.configuration.Configuration;
-import pl.com.hom.scheme.JetPage;
+import pl.com.hom.scheme.Page;
 
 public class Main {
 	public static void main(String args[]) throws Exception {				
@@ -11,7 +11,7 @@ public class Main {
 
 		Configuration.initialize();
 
-		JetPage page = new JetPage("L1", "L2", 1);
+		Page page = new Page("L1", "L2", 1);
 		page.draw();
 			  		 
 		getPdfDocument().close();  

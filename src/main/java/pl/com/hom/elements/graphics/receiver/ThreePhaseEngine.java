@@ -3,27 +3,25 @@ package pl.com.hom.elements.graphics.receiver;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.scheme.Column;
+import pl.com.hom.elements.Element;
+import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
-public class ThreePhaseEngine extends ColumnRow {
+public class ThreePhaseEngine extends Element {
 	public static float L1WIDTH = 100f * Measures.SCALE;
 	public static float L2WIDTH = 200f * Measures.SCALE;
 	public static float L3WIDTH = 300f * Measures.SCALE;
 
-	public ThreePhaseEngine(Column parent) {
+	public ThreePhaseEngine(Page parent, float x, float y) {
 		this.name       = "ThreePhaseEngine";
 		this.visibility = true;
 		this.image      = getImage(name);
-		this.role       = Roles.role(name);
 
-		this.x = parent.widthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.level();
+		this.x = x;
+		this.y = y;
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;

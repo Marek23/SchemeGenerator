@@ -30,7 +30,7 @@ public class Potential {
 
 	public float height() {
 		if (this.height < 0)
-			throw new RuntimeException("Wrong acces to potential: " + potential + " width");
+			throw new RuntimeException("Wrong acces to potential: " + potential + " height");
 
 		return height;
 	}

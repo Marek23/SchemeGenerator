@@ -4,11 +4,10 @@ import java.util.ArrayList;
 
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
-import pl.com.hom.configuration.Role;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
 
-public abstract class ColumnRow {
+public abstract class Element {
 	protected String id;
 	protected String desc;
 	protected String name;
@@ -22,7 +21,7 @@ public abstract class ColumnRow {
 	protected String terminalGroup;
 
 	protected ArrayList<Terminal> terminals;
-	protected ArrayList<ColumnRow> childs;
+	protected ArrayList<Element> childs;
 
 	protected float x;
 	protected float y;
@@ -32,12 +31,6 @@ public abstract class ColumnRow {
 
 	protected float width;
 	protected float height;
-
-	protected Role role;
-
-	public Role role() {
-		return this.role;
-	}
 
 	public boolean visible() {
 		return visibility;

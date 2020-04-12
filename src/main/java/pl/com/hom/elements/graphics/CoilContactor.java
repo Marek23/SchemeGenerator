@@ -5,52 +5,45 @@ import static pl.com.hom.configuration.Resource.getImage;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.scheme.Column;
+import pl.com.hom.elements.Element;
+import pl.com.hom.scheme.Page;
 
-public class CoilContactor extends ColumnRow {
+public class CoilContactor extends Element {
 	public static String techSymbol = "Q";
 
-	public CoilContactor (Column parent, int pageNr, int number, String STEERPOT) {
+	public CoilContactor (Page parent, float x, float y, int number, String STEERPOT) {
 		this.name       = "CoilContactor";
 		this.visibility = true;
 		this.image      = getImage(name);
-		this.role       = Roles.role(name);
 
-		this.x = parent.widthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.level();
+		this.x = x;
+		this.y = y;
 		
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 		
-		this.techName = String.valueOf(pageNr) + techSymbol + String.valueOf(number);
+		this.techName = String.valueOf(parent.getNr()) + techSymbol + String.valueOf(number);
 
-		this.nameXPos = this.widthPos() - 14f;
-		this.nameYPos = 595.0f - this.heightPos() - this.height()/1.5f;
+		this.nameXPos = x - 22f;
+		this.nameYPos = 595.0f - y - this.height()/1.5f;
 
 		points = new ArrayList<Point>();
-		childs = new ArrayList<ColumnRow>();
+		childs = new ArrayList<Element>();
 
 		points.add(Point.upOrDownPotential(this, "LSTER_____", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "N_________", Direction.Down));
+		points.add(Point.upOrDownPotential(this, "GROUNDN___ELEM", Direction.Down));
 
 		parent.addElement(this);
 	}
 
-	public void addJetBridgeContactor(Column parent) {
-		childs.add(new JetBridgeContactor(parent, this.techName));
+	public void secondGear(Page parent) {
+		childs.add(new JetBridgeContactor(parent, this));
+		childs.add(new SecGearContactor(parent, this));
 	}
 
-	public void addFirstGearContactor(Column parent) {
-		childs.add(new FirstGearContactor(parent, this.techName));
+	public void firstGear(Page parent) {
+		childs.add(new FirstGearContactor(parent, this));
 	}
-
-	public void addSecGearContactor(Column parent) {
-		childs.add(new FirstGearContactor(parent, this.techName));
-	}
-		
-	
 }

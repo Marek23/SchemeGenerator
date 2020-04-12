@@ -3,32 +3,32 @@ package pl.com.hom.elements.graphics;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.configuration.Roles;
+import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.scheme.Column;
+import pl.com.hom.elements.Element;
+import pl.com.hom.elements.bridges.UpDownRightPhases;
+import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
-public class Mks extends ColumnRow {
+public class Mks extends Element {
 	public static String techSymbol = "MKS";
 
-	public Mks(Column parent, int pageNr, int id) {
+	public Mks(Page parent, float x, float y) {
 		this.name       = "Mks";
 		this.visibility = true;
 		this.image      = getImage(name);
-		this.role       = Roles.role(name);
 
-		this.x = parent.widthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.level();
+		this.x = x;
+		this.y = y;
 		
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 		
-		this.techName = String.valueOf(pageNr) + techSymbol + String.valueOf(id);
+		this.techName = String.valueOf(parent.getNr()) + techSymbol + String.valueOf(id);
 
-		this.nameXPos = this.widthPos() - 20f;
-		this.nameYPos = 595.0f - this.heightPos();
+		this.nameXPos = x - 20f;
+		this.nameYPos = 595.0f - y;
 
 		points = new ArrayList<Point>();
 
@@ -36,6 +36,14 @@ public class Mks extends ColumnRow {
 		points.add(Point.leftPoint(this, "L2________INVERLINE"));
 		points.add(Point.leftPoint(this, "L3________INVERLINE"));
 
+		points.add(Point.upOrDownPotential(this, "MAINDC24__", Direction.Up));
+		points.add(Point.upOrDownPotential(this, "GROUNDDC__", Direction.Down));
+
 		parent.addElement(this);
+	}
+
+	public void jetControl(Page parent) {
+		float x = Measures.THIRD_JET_COL;
+		new UpDownRightPhases(parent, x, this.y);
 	}
 }

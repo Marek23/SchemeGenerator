@@ -3,25 +3,23 @@ package pl.com.hom.elements;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.configuration.Roles;
 import pl.com.hom.configuration.TerminalGroups;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
-import pl.com.hom.scheme.Column;
+import pl.com.hom.scheme.Page;
 
-public class Terminals extends ColumnRow {
-	public Terminals(Column parent, ColumnRow receiver) {
+public class Terminals extends Element {
+	public Terminals(Page parent, float x, float y, Element receiver) {
 		this.name       = "Terminals";
 		this.visibility = false;
 		this.image      = null;
-		this.role       = Roles.role(name);
 
-		this.x = parent.widthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.level() + Measures.COL_LEV_HEIGHT/2f;
+		this.x = x;
+		this.y = y;
 
-		this.nameXPos = this.widthPos() - 80f * Measures.SCALE;
-		this.nameYPos = 595.0f - this.heightPos() - this.height();
+		this.nameXPos = x - 80f * Measures.SCALE;
+		this.nameYPos = 595.0f - y - this.height();
 
 		this.techName = receiver.terminalGroup + ":";
 

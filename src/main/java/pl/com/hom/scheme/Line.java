@@ -1,5 +1,6 @@
 package pl.com.hom.scheme;
 
+import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 

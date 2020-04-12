@@ -27,17 +27,26 @@ public final class Potentials {
 		add(new Potential("L2________INHORLINE", 200f, -1f));
 		add(new Potential("L3________INHORLINE", 300f, -1f));
 
-		add(new Potential("MAINL1____", 100f, 30f));
-		add(new Potential("MAINL2____", 200f, 60f));
-		add(new Potential("MAINL3____", 300f, 90f));
+		add(new Potential("GROUNDN___ELEM", 100f, -1f));
+		add(new Potential("GROUNDDC__ELEM", 100f, -1f));
+		add(new Potential("GROUNDPE__ELEM", 100f, -1f));
+
+		add(new Potential("GROUNDN___", 100f, 3500f));
+		add(new Potential("GROUNDDC__", 100f, 3600f));
+		add(new Potential("GROUNDPE__", 100f, 3700f));
+
+		add(new Potential("MAINL1____", 100f, 40f));
+		add(new Potential("MAINL2____", 200f, 80f));
+		add(new Potential("MAINL3____", 300f, 120f));
+		add(new Potential("MAINDC24__", 100f, 160f));
 
 		add(new Potential("MAINL1____INHORLINE", 100f, -1f));
 		add(new Potential("MAINL2____INHORLINE", 200f, -1f));
 		add(new Potential("MAINL3____INHORLINE", 300f, -1f));
 
-		add(new Potential("MAINL1____INVERLINE", -1f, 30f));
-		add(new Potential("MAINL2____INVERLINE", -1f, 60f));
-		add(new Potential("MAINL3____INVERLINE", -1f, 90f));
+		add(new Potential("MAINL1____INVERLINE", -1f, 50f));
+		add(new Potential("MAINL2____INVERLINE", -1f, 100f));
+		add(new Potential("MAINL3____INVERLINE", -1f, 150f));
 
 		add(new Potential("L1________INVERLINE", -1f, 100f));
 		add(new Potential("L2________INVERLINE", -1f, 200f));

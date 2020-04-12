@@ -7,7 +7,7 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
-import pl.com.hom.elements.ColumnRow;
+import pl.com.hom.elements.Element;
 
 import static pl.com.hom.configuration.Resource.getImage;
 public class Point {
@@ -31,7 +31,7 @@ public class Point {
 				+ ", directions=" + directions + ", potential=" + potential + "]";
 	}
 
-	public static Point upOrDownPotential(ColumnRow parent, String potName, Direction direction) {
+	public static Point upOrDownPotential(Element parent, String potName, Direction direction) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(direction, false);
 
@@ -49,10 +49,16 @@ public class Point {
 	}
 
 	public static Point mainPoint(Point point) {
-		return new Point(point);
+		if (point.has(Direction.Up))
+			return new Point(point, Direction.Down);
+
+		if (point.has(Direction.Down))
+			return new Point(point, Direction.Up);
+
+		throw new RuntimeException("Error while adding main point");
 	}
 
-	public static Point upDownLeftBridge(ColumnRow parent, String potName) {
+	public static Point upDownLeftBridge(Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Left, false);
 		dirs.put(Direction.Up, false);
@@ -66,7 +72,7 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, true);	
 	}
 
-	public static Point upDownRightBridge(ColumnRow parent, String potName) {
+	public static Point upDownRightBridge(Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Right, false);
 		dirs.put(Direction.Up, false);
@@ -80,7 +86,7 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, true);	
 	}
 
-	public static Point upLeftPoint(ColumnRow parent, String potName) {
+	public static Point upLeftPoint(Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Left, false);
@@ -93,7 +99,7 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, false);	
 	}
 
-	public static Point upRightPoint(ColumnRow parent, String potName) {
+	public static Point upRightPoint(Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Right, false);
@@ -106,7 +112,7 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, false);	
 	}
 
-	public static Point leftPoint(ColumnRow parent, String potName) {
+	public static Point leftPoint(Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Left, false);
 
@@ -118,7 +124,7 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, false);	
 	}
 
-	public static Point rightPoint(ColumnRow parent, String potName) {
+	public static Point rightPoint(Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Right, false);
 
@@ -130,7 +136,7 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, false);	
 	}
 
-	private Point(ColumnRow parent, Potential potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
+	private Point(Element parent, Potential potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
 		this.x = parent.widthPos()  + x;
 		this.y = parent.heightPos() + y;
 
@@ -148,7 +154,7 @@ public class Point {
 		this.directions = dirs;		
 	}
 
-	private Point(Point point) {
+	private Point(Point point, Direction direction) {
 		this.potential  = Potentials.potential(point.potential().name());
 
 		this.x = point.widthPos();
@@ -162,7 +168,10 @@ public class Point {
 		this.height = image.getHeight() * Measures.SCALE;
 
 		this.directions = new EnumMap<Direction,Boolean>(Direction.class);
-		this.directions.put(Direction.Down, false);
+		this.directions.put(direction, false);
+//		TODO
+		this.directions.put(Direction.Left, false);
+		this.directions.put(Direction.Right, false);
 	}
 
 	public Potential potential() {
@@ -173,22 +182,8 @@ public class Point {
 		return directions.containsKey(d);
 	}
 
-	public boolean hasUnlinked(Direction d) {
-		if (directions.containsKey(d))
-			return !directions.get(d);
-
-		return false; 
-	}
-
 	public EnumMap<Direction, Boolean> directions() {
 		return this.directions;
-	}
-
-	public void link(Direction direction) {
-		if (!this.directions.containsKey(direction))
-			throw new RuntimeException("Direction " + direction + " does not exist in point.");
-
-		this.directions.put(direction, true);
 	}
 	
     public boolean isVisibile() {
@@ -226,7 +221,7 @@ public class Point {
 	public boolean equals(Object o) { 
     	if (o == this) return true; 
 
-    	if (!(o instanceof ColumnRow)) return false;  
+    	if (!(o instanceof Element)) return false;  
 
     	Point p = (Point) o; 
 
@@ -242,5 +237,19 @@ public class Point {
 
 	public PdfFormXObject image() {
 		return this.image;
+	}
+
+	public boolean existDisconnected(Direction d) {
+		if (directions.containsKey(d))
+			return !directions.get(d);
+		else
+			return false;
+	}
+
+	public void connect(Direction d) {
+		if (!directions.containsKey(d))
+			throw new RuntimeException("Direction " + d + " does not exist in point.");
+
+		directions.put(d, true);
 	}
 }

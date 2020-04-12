@@ -7,7 +7,7 @@ public class VerticalLine extends Line{
 	public VerticalLine(Point from, Point to) {
 		super(from,to);
 
-		from.link(Direction.Down);
-		to.link(Direction.Up);
+		from.connect(Direction.Down);
+		to.connect(Direction.Up);
 	}
 }

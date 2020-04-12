@@ -3,28 +3,26 @@ package pl.com.hom.elements.graphics;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
-import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.scheme.Column;
+import pl.com.hom.elements.Element;
+import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
-public class SecGearContactor extends ColumnRow {
-	public SecGearContactor (Column parent, String techName) {
+public class SecGearContactor extends Element {
+	public SecGearContactor (Page parent, Element element) {
 		this.name       = "FirstGearContactor";
 		this.visibility = true;
 		this.image      = getImage(name);
-		this.role       = Roles.role(name);
 
-		this.x = parent.widthPos();
-		this.y = Measures.COL_LEV_HEIGHT * role.level();
-		
+		this.x = Measures.THIRD_JET_COL;
+		this.y = Measures.CONTACTOR_HEIGHT;
+
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
-		
-		this.techName = techName;
+
+		this.techName = element.techName();
 
 		this.nameXPos = this.widthPos() - 22f;
 		this.nameYPos = 595.0f - this.heightPos() - this.height()/1.5f;

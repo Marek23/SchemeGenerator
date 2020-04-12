@@ -3,7 +3,7 @@ package pl.com.hom.connections;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.elements.ColumnRow;
+import pl.com.hom.elements.Element;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
@@ -26,7 +26,7 @@ public class Terminal {
 	float width;
 	float height;
 
-	public Terminal(ColumnRow parent, Potential potential, int id) {
+	public Terminal(Element parent, Potential potential, int id) {
 		this.name  = "Terminal";
 		this.image = getImage(name);
 

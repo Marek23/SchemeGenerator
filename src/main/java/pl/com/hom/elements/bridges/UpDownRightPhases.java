@@ -2,21 +2,17 @@ package pl.com.hom.elements.bridges;
 
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
-import pl.com.hom.configuration.Roles;
 import pl.com.hom.connections.Point;
-import pl.com.hom.elements.ColumnRow;
-import pl.com.hom.scheme.Column;
+import pl.com.hom.elements.Element;
+import pl.com.hom.scheme.Page;
 
-public class ToMksBridge extends ColumnRow {
-	public ToMksBridge (Column parent) {
-		this.name       = "ToMksBridge";
+public class UpDownRightPhases extends Element {
+	public UpDownRightPhases(Page parent, float x, float y) {
 		this.visibility = false;
 		this.image      = null;
-		this.role       = Roles.role(name);
 
-		this.x = parent.widthPos();
-		this.y = Measures.COL_LEV_HEIGHT * this.role.level();
+		this.x = x;
+		this.y = y;
 
 		points = new ArrayList<Point>();
 
