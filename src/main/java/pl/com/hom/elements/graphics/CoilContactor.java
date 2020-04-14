@@ -24,15 +24,15 @@ public class CoilContactor extends Element {
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 		
-		this.techName = String.valueOf(parent.getNr()) + techSymbol + String.valueOf(number);
+		this.symbol = symbol(parent, "Q");
 
-		this.nameXPos = x - 22f;
-		this.nameYPos = 595.0f - y - this.height()/1.5f;
+		this.symbolX = x - 22f;
+		this.symbolY = 595.0f - y - this.height()/1.5f;
 
 		points = new ArrayList<Point>();
 		childs = new ArrayList<Element>();
 
-		points.add(Point.upOrDownPotential(this, "LSTER_____", Direction.Up));
+		points.add(Point.upOrDownPotential(this, "STEER_____", Direction.Up));
 		points.add(Point.upOrDownPotential(this, "GROUNDN___ELEM", Direction.Down));
 
 		parent.addElement(this);

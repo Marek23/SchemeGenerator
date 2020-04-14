@@ -48,6 +48,15 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, false);
 	}
 
+	public static Point pe(Element parent, float x, float y) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Up, false);
+
+		Potential potential = Potentials.potential("GROUNDPE__");
+
+		return new Point(parent, potential, x, y, dirs, false);
+	}
+
 	public static Point mainPoint(Point point) {
 		if (point.has(Direction.Up))
 			return new Point(point, Direction.Down);

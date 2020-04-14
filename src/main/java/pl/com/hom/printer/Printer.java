@@ -46,10 +46,10 @@ public class Printer extends PdfCanvas{
 	}
 
 	public void addElement(Element row) {
-		if (row.techName() != null) {
+		if (row.symbol() != null) {
 			this.beginText();
-			this.moveText(row.widthNamePos(), row.heightNamePos());
-			this.showText(row.techName());
+			this.moveText(row.symbolWidthPos(), row.symbolHeightPos());
+			this.showText(row.symbol());
 			this.endText();
 		}
 

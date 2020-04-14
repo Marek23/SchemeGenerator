@@ -17,7 +17,6 @@ public final class Potentials {
 		add(new Potential("DC24______", 100f, 400f));
 		add(new Potential("DCPLC_____", 100f, 500f));
 		add(new Potential("L10_______", 100f, 600f));
-		add(new Potential("LSTER_____", 100f, 100f));
 
 		add(new Potential("DC0_______", 100f, 100f));
 		add(new Potential("N_________", 200f, 100f));
@@ -31,9 +30,9 @@ public final class Potentials {
 		add(new Potential("GROUNDDC__ELEM", 100f, -1f));
 		add(new Potential("GROUNDPE__ELEM", 100f, -1f));
 
-		add(new Potential("GROUNDN___", 100f, 3500f));
-		add(new Potential("GROUNDDC__", 100f, 3600f));
-		add(new Potential("GROUNDPE__", 100f, 3700f));
+		add(new Potential("GROUNDN___", 100f, 2800f));
+		add(new Potential("GROUNDDC__", 100f, 2850f));
+		add(new Potential("GROUNDPE__", 200f, 2900f));
 
 		add(new Potential("MAINL1____", 100f, 40f));
 		add(new Potential("MAINL2____", 200f, 80f));
@@ -55,6 +54,8 @@ public final class Potentials {
 		add(new Potential("L1________LEFT", 100f, 300f));
 		add(new Potential("L2________LEFT", 200f, 200f));
 		add(new Potential("L3________LEFT", 300f, 100f));
+
+		add(new Potential("STEER_____", 100f, 2000f));
 	}
 
 	public static void add(Potential potential) {

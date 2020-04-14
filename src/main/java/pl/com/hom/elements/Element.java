@@ -5,29 +5,28 @@ import java.util.ArrayList;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.connections.Point;
-import pl.com.hom.connections.Terminal;
+import pl.com.hom.scheme.Page;
+
+import static pl.com.hom.configuration.Symbols.symbols;
 
 public abstract class Element {
 	protected String id;
 	protected String desc;
 	protected String name;
-	protected String techName;
+	protected String symbol;
 
 	protected PdfFormXObject image;
 	protected boolean        visibility;
 	
 	protected ArrayList<Point> points;
 
-	protected String terminalGroup;
-
-	protected ArrayList<Terminal> terminals;
 	protected ArrayList<Element> childs;
 
 	protected float x;
 	protected float y;
 
-	protected float nameXPos;
-	protected float nameYPos;
+	protected float symbolX;
+	protected float symbolY;
 
 	protected float width;
 	protected float height;
@@ -67,27 +66,31 @@ public abstract class Element {
 		return y;
 	}
 
-	public float widthNamePos() {
-		return nameXPos;
+	public float symbolWidthPos() {
+		return symbolX;
 	}
 
-	public float heightNamePos() {
-		return nameYPos;
+	public float symbolHeightPos() {
+		return symbolY;
 	}
 
 	public PdfFormXObject image() {
 		return this.image;
 	}
 
-	public String techName() {
-		return this.techName;
+	public String symbol() {
+		return this.symbol;
 	}
 
-	public ArrayList<Terminal> terminals() {
-		return this.terminals;
+	protected String symbol(Page parent, String type) {
+		String page = String.valueOf(parent.getNr());
+
+		if (symbols.containsKey(page + type))
+			symbols.put(page + type, symbols.get(page + type)+1);
+		else
+			symbols.put(page + type, 1);
+
+		return  page + type + String.valueOf(symbols.get(page + type));
 	}
 
-	public String terminalGroup() {
-		return terminalGroup;
-	}
 }

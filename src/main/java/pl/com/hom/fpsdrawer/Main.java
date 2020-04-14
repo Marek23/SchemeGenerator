@@ -11,9 +11,12 @@ public class Main {
 
 		Configuration.initialize();
 
-		Page page = new Page("L1", "L2", 1);
-		page.draw();
-			  		 
+		Page page1 = new Page("L1", "L2", 1);
+		page1.draw();
+
+		Page page2 = new Page("L1", "L2", 2);
+		page2.draw();
+
 		getPdfDocument().close();  
 		
 		System.out.println("Object drawn on pdf successfully");

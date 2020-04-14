@@ -11,8 +11,6 @@ import pl.com.hom.scheme.Page;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class ThreePhaseFuse extends Element {
-	public static String techSymbol = "F";
-
 	public ThreePhaseFuse(Page parent, float x, float y, int number) {
 		this.name       = "ThreePhaseFuse";
 		this.visibility = true;
@@ -24,10 +22,10 @@ public class ThreePhaseFuse extends Element {
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 		
-		this.techName = String.valueOf(parent.getNr()) + techSymbol + String.valueOf(number);
+		this.symbol = symbol(parent, "F");
 
-		this.nameXPos = x - 22f;
-		this.nameYPos = 595.0f - y - this.height()/1.5f;
+		this.symbolX = x - 22f;
+		this.symbolY = 595.0f - y - this.height()/1.5f;
 
 		points = new ArrayList<Point>();
 

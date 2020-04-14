@@ -25,10 +25,10 @@ public class Mks extends Element {
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 		
-		this.techName = String.valueOf(parent.getNr()) + techSymbol + String.valueOf(id);
+		this.symbol = symbol(parent, "MKS");
 
-		this.nameXPos = x - 20f;
-		this.nameYPos = 595.0f - y;
+		this.symbolX = x - 20f;
+		this.symbolY = 595.0f - y;
 
 		points = new ArrayList<Point>();
 
@@ -38,6 +38,7 @@ public class Mks extends Element {
 
 		points.add(Point.upOrDownPotential(this, "MAINDC24__", Direction.Up));
 		points.add(Point.upOrDownPotential(this, "GROUNDDC__", Direction.Down));
+		points.add(Point.upOrDownPotential(this, "GROUNDPE__", Direction.Down));
 
 		parent.addElement(this);
 	}

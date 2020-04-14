@@ -3,7 +3,6 @@ package pl.com.hom.scheme;
 import static pl.com.hom.configuration.Document.getPdfDocument;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import com.itextpdf.kernel.geom.PageSize;
@@ -16,11 +15,6 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.Element;
-//import pl.com.hom.elements.bridges.UpDownLeft;
-//import pl.com.hom.elements.bridges.ToMks;
-import pl.com.hom.elements.bridges.UpLeftPhases;
-import pl.com.hom.elements.bridges.UpRightPhases;
-import pl.com.hom.elements.graphics.AboveContactor;
 import pl.com.hom.elements.graphics.CoilContactor;
 import pl.com.hom.elements.graphics.Mks;
 import pl.com.hom.elements.graphics.ThreePhaseFuse;
@@ -30,13 +24,13 @@ import pl.com.hom.printer.Printer;
 public class Page extends PdfPage{
 	private static final long serialVersionUID = 7351148506505896070L;
 
-	private ArrayList<Point>   points;
-	private ArrayList<Line>    lines;
-	private ArrayList<Element> elements;
+	private ArrayList<Point>    points;
+	private ArrayList<Line>     lines;
+	private ArrayList<Element>  elements;
+	private ArrayList<Terminal> terminals;
 
 	private int nr;
 
-	private HashMap<String, Integer> symbolNumbers;
 	Printer printer;
 
 	public Page(String firstGearPot, String secGearPot, int nr) {
@@ -46,11 +40,10 @@ public class Page extends PdfPage{
 		this.nr  = nr;
 		this.printer = new Printer(this);
 
-		this.points   = new ArrayList<Point>();
-		this.lines    = new ArrayList<Line>();
-		this.elements = new ArrayList<Element>();
-
-		this.symbolNumbers   = new HashMap<String, Integer>();
+		this.points    = new ArrayList<Point>();
+		this.lines     = new ArrayList<Line>();
+		this.elements  = new ArrayList<Element>();
+		this.terminals = new ArrayList<Terminal>();
 
 		CoilContactor coil1 = new CoilContactor(this, Measures.COIL_1, Measures.COIL_HEIGHT,10, "LSTER_____");
 		coil1.firstGear(this);
@@ -63,6 +56,8 @@ public class Page extends PdfPage{
 
 		Mks mks = new Mks(this,Measures.MKS_COL, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
 		mks.jetControl(this);
+
+		new JetEngine(this, Measures.JET_ENGINE_COL, Measures.RECEIVER_HEIGHT);
 	}
 
 	public void showPoints() {
@@ -163,29 +158,18 @@ public class Page extends PdfPage{
 		for(Point p: points)
 			printer.addPoint(p);
 
-		for (Element e : elements) {
+		for (Element e : elements)
 			printer.addElement(e);
 
-			if (e.terminals() != null)
-				for(Terminal t: e.terminals())
-					printer.addTerminal(t);
-		}
-	}
-
-	private int getNumerForTechSymbol(String symbol) {
-		if (symbolNumbers.containsKey(symbol))
-			symbolNumbers.put(symbol, symbolNumbers.get(symbol)+1);
-		else
-			symbolNumbers.put(symbol, 1);
-
-		return symbolNumbers.get(symbol);
+		for (Terminal t : terminals)
+			printer.addTerminal(t);
 	}
 
 	private void addMainsPoints(Element element) {
 		for (Point point : element.points()) {
 			String shortName = point.potential().name();
 
-			if (shortName.startsWith("MAIN") || shortName.startsWith("GROUND"))
+			if (shortName.startsWith("MAIN") || shortName.startsWith("GROUND") || shortName.startsWith("STEER"))
 			{
 				float width  = point.widthPos();
 
@@ -214,5 +198,9 @@ public class Page extends PdfPage{
 
 	public int getNr() {
 		return nr;
+	}
+
+	public void terminal(Terminal t) {
+		terminals.add(t);
 	}
 }

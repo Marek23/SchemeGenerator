@@ -3,15 +3,17 @@ package pl.com.hom.elements.graphics.receiver;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
+import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
+import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.Element;
+import pl.com.hom.elements.bridges.UpLeftPhases;
+import pl.com.hom.elements.bridges.UpRightPhases;
 import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class JetEngine extends Element {
-	public static String techSymbol = "JET";
-
 	public JetEngine(Page parent, float x, float y) {
 		this.name       = "JetEngine";
 		this.visibility = true;
@@ -33,6 +35,20 @@ public class JetEngine extends Element {
 		points.add(Point.rightPoint(this, "L2________"));
 		points.add(Point.rightPoint(this, "L3________"));
 
+		Point pe = Point.pe(this, 200f * Measures.SCALE, 0f);
+		points.add(pe);
+		
 		parent.addElement(this);
+
+		Element left  = new UpRightPhases(parent, Measures.SECOND_JET_COL, y);
+		Element right = new UpLeftPhases(parent, Measures.THIRD_JET_COL, y);
+
+		for (Point p: left.points())
+			parent.terminal(new Terminal(parent, p, "X2"));
+
+		for (Point p: right.points())
+			parent.terminal(new Terminal(parent, p, "X2"));
+
+		parent.terminal(new Terminal(parent, pe, "X2"));
 	}
 }

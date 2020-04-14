@@ -3,7 +3,9 @@ package pl.com.hom.connections;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Measures;
+import pl.com.hom.configuration.TerminalGroups;
 import pl.com.hom.elements.Element;
+import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
@@ -16,33 +18,37 @@ public class Terminal {
 
 	Potential potential;
 
-	int id;
+	String id;
 
 	float x;
 	float y;
-	float nameXPos;
-	float nameYPos;
+	float symbolX;
+	float symbolY;
 
 	float width;
 	float height;
 
-	public Terminal(Element parent, Potential potential, int id) {
+	public Terminal(Page parent, Point point, String group) {
 		this.name  = "Terminal";
 		this.image = getImage(name);
 
-		this.potential = potential;
+		this.potential = point.potential();
 
-		this.x = parent.widthPos() + potential.width();
-		this.y = parent.heightPos();
+		this.x = point.widthPos();
+		this.y = Measures.TERMINAL_HEIGHT;
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 
-		this.id = id;
-		this.nameXPos = this.widthPos() + 60f * Measures.SCALE;
-		this.nameYPos = this.heightPos();
+		if (potential.name().equals("GROUNDPE__"))
+			this.id = "PE";
+		else
+			this.id = String.valueOf(TerminalGroups.sequence(group));
 
-		this.group = parent.terminalGroup();
+		this.symbolX = this.x + 60f * Measures.SCALE;
+		this.symbolY = this.y;
+
+		this.group = group;
 	}
 
 	public float widthPos() {
@@ -62,11 +68,11 @@ public class Terminal {
 	}
 
 	public float widthNamePos() {
-		return nameXPos;
+		return symbolX;
 	}
 
 	public float heightNamePos() {
-		return nameYPos;
+		return symbolY;
 	}
 
 	public String fullName() {

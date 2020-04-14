@@ -23,10 +23,10 @@ public class FirstGearContactor extends Element {
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 
-		this.techName = element.techName();
+		this.symbol = element.symbol();
 
-		this.nameXPos = this.widthPos() - 22f;
-		this.nameYPos = 595.0f - this.heightPos() - this.height()/1.5f;
+		this.symbolX = this.widthPos() - 22f;
+		this.symbolY = 595.0f - this.heightPos() - this.height()/1.5f;
 
 
 		points = new ArrayList<Point>();
