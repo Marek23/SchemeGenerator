@@ -26,7 +26,11 @@ public final class Resource {
 		"AboveContactorBridge.wmf",
 		"CoilContactor.wmf",
 		"Point.wmf",
-		"Mks.wmf"
+		"Mks.wmf",
+		"MotorFuse3.wmf",
+		"ThermalFuse3.wmf",
+		"PlcCpu.wmf",
+		"PlcModule.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

@@ -14,6 +14,12 @@ public final class Measures {
 	public final static float COIL_1  = 550f;
 	public final static float COIL_2  = 650f;
 
+	public final static float PLC_HEIGHT = 150f;
+	public final static float PLC_WIDTH  = 80f;
+
+	public final static float PLCINPUTHEIGHT  = 150f;
+	public final static float PLCOUTPUTHEIGHT = 150f;
+
 	public final static float FUSE_HEIGHT = 100f;
 
 	public final static float ABOVE_CONTACTOR_BRIDGE = 190f;
@@ -23,6 +29,6 @@ public final class Measures {
 
 	public final static float COIL_HEIGHT = 300f;
 
-	public final static float RECEIVER_HEIGHT = 500f;
-	public final static float TERMINAL_HEIGHT = 450f;
+	public final static float RECEIVER_HEIGHT = 450f;
+	public final static float TERMINAL_HEIGHT = 420f;
 }

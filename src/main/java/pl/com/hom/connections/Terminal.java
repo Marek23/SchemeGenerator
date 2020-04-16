@@ -9,24 +9,25 @@ import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
+import java.util.ArrayList;
+
 public class Terminal {
-	PdfFormXObject image;
-	String name;
+	private PdfFormXObject image;
+	private String name;
 
-	int    number;
-	String group;
+	private String group;
 
-	Potential potential;
+	private Potential potential;
 
-	String id;
+	private String id;
 
-	float x;
-	float y;
-	float symbolX;
-	float symbolY;
+	private float x;
+	private float y;
+	private float symbolX;
+	private float symbolY;
 
-	float width;
-	float height;
+	private float width;
+	private float height;
 
 	public Terminal(Page parent, Point point, String group) {
 		this.name  = "Terminal";
@@ -49,6 +50,13 @@ public class Terminal {
 		this.symbolY = this.y;
 
 		this.group = group;
+
+		ArrayList<Point> points = new ArrayList<Point>();
+
+		points.add(Point.upOrDownTerminal(this,  Direction.Up));
+		points.add(Point.upOrDownTerminal(this, Direction.Down));
+
+		parent.addAll(points);
 	}
 
 	public float widthPos() {

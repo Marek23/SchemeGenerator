@@ -3,7 +3,6 @@ package pl.com.hom.elements.graphics.receiver;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.Element;

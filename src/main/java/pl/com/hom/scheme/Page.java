@@ -8,32 +8,27 @@ import java.util.Iterator;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfPage;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.Element;
-import pl.com.hom.elements.graphics.CoilContactor;
-import pl.com.hom.elements.graphics.Mks;
-import pl.com.hom.elements.graphics.ThreePhaseFuse;
-import pl.com.hom.elements.graphics.receiver.JetEngine;
 import pl.com.hom.printer.Printer;
 
 public class Page extends PdfPage{
-	private static final long serialVersionUID = 7351148506505896070L;
+	protected static final long serialVersionUID = 7351148506505896070L;
 
-	private ArrayList<Point>    points;
-	private ArrayList<Line>     lines;
-	private ArrayList<Element>  elements;
-	private ArrayList<Terminal> terminals;
+	protected ArrayList<Point>    points;
+	protected ArrayList<Line>     lines;
+	protected ArrayList<Element>  elements;
+	protected ArrayList<Terminal> terminals;
 
 	private int nr;
 
 	Printer printer;
 
-	public Page(String firstGearPot, String secGearPot, int nr) {
+	public Page(int nr) {
 		super(getPdfDocument(), PageSize.A4.rotate());
 		getPdfDocument().addPage(this);
 
@@ -45,19 +40,7 @@ public class Page extends PdfPage{
 		this.elements  = new ArrayList<Element>();
 		this.terminals = new ArrayList<Terminal>();
 
-		CoilContactor coil1 = new CoilContactor(this, Measures.COIL_1, Measures.COIL_HEIGHT,10, "LSTER_____");
-		coil1.firstGear(this);
-
-		CoilContactor coil2 = new CoilContactor(this, Measures.COIL_2, Measures.COIL_HEIGHT,10, "LSTER_____");
-		coil2.secondGear(this);
-
-		new ThreePhaseFuse(this, Measures.SECOND_JET_COL, Measures.FUSE_HEIGHT, 10);
-		new ThreePhaseFuse(this, Measures.THIRD_JET_COL, Measures.FUSE_HEIGHT, 10);
-
-		Mks mks = new Mks(this,Measures.MKS_COL, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
-		mks.jetControl(this);
-
-		new JetEngine(this, Measures.JET_ENGINE_COL, Measures.RECEIVER_HEIGHT);
+		this.printer = new Printer(this);
 	}
 
 	public void showPoints() {
@@ -77,7 +60,8 @@ public class Page extends PdfPage{
 
 		addMainsPoints(element);
 	}
-	private void createLines() {
+
+	protected void createLines() {
 		for (int i = 0; i < points.size(); i++) {
 			Point from = points.get(i);
 
@@ -163,6 +147,10 @@ public class Page extends PdfPage{
 
 		for (Terminal t : terminals)
 			printer.addTerminal(t);
+	}
+
+	public void addAll(ArrayList<Point> points) {
+		this.points.addAll(points);
 	}
 
 	private void addMainsPoints(Element element) {

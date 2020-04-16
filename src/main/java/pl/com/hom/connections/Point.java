@@ -48,6 +48,13 @@ public class Point {
 		return new Point(parent, potential, x, y, dirs, false);
 	}
 
+	public static Point upOrDownTerminal(Terminal parent, Direction direction) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(direction, false);
+
+		return new Point(parent, direction);
+	}
+
 	public static Point pe(Element parent, float x, float y) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
@@ -160,7 +167,24 @@ public class Point {
 		}
 
 		this.potential  = potential;
-		this.directions = dirs;		
+		this.directions = dirs;
+	}
+
+	private Point(Terminal parent, Direction direction) {
+		this.x = parent.widthPos();
+
+		if (direction == Direction.Up)
+			this.y = parent.heightPos();
+		else
+			this.y = parent.heightPos() + parent.height();
+
+		this.visibility = false;
+
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(direction, false);
+
+		this.potential  = parent.potential();
+		this.directions = dirs;
 	}
 
 	private Point(Point point, Direction direction) {

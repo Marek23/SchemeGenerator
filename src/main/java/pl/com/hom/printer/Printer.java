@@ -35,7 +35,7 @@ public class Printer extends PdfCanvas{
 	}
 
 	public void addLine(Line line) {
-		this.setLineWidth(0.5f);
+		this.setLineWidth(0.01f);
 		this.setStrokeColorRgb(0f, 0f, 0f);
 		this.moveTo(line.getBeginWidth(), 595.0f - line.getBeginHeight());
 		this.lineTo(line.getEndWidth(),   595.0f - line.getEndHeight());
