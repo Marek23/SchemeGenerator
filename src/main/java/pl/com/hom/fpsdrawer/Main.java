@@ -22,10 +22,6 @@ public class Main {
 
 		getPdfDocument().close();
 
-		Reader.init("BilansMocy.xls");
-		Reader.addEngines();
-		Reader.showJets();
-
 		System.out.println("Object drawn on pdf successfully");
    }
 }
