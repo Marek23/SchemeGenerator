@@ -14,7 +14,7 @@ public class PlcIn extends Element {
 	public PlcIn(Page parent, PlcModule module, float x, float y) {
 		this.name       = "PlcModule";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.x = x;
 		this.y = y;
@@ -29,7 +29,7 @@ public class PlcIn extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(this, "PLCINPUT__", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "PLCINPUT__", Direction.Up));
 
 		parent.addElement(this);
 	}
@@ -37,7 +37,7 @@ public class PlcIn extends Element {
 	public PlcIn(Page parent, PlcCpu cpu, float x, float y) {
 		this.name       = "PlcModule";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.x = x;
 		this.y = y;
@@ -52,7 +52,7 @@ public class PlcIn extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(this, "PLCINPUT__", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "PLCINPUT__", Direction.Up));
 
 		parent.addElement(this);
 	}

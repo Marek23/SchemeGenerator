@@ -2,7 +2,7 @@ package pl.com.hom.configuration;
 
 import java.util.HashMap;
 
-public final class TerminalGroups {
+public final class Sequences {
 	private static HashMap<String, Integer> group = new HashMap<String, Integer>();
 
 	public static int sequence(String g) {

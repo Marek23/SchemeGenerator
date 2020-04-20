@@ -19,7 +19,7 @@ public class JetBridgeContactor extends Element {
 	public JetBridgeContactor (Page parent, Element element) {
 		this.name       = "JetBridgeContactor";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.x = Measures.FIRST_JET_COL;
 		this.y = Measures.CONTACTOR_HEIGHT;
@@ -34,13 +34,13 @@ public class JetBridgeContactor extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L1________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L2________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Up));
 
-		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Down));
-		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Down));
-		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L1________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L2________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Down));
 
 		new AboveContactor(parent, this.x, Measures.ABOVE_CONTACTOR_BRIDGE);
 		new UpRightPhases(parent, this.x, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);

@@ -16,9 +16,9 @@ public class UpDownRightPhases extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upDownRightBridge(this, "L1________"));
-		points.add(Point.upDownRightBridge(this, "L2________"));
-		points.add(Point.upDownRightBridge(this, "L3________"));
+		points.add(Point.upDownRightBridge(parent, this, "L1________"));
+		points.add(Point.upDownRightBridge(parent, this, "L2________"));
+		points.add(Point.upDownRightBridge(parent, this, "L3________"));
 
 		parent.addElement(this);
 	}

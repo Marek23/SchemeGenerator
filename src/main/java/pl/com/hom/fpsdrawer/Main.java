@@ -1,8 +1,7 @@
 package pl.com.hom.fpsdrawer;
 
-import static pl.com.hom.configuration.Document.getPdfDocument;
-
 import pl.com.hom.configuration.Configuration;
+import pl.com.hom.data.Board;
 import pl.com.hom.data.Reader;
 import pl.com.hom.scheme.JetPage;
 import pl.com.hom.scheme.Page;
@@ -14,13 +13,17 @@ public class Main {
 
 		Configuration.initialize();
 
-		Page page1 = new JetPage("L1", "L2", 1);
-		page1.draw();
+		Board board = new Board("RWG3.pdf");
 
-		Page page2 = new PlcPage(2);
-		page2.draw();
+		Reader.read();
+		Reader.show();
+//		Page page1 = new JetPage("L1", "L2", 1);
+//		page1.draw();
+//
+//		Page page2 = new PlcPage(2);
+//		page2.draw();
 
-		getPdfDocument().close();
+//		getPdfDocument().close();
 
 		System.out.println("Object drawn on pdf successfully");
    }

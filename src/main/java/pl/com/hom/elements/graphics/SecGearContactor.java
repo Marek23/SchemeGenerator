@@ -14,7 +14,7 @@ public class SecGearContactor extends Element {
 	public SecGearContactor (Page parent, Element element) {
 		this.name       = "FirstGearContactor";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.x = Measures.THIRD_JET_COL;
 		this.y = Measures.CONTACTOR_HEIGHT;
@@ -29,13 +29,13 @@ public class SecGearContactor extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L1________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L2________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Up));
 
-		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Down));
-		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Down));
-		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L1________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L2________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Down));
 
 		parent.addElement(this);
 	}

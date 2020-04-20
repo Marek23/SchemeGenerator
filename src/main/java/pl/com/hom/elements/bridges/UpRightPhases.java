@@ -16,9 +16,9 @@ public class UpRightPhases extends Element {
 
 		this.points = new ArrayList<Point>();
 
-		points.add(Point.upRightPoint(this, "L1________LEFT"));
-		points.add(Point.upRightPoint(this, "L2________LEFT"));
-		points.add(Point.upRightPoint(this, "L3________LEFT"));
+		points.add(Point.upRightPoint(parent, this, "L1________LEFT"));
+		points.add(Point.upRightPoint(parent, this, "L2________LEFT"));
+		points.add(Point.upRightPoint(parent, this, "L3________LEFT"));
 
 		parent.addElement(this);
 	}

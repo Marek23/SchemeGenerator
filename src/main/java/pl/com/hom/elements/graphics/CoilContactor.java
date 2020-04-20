@@ -16,7 +16,7 @@ public class CoilContactor extends Element {
 	public CoilContactor (Page parent, float x, float y, int number, String STEERPOT) {
 		this.name       = "CoilContactor";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.x = x;
 		this.y = y;
@@ -32,8 +32,8 @@ public class CoilContactor extends Element {
 		points = new ArrayList<Point>();
 		childs = new ArrayList<Element>();
 
-		points.add(Point.upOrDownPotential(this, "STEER_____", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "GROUNDN___ELEM", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "STEER_____", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "GROUNDN___ELEM", Direction.Down));
 
 		parent.addElement(this);
 	}

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static pl.com.hom.configuration.Document.getPdfDocument;
-
 import java.net.MalformedURLException;
 
 import com.itextpdf.kernel.PdfException;
+import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.canvas.wmf.WmfImageData;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
@@ -49,7 +48,7 @@ public final class Resource {
 		}
 	}
 
-	public static PdfFormXObject getImage(String name) {
-		 return new PdfFormXObject(graphics.get(name), getPdfDocument());
+	public static PdfFormXObject getImage(String name, PdfDocument parent) {
+		 return new PdfFormXObject(graphics.get(name), parent);
 	}
 }

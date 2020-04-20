@@ -16,7 +16,7 @@ public class JetEngine extends Element {
 	public JetEngine(Page parent, float x, float y) {
 		this.name       = "JetEngine";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
@@ -26,15 +26,15 @@ public class JetEngine extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.leftPoint(this, "L1________LEFT"));
-		points.add(Point.leftPoint(this, "L2________LEFT"));
-		points.add(Point.leftPoint(this, "L3________LEFT"));
+		points.add(Point.leftPoint(parent, this, "L1________LEFT"));
+		points.add(Point.leftPoint(parent, this, "L2________LEFT"));
+		points.add(Point.leftPoint(parent, this, "L3________LEFT"));
 
-		points.add(Point.rightPoint(this, "L1________"));
-		points.add(Point.rightPoint(this, "L2________"));
-		points.add(Point.rightPoint(this, "L3________"));
+		points.add(Point.rightPoint(parent, this, "L1________"));
+		points.add(Point.rightPoint(parent, this, "L2________"));
+		points.add(Point.rightPoint(parent, this, "L3________"));
 
-		Point pe = Point.pe(this, 200f * Measures.SCALE, 0f);
+		Point pe = Point.pe(parent, this, 200f * Measures.SCALE, 0f);
 		points.add(pe);
 		
 		parent.addElement(this);

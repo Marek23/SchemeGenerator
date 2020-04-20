@@ -7,7 +7,7 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import pl.com.hom.connections.Point;
 import pl.com.hom.scheme.Page;
 
-import static pl.com.hom.configuration.Symbols.symbols;
+import static pl.com.hom.configuration.Sequences.sequence;
 
 public abstract class Element {
 	protected String id;
@@ -85,12 +85,7 @@ public abstract class Element {
 	protected String symbol(Page parent, String type) {
 		String page = String.valueOf(parent.getNr());
 
-		if (symbols.containsKey(page + type))
-			symbols.put(page + type, symbols.get(page + type)+1);
-		else
-			symbols.put(page + type, 1);
-
-		return  page + type + String.valueOf(symbols.get(page + type));
+		return  page + type + String.valueOf(sequence(page + type));
 	}
 
 }

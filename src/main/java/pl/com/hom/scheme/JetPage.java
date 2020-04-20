@@ -1,7 +1,7 @@
 package pl.com.hom.scheme;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.connections.Point;
+import pl.com.hom.data.Board;
 import pl.com.hom.elements.graphics.CoilContactor;
 import pl.com.hom.elements.graphics.Mks;
 import pl.com.hom.elements.graphics.MotorFuse3;
@@ -13,8 +13,8 @@ public class JetPage extends Page {
 	private static final long serialVersionUID = 1L;
 	Printer printer;
 
-	public JetPage(String firstGearPot, String secGearPot, int nr) {
-		super(nr);
+	public JetPage(Board parent, String firstGearPot, String secGearPot) {
+		super(parent);
 
 		CoilContactor coil1 = new CoilContactor(this, Measures.COIL_1, Measures.COIL_HEIGHT,10, "LSTER_____");
 		coil1.firstGear(this);
@@ -29,15 +29,5 @@ public class JetPage extends Page {
 		mks.jetControl(this);
 
 		new JetEngine(this, Measures.JET_ENGINE_COL, Measures.RECEIVER_HEIGHT);
-	}
-
-	public void showPoints() {
-		for (Point p : points)
-			System.out.println(p);
-	}
-
-	public void showLines() {
-		for (Line l : lines)
-			System.out.println(l);
 	}
 }

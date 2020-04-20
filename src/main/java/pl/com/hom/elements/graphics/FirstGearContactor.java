@@ -15,7 +15,7 @@ public class FirstGearContactor extends Element {
 	public FirstGearContactor (Page parent, Element element) {
 		this.name       = "FirstGearContactor";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.x = Measures.SECOND_JET_COL;
 		this.y = Measures.CONTACTOR_HEIGHT;
@@ -31,13 +31,13 @@ public class FirstGearContactor extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L1________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L2________INHORLINE", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Up));
 
-		points.add(Point.upOrDownPotential(this, "L1________INHORLINE", Direction.Down));
-		points.add(Point.upOrDownPotential(this, "L2________INHORLINE", Direction.Down));
-		points.add(Point.upOrDownPotential(this, "L3________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L1________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L2________INHORLINE", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Down));
 
 		new UpDownLeftPhases(parent, this.x, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
 		parent.addElement(this);

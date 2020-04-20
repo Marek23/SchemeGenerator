@@ -18,7 +18,7 @@ public class ThreePhaseEngine extends Element {
 	public ThreePhaseEngine(Page parent, float x, float y) {
 		this.name       = "ThreePhaseEngine";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.x = x;
 		this.y = y;
@@ -28,9 +28,9 @@ public class ThreePhaseEngine extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(this, "L1________", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "L2________", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "L3________", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L1________", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L2________", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "L3________", Direction.Up));
 
 		parent.addElement(this);
 	}

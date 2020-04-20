@@ -15,15 +15,13 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.Element;
 import pl.com.hom.scheme.Line;
-
-import static pl.com.hom.configuration.Document.getPdfDocument;
 public class Printer extends PdfCanvas{
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
 
 	public Printer(PdfPage page){
 		super(page);
-		canvas = new Canvas(this, getPdfDocument(), page.getPageSize());
+		canvas = new Canvas(this, page.getDocument(), page.getPageSize());
 
 		try {
 			this.setFontAndSize(PdfFontFactory.createFont("src\\main\\resources\\fonts\\ShareTech-Regular.ttf"), 12);

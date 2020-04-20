@@ -23,9 +23,9 @@ public class UpDownLeftPhases extends Element {
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Down, false);
 
-		points.add(Point.upDownLeftBridge(this, "L1________LEFT"));
-		points.add(Point.upDownLeftBridge(this, "L2________LEFT"));
-		points.add(Point.upDownLeftBridge(this, "L3________LEFT"));
+		points.add(Point.upDownLeftBridge(parent, this, "L1________LEFT"));
+		points.add(Point.upDownLeftBridge(parent, this, "L2________LEFT"));
+		points.add(Point.upDownLeftBridge(parent, this, "L3________LEFT"));
 
 		parent.addElement(this);
 	}

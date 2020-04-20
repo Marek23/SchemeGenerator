@@ -8,6 +8,7 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.elements.Element;
+import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 public class Point {
@@ -31,7 +32,7 @@ public class Point {
 				+ ", directions=" + directions + ", potential=" + potential + "]";
 	}
 
-	public static Point upOrDownPotential(Element parent, String potName, Direction direction) {
+	public static Point upOrDownPotential(Page page, Element parent, String potName, Direction direction) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(direction, false);
 
@@ -45,7 +46,7 @@ public class Point {
 		else
 			y = parent.height();
 
-		return new Point(parent, potential, x, y, dirs, false);
+		return new Point(page, parent, potential, x, y, dirs, false);
 	}
 
 	public static Point upOrDownTerminal(Terminal parent, Direction direction) {
@@ -55,26 +56,26 @@ public class Point {
 		return new Point(parent, direction);
 	}
 
-	public static Point pe(Element parent, float x, float y) {
+	public static Point pe(Page page, Element parent, float x, float y) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 
 		Potential potential = Potentials.potential("GROUNDPE__");
 
-		return new Point(parent, potential, x, y, dirs, false);
+		return new Point(page, parent, potential, x, y, dirs, false);
 	}
 
-	public static Point mainPoint(Point point) {
+	public static Point mainPoint(Page page, Point point) {
 		if (point.has(Direction.Up))
-			return new Point(point, Direction.Down);
+			return new Point(page, point, Direction.Down);
 
 		if (point.has(Direction.Down))
-			return new Point(point, Direction.Up);
+			return new Point(page, point, Direction.Up);
 
 		throw new RuntimeException("Error while adding main point");
 	}
 
-	public static Point upDownLeftBridge(Element parent, String potName) {
+	public static Point upDownLeftBridge(Page page, Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Left, false);
 		dirs.put(Direction.Up, false);
@@ -85,10 +86,10 @@ public class Point {
 		float x = potential.width();
 		float y = potential.height();
 
-		return new Point(parent, potential, x, y, dirs, true);	
+		return new Point(page, parent, potential, x, y, dirs, true);	
 	}
 
-	public static Point upDownRightBridge(Element parent, String potName) {
+	public static Point upDownRightBridge(Page page, Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Right, false);
 		dirs.put(Direction.Up, false);
@@ -99,10 +100,10 @@ public class Point {
 		float x = potential.width();
 		float y = potential.height();
 
-		return new Point(parent, potential, x, y, dirs, true);	
+		return new Point(page, parent, potential, x, y, dirs, true);	
 	}
 
-	public static Point upLeftPoint(Element parent, String potName) {
+	public static Point upLeftPoint(Page page, Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Left, false);
@@ -112,10 +113,10 @@ public class Point {
 		float x = potential.width();
 		float y = potential.height();
 
-		return new Point(parent, potential, x, y, dirs, false);	
+		return new Point(page, parent, potential, x, y, dirs, false);	
 	}
 
-	public static Point upRightPoint(Element parent, String potName) {
+	public static Point upRightPoint(Page page, Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Right, false);
@@ -125,10 +126,10 @@ public class Point {
 		float x = potential.width();
 		float y = potential.height();
 
-		return new Point(parent, potential, x, y, dirs, false);	
+		return new Point(page, parent, potential, x, y, dirs, false);	
 	}
 
-	public static Point leftPoint(Element parent, String potName) {
+	public static Point leftPoint(Page page, Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Left, false);
 
@@ -137,10 +138,10 @@ public class Point {
 		float y = potential.height();
 		float x = 0f;
 
-		return new Point(parent, potential, x, y, dirs, false);	
+		return new Point(page, parent, potential, x, y, dirs, false);	
 	}
 
-	public static Point rightPoint(Element parent, String potName) {
+	public static Point rightPoint(Page page, Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Right, false);
 
@@ -149,10 +150,10 @@ public class Point {
 		float x = parent.width();
 		float y = potential.height();
 
-		return new Point(parent, potential, x, y, dirs, false);	
+		return new Point(page, parent, potential, x, y, dirs, false);	
 	}
 
-	private Point(Element parent, Potential potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
+	private Point(Page page, Element parent, Potential potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
 		this.x = parent.widthPos()  + x;
 		this.y = parent.heightPos() + y;
 
@@ -160,7 +161,7 @@ public class Point {
 		if (visibility) {
 			this.name       = "Point";
 			this.visibility = true;
-			this.image      = getImage(name);
+			this.image      = getImage(name, page.getDocument());
 
 			this.width  = image.getWidth()  * Measures.SCALE;
 			this.height = image.getHeight() * Measures.SCALE;
@@ -187,7 +188,7 @@ public class Point {
 		this.directions = dirs;
 	}
 
-	private Point(Point point, Direction direction) {
+	private Point(Page page, Point point, Direction direction) {
 		this.potential  = Potentials.potential(point.potential().name());
 
 		this.x = point.widthPos();
@@ -195,7 +196,7 @@ public class Point {
 
 		this.name       = "Point";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, page.getDocument());
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;

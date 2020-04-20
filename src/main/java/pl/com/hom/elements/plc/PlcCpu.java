@@ -15,7 +15,7 @@ public class PlcCpu extends Element {
 	public PlcCpu(Page parent, float x, float y) {
 		this.name       = "PlcCpu";
 		this.visibility = true;
-		this.image      = getImage(name);
+		this.image      = getImage(name, parent.getDocument());
 
 		this.x = x;
 		this.y = y;
@@ -30,12 +30,12 @@ public class PlcCpu extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(this, "MAINDCPLC_", Direction.Up));
-		points.add(Point.upOrDownPotential(this, "GROUNDDC__", Direction.Down));
-		points.add(Point.upOrDownPotential(this, "GROUNDPE__PLC", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "MAINDCPLC_", Direction.Up));
+		points.add(Point.upOrDownPotential(parent, this, "GROUNDDC__", Direction.Down));
+		points.add(Point.upOrDownPotential(parent, this, "GROUNDPE__PLC", Direction.Down));
 
-		Point a = Point.upOrDownPotential(this, "A+________", Direction.Down);
-		Point b = Point.upOrDownPotential(this, "B-________", Direction.Down);
+		Point a = Point.upOrDownPotential(parent, this, "A+________", Direction.Down);
+		Point b = Point.upOrDownPotential(parent, this, "B-________", Direction.Down);
 
 		points.add(a);
 		points.add(b);

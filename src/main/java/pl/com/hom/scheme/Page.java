@@ -1,7 +1,5 @@
 package pl.com.hom.scheme;
 
-import static pl.com.hom.configuration.Document.getPdfDocument;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,8 +11,11 @@ import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.connections.Terminal;
+import pl.com.hom.data.Board;
 import pl.com.hom.elements.Element;
 import pl.com.hom.printer.Printer;
+
+import static pl.com.hom.configuration.Sequences.sequence;
 
 public class Page extends PdfPage{
 	protected static final long serialVersionUID = 7351148506505896070L;
@@ -28,11 +29,11 @@ public class Page extends PdfPage{
 
 	Printer printer;
 
-	public Page(int nr) {
-		super(getPdfDocument(), PageSize.A4.rotate());
-		getPdfDocument().addPage(this);
+	public Page(Board parent) {
+		super(parent, PageSize.A4.rotate());
+		parent.addPage(this);
 
-		this.nr  = nr;
+		this.nr  = sequence("page");
 		this.printer = new Printer(this);
 
 		this.points    = new ArrayList<Point>();
@@ -163,7 +164,7 @@ public class Page extends PdfPage{
 
 				if (!hasMainPoint(shortName, width))
 					if (point.has(Direction.Up) || point.has(Direction.Down))
-						this.points.add(Point.mainPoint(point));
+						this.points.add(Point.mainPoint(this, point));
 			}
 		}
 	}
