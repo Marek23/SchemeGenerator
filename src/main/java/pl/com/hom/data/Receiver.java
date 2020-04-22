@@ -19,16 +19,16 @@ public abstract class Receiver {
 		return this.name;
 	}
 
-	public void setSters(String ster1, String ster2) {
+	public void sters(String ster1, String ster2) {
 		this.ster1 = ster1;
 		this.ster2 = ster2;
 	}
 
-	public void setSter1(String ster1) {
+	public void ster1(String ster1) {
 		this.ster1 = ster1;
 	}
 
-	public void setSter2(String ster2) {
+	public void ster2(String ster2) {
 		this.ster2 = ster2;
 	}
 

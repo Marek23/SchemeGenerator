@@ -12,6 +12,9 @@ import java.util.Map.Entry;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import pl.com.hom.configuration.Potentials;
+import pl.com.hom.connections.Potential;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.CellType;
@@ -25,7 +28,7 @@ public class Reader {
 	public static HashMap<String, Integer> colM;
 	public static HashMap<String, Integer> colS;
 
-	public static HashMap<String, ArrayList<String>> steerings;
+	public static HashMap<String, ArrayList<Receiver>> steerings;
 
 	public static HashMap<String, Board> boards;
 
@@ -38,18 +41,9 @@ public class Reader {
 		String matrix  = "MatrycaSterowan.xls";
 		String signals = "PunktyDanychDoInstalacjiSSP.xls";
 
-        File fileB = new File("src\\main\\resources\\data\\" + balance);
-        File fileM = new File("src\\main\\resources\\data\\" + matrix);
-        File fileS = new File("src\\main\\resources\\data\\" + signals);
-
-        if (fileB.isFile() && fileB.exists())
-            System.out.println(balance + " open.");
-
-        if (fileM.isFile() && fileM.exists())
-            System.out.println(matrix + " open.");
-
-        if (fileS.isFile() && fileM.exists())
-            System.out.println(signals + " open.");
+		File fileB = new File("src\\main\\resources\\data\\" + balance);
+		File fileM = new File("src\\main\\resources\\data\\" + matrix);
+		File fileS = new File("src\\main\\resources\\data\\" + signals);
 
         FileInputStream fipB = new FileInputStream(fileB);
         FileInputStream fipM = new FileInputStream(fileM);
@@ -104,7 +98,7 @@ public class Reader {
 
         scenarios = new ArrayList<String>();
         receivers = new ArrayList<Receiver>();
-        steerings = new HashMap<String, ArrayList<String>>();
+        steerings = new HashMap<String, ArrayList<Receiver>>();
 
 		for (Row r: workbookB.getSheetAt(0))
 			for(Cell c: r)
@@ -239,7 +233,9 @@ public class Reader {
 
 				if (isString) {
 					String recName = receiver.getStringCellValue();
-					if (receiver(recName) != null) {
+					Receiver rec   = receiver(recName);
+
+					if (rec != null) {
 						String key1B = "1B" + receiver(recName).board().name();
 						String key2B = "2B" + receiver(recName).board().name();
 
@@ -255,18 +251,31 @@ public class Reader {
 							if (scenName.toUpperCase().trim().startsWith("1B")) key1B += s;
 							if (scenName.toUpperCase().trim().startsWith("2B")) key2B += s;
 						}
-						addSteering(recName, key1B);
-						addSteering(recName, key2B);
+						addSteering(rec, key1B);
+						addSteering(rec, key2B);
 					}
 				}
 			}
 		}
 
+		for (Entry<String, ArrayList<Receiver>> e: steerings.entrySet()) {
+			if (e.getKey().startsWith("1B"))
+				for (Receiver r: e.getValue()) {
+					Potentials.add(new Potential(e.getKey(), 100f, 2000f));
+					r.ster1(e.getKey());
+				}
+			if (e.getKey().startsWith("2B"))
+				for (Receiver r: e.getValue()) {
+					Potentials.add(new Potential(e.getKey(), 100f, 1900f));
+					r.ster2(e.getKey());
+				}
+		}
+
 //		TESTS
-		for (Entry<String, ArrayList<String>> e: steerings.entrySet()) {
+		for (Entry<String, ArrayList<Receiver>> e: steerings.entrySet()) {
 			System.out.println("Steering key: " + e.getKey());
-			for (String r: e.getValue())
-				System.out.println("\t" + r);
+			for (Receiver r: e.getValue())
+				System.out.println(r);
 		}
 	}
 
@@ -330,10 +339,10 @@ public class Reader {
 		return null;
 	}
 
-	private static void addSteering(String name, String key) {
+	private static void addSteering(Receiver receiver, String key) {
 		if (steerings.containsKey(key))
-			steerings.get(key).add(name);
+			steerings.get(key).add(receiver);
 		else
-			steerings.put(key, new ArrayList<String>(Arrays.asList(name)));
+			steerings.put(key, new ArrayList<Receiver>(Arrays.asList(receiver)));
 	}
 }
