@@ -5,7 +5,7 @@ import pl.com.hom.scheme.Page;
 
 public class Jet extends Receiver{
 	public Jet(Board parent, String name, String current1, String current2, String power1, String power2, String cable, String switchboard) {
-		this.name = name;
+		this.name     = name;
 		this.current1 = current1;
 		this.current2 = current2;
 		this.power1   = power1;

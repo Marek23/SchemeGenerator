@@ -40,4 +40,8 @@ public abstract class Receiver {
 				+ ", power2=" + power2 + ", ster1=" + ster1 + ", ster2=" + ster2 + ", cable=" + cable + ", switchboard="
 				+ ", runMethod=" + runMethod + "]";
 	}
+
+	public Board board() {
+		return parent;
+	}
 }

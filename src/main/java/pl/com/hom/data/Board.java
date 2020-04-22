@@ -13,7 +13,6 @@ public class Board extends PdfDocument {
 	private String current;
 	private String power;
 	private String cable;
-	private String switchboard;
 
 	private ArrayList<Receiver> receivers;
 	private ArrayList<Signal>   signals;
@@ -28,7 +27,7 @@ public class Board extends PdfDocument {
 	}
 
 	public String name() {
-		return this.name + " " + this.switchboard;
+		return this.name;
 	}
 
 	public void add(Signal signal) {
