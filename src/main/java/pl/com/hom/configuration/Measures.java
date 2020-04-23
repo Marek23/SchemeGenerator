@@ -5,14 +5,12 @@ public final class Measures {
 	public final static float COL_LEV_HEIGHT = 70f;
 	public final static float TERMINAL_DRAW_MARGIN = 100f * SCALE;
 
-	public final static float FIRST_JET_COL  = 70f;
-	public final static float SECOND_JET_COL = 140f;
-	public final static float JET_ENGINE_COL = 210f;
-	public final static float THIRD_JET_COL  = 280f;
+	public final static float SECOND_JET_COL = 80f;
+	public final static float JET_ENGINE_COL = 160f;
+	public final static float THIRD_JET_COL  = 240f;
 
 	public final static float MKS_COL = 450f;
-	public final static float COIL_1  = 550f;
-	public final static float COIL_2  = 650f;
+	public final static float COIL    = 500f;
 
 	public final static float PLC_HEIGHT = 150f;
 	public final static float PLC_WIDTH  = 80f;

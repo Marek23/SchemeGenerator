@@ -13,7 +13,7 @@ public class Potential {
 		this.height    = height * Measures.SCALE;
 	}
 
-	public String name() {
+	public String shortName() {
 		return potential.substring(0, 10);
 	}
 

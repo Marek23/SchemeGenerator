@@ -40,7 +40,7 @@ public class Terminal {
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 
-		if (potential.name().equals("GROUNDPE__"))
+		if (potential.shortName().equals("GROUNDPE__"))
 			this.id = "PE";
 		else
 			this.id = String.valueOf(Sequences.sequence(group));

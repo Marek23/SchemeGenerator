@@ -9,6 +9,7 @@ import pl.com.hom.elements.graphics.ThermalFuse3;
 import pl.com.hom.elements.graphics.receiver.JetEngine;
 import pl.com.hom.printer.Printer;
 
+import static pl.com.hom.configuration.Sequences.sequence;
 public class JetPage extends Page {
 	private static final long serialVersionUID = 1L;
 	Printer printer;
@@ -16,10 +17,10 @@ public class JetPage extends Page {
 	public JetPage(Board parent, String firstGearPot, String secGearPot) {
 		super(parent);
 
-		CoilContactor coil1 = new CoilContactor(this, Measures.COIL_1, Measures.COIL_HEIGHT,10, "LSTER_____");
+		CoilContactor coil1 = new CoilContactor(this, coilX(), Measures.COIL_HEIGHT,10, firstGearPot);
 		coil1.firstGear(this);
 
-		CoilContactor coil2 = new CoilContactor(this, Measures.COIL_2, Measures.COIL_HEIGHT,10, "LSTER_____");
+		CoilContactor coil2 = new CoilContactor(this, coilX(), Measures.COIL_HEIGHT,10, secGearPot);
 		coil2.secondGear(this);
 
 		new MotorFuse3(this, Measures.SECOND_JET_COL, Measures.FUSE_HEIGHT, 10);
@@ -29,5 +30,9 @@ public class JetPage extends Page {
 		mks.jetControl(this);
 
 		new JetEngine(this, Measures.JET_ENGINE_COL, Measures.RECEIVER_HEIGHT);
+	}
+
+	private float coilX() {
+		return Measures.COIL + 50f * sequence("PAGE" + String.valueOf(this.getNr()) + "COIL");
 	}
 }

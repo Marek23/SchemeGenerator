@@ -75,6 +75,10 @@ public class Point {
 		throw new RuntimeException("Error while adding main point");
 	}
 
+	public static Point steerPoint(Page page, Point point) {
+		return new Point(page, point);
+	}
+
 	public static Point upDownLeftBridge(Page page, Element parent, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Left, false);
@@ -189,7 +193,7 @@ public class Point {
 	}
 
 	private Point(Page page, Point point, Direction direction) {
-		this.potential  = Potentials.potential(point.potential().name());
+		this.potential  = Potentials.potential(point.potential().shortName());
 
 		this.x = point.widthPos();
 		this.y = this.potential.height();
@@ -203,7 +207,27 @@ public class Point {
 
 		this.directions = new EnumMap<Direction,Boolean>(Direction.class);
 		this.directions.put(direction, false);
-//		TODO
+
+		this.directions.put(Direction.Left, false);
+		this.directions.put(Direction.Right, false);
+	}
+
+	private Point(Page page, Point point) {
+		this.potential  = Potentials.potential(point.potential().fullName());
+
+		this.x = point.widthPos();
+		this.y = this.potential.height();
+
+		this.name       = "Point";
+		this.visibility = true;
+		this.image      = getImage(name, page.getDocument());
+
+		this.width  = image.getWidth()  * Measures.SCALE;
+		this.height = image.getHeight() * Measures.SCALE;
+
+		this.directions = new EnumMap<Direction,Boolean>(Direction.class);
+
+		this.directions.put(Direction.Down, false);
 		this.directions.put(Direction.Left, false);
 		this.directions.put(Direction.Right, false);
 	}

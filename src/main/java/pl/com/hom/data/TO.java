@@ -1,8 +1,5 @@
 package pl.com.hom.data;
 
-import pl.com.hom.scheme.JetPage;
-import pl.com.hom.scheme.Page;
-
 public class TO extends Receiver{
 	public TO(Board parent, String name, String current1, String current2, String power1, String power2, String cable, String switchboard) {
 		this.name = name;
@@ -14,7 +11,5 @@ public class TO extends Receiver{
 	}
 
 	// TODO
-		public Page page() {
-			return new JetPage(parent, this.ster1, this.ster2);
-		}
+	public void draw() {}
 }

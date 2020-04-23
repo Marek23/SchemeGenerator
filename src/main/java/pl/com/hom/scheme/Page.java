@@ -73,7 +73,7 @@ public class Page extends PdfPage{
 					Point to = points.get(j);
 
 					if (to.existDisconnected(Direction.Left) && from.heightPos() == to.heightPos()
-					&& from.potential().name().equals(to.potential().name()))
+					&& from.potential().shortName().equals(to.potential().shortName()))
 					{
 						float newDistance = to.widthPos() - from.widthPos();
 
@@ -108,7 +108,7 @@ public class Page extends PdfPage{
 					Point to = points.get(j);
 
 					if (to.existDisconnected(Direction.Up) && from.widthPos() == to.widthPos()
-					&& from.potential().name().equals(to.potential().name()))
+					&& from.potential().shortName().equals(to.potential().shortName()))
 					{
 						float newDistance = to.heightPos() - from.heightPos();
 
@@ -156,15 +156,22 @@ public class Page extends PdfPage{
 
 	private void addMainsPoints(Element element) {
 		for (Point point : element.points()) {
-			String shortName = point.potential().name();
+			String shortName = point.potential().shortName();
+			String fullName  = point.potential().fullName();
 
-			if (shortName.startsWith("MAIN") || shortName.startsWith("GROUND") || shortName.startsWith("STEER"))
+			float width  = point.widthPos();
+
+			if (shortName.startsWith("MAIN") || shortName.startsWith("GROUND"))
 			{
-				float width  = point.widthPos();
-
 				if (!hasMainPoint(shortName, width))
 					if (point.has(Direction.Up) || point.has(Direction.Down))
 						this.points.add(Point.mainPoint(this, point));
+			}
+			else if (shortName.startsWith("1B") || shortName.startsWith("2B"))
+			{
+				if (!hasMainPoint(fullName, width))
+					if (point.has(Direction.Up))
+						this.points.add(Point.steerPoint(this, point));
 			}
 		}
 	}

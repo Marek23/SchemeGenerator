@@ -18,7 +18,7 @@ public class Board extends PdfDocument {
 	private ArrayList<Signal>   signals;
 
 	public Board(String name) throws FileNotFoundException {
-		super(new PdfWriter(name));
+		super(new PdfWriter(name + ".pdf"));
 
 		this.name = name;
 
@@ -28,6 +28,15 @@ public class Board extends PdfDocument {
 
 	public String name() {
 		return this.name;
+	}
+
+	public void generate() {
+		for (Receiver r: receivers)
+			if (r instanceof Jet) {
+				r.draw();
+			}
+
+		this.close();
 	}
 
 	public void add(Signal signal) {

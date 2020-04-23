@@ -1,8 +1,5 @@
 package pl.com.hom.data;
 
-import pl.com.hom.scheme.JetPage;
-import pl.com.hom.scheme.Page;
-
 public class StarEngine extends Receiver{
 	public StarEngine(Board parent, String name, String current2, String power2, String cable, String switchboard, String runMethod) {
 		this.name = name;
@@ -16,7 +13,5 @@ public class StarEngine extends Receiver{
 	}
 
 	// TODO
-		public Page page() {
-			return new JetPage(parent, this.ster1, this.ster2);
-		}
+	public void draw() {}
 }

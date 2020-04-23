@@ -1,7 +1,5 @@
 package pl.com.hom.data;
 
-import pl.com.hom.scheme.Page;
-
 public abstract class Receiver {
 	protected String name;
 	protected String current1;
@@ -32,7 +30,7 @@ public abstract class Receiver {
 		this.ster2 = ster2;
 	}
 
-	public abstract Page page();
+	public abstract void draw();
 
 	@Override
 	public String toString() {

@@ -13,18 +13,10 @@ public class Main {
 
 		Configuration.initialize();
 
-		Board board = new Board("RWG3.pdf");
-
 		Reader.read();
 		Reader.show();
-//		Page page1 = new JetPage("L1", "L2", 1);
-//		page1.draw();
-//
-//		Page page2 = new PlcPage(2);
-//		page2.draw();
 
-//		getPdfDocument().close();
-
+		Reader.generate();
 		System.out.println("Object drawn on pdf successfully");
    }
 }

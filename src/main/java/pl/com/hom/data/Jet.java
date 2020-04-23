@@ -1,7 +1,6 @@
 package pl.com.hom.data;
 
 import pl.com.hom.scheme.JetPage;
-import pl.com.hom.scheme.Page;
 
 public class Jet extends Receiver{
 	public Jet(Board parent, String name, String current1, String current2, String power1, String power2, String cable, String switchboard) {
@@ -16,7 +15,7 @@ public class Jet extends Receiver{
 		parent.add(this);
 	}
 
-	public Page page() {
-		return new JetPage(parent, this.ster1, this.ster2);
+	public void draw() {
+		new JetPage(parent, this.ster1, this.ster2).draw();
 	}
 }

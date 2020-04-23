@@ -1,4 +1,4 @@
-package pl.com.hom.elements.graphics;
+package pl.com.hom.elements.contacts;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
@@ -8,14 +8,13 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
-import pl.com.hom.elements.contacts.Contact;
 import pl.com.hom.scheme.Page;
 
-public class CoilContactor extends Element {
+public class Contact extends Element {
 	public static String techSymbol = "Q";
 
-	public CoilContactor (Page parent, float x, float y, int number, String steerPotential) {
-		this.name       = "CoilContactor";
+	public Contact (Page parent, float x, float y, int number, String steerPotential) {
+		this.name       = "Contact";
 		this.visibility = true;
 		this.image      = getImage(name, parent.getDocument());
 
@@ -27,7 +26,7 @@ public class CoilContactor extends Element {
 		
 		this.symbol = symbol(parent, "Q");
 
-		this.symbolX = x - 18f;
+		this.symbolX = x - 22f;
 		this.symbolY = 595.0f - y - this.height()/1.5f;
 
 		points = new ArrayList<Point>();
@@ -38,17 +37,4 @@ public class CoilContactor extends Element {
 
 		parent.addElement(this);
 	}
-
-	public void secondGear(Page parent) {
-		childs.add(new JetBridgeContactor(parent, this));
-		childs.add(new SecGearContactor(parent, this));
-	}
-
-	public void firstGear(Page parent) {
-		childs.add(new FirstGearContactor(parent, this));
-	}
-
-//	public void pair(CoilContactor pair) {
-//		childs.add(new Contact(this));
-//	}
 }

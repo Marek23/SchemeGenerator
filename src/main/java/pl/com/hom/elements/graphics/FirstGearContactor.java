@@ -6,7 +6,7 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
-import pl.com.hom.elements.bridges.UpDownLeftPhases;
+import pl.com.hom.elements.bridges.UpDownRightPhases;
 import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
@@ -39,7 +39,7 @@ public class FirstGearContactor extends Element {
 		points.add(Point.upOrDownPotential(parent, this, "L2________INHORLINE", Direction.Down));
 		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Down));
 
-		new UpDownLeftPhases(parent, this.x, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
+		new UpDownRightPhases(parent, this.x, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
 		parent.addElement(this);
 	}
 }

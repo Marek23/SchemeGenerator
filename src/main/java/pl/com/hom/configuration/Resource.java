@@ -29,7 +29,8 @@ public final class Resource {
 		"MotorFuse3.wmf",
 		"ThermalFuse3.wmf",
 		"PlcCpu.wmf",
-		"PlcModule.wmf"
+		"PlcModule.wmf",
+		"Contact.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

@@ -6,7 +6,7 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
-import pl.com.hom.elements.bridges.UpRightPhases;
+import pl.com.hom.elements.bridges.UpLeftPhases;
 import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
@@ -21,7 +21,7 @@ public class JetBridgeContactor extends Element {
 		this.visibility = true;
 		this.image      = getImage(name, parent.getDocument());
 
-		this.x = Measures.FIRST_JET_COL;
+		this.x = Measures.JET_ENGINE_COL;
 		this.y = Measures.CONTACTOR_HEIGHT;
 
 		this.width  = image.getWidth()  * Measures.SCALE;
@@ -43,7 +43,7 @@ public class JetBridgeContactor extends Element {
 		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Down));
 
 		new AboveContactor(parent, this.x, Measures.ABOVE_CONTACTOR_BRIDGE);
-		new UpRightPhases(parent, this.x, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
+		new UpLeftPhases(parent, this.x, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
 
 		parent.addElement(this);
 	}

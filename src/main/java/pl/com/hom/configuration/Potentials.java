@@ -61,7 +61,8 @@ public final class Potentials {
 		add(new Potential("A+________", 500f, -1f));
 		add(new Potential("B-________", 600f, -1f));
 
-		add(new Potential("STEER_____", 100f, 2000f));
+		add(new Potential("1B________", -1f, 1500f));
+		add(new Potential("2B________", -1f, 1550f));
 
 		add(new Potential("PLCINPUT__", 100f, -1f));
 		add(new Potential("PLCOUTPUT_", 100f, -1f));

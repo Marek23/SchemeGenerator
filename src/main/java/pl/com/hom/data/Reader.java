@@ -30,7 +30,7 @@ public class Reader {
 
 	public static HashMap<String, ArrayList<Receiver>> steerings;
 
-	public static HashMap<String, Board> boards;
+	public static ArrayList<Board> boards;
 
 	public static ArrayList<Receiver> receivers;
 	public static ArrayList<String>   scenarios;
@@ -57,13 +57,13 @@ public class Reader {
         colM  = new HashMap<String, Integer>();
         colS  = new HashMap<String, Integer>();
 
-        boards = new HashMap<String, Board>();
+        boards = new ArrayList<Board>();
 
 		Iterator<Sheet> i = workbookB.sheetIterator();
 		while(i.hasNext()) {
 			String name = i.next().getSheetName();
 
-			boards.put(name, new Board(name));
+			boards.add(new Board(name));
 		}
 
         ArrayList<String> balanceCols = new ArrayList<String>(Arrays.asList(
@@ -154,6 +154,12 @@ public class Reader {
 		readSignals();
 	}
 
+	public static void generate() {
+		for (Board b: boards) {
+			b.generate();
+		}
+	}
+
 	private static void readBalance() {
 		Iterator<Sheet> i = workbookB.sheetIterator();
 		while(i.hasNext())
@@ -192,7 +198,7 @@ public class Reader {
 
 							if (current1.getNumericCellValue() > 0d && power1.getNumericCellValue() > 0d) {
 								receivers.add(new Jet(
-									boards.get(boardName),
+									board(boardName),
 									name,
 									String.valueOf(current1.getNumericCellValue()),
 									String.valueOf(current2.getNumericCellValue()),
@@ -201,19 +207,17 @@ public class Reader {
 									cable.getStringCellValue(),
 									s.getSheetName()
 								));
-//								System.out.println("Add " + name);
 							}
 							else if (current2.getNumericCellValue() > 0d && power2.getNumericCellValue() > 0d) {
 								if (runMethod.equalsIgnoreCase("Rozruch bezpośredni")) {
 									receivers.add(new DolEngine(
-										boards.get(boardName),
+										board(boardName),
 										name,
 										String.valueOf(current2.getNumericCellValue()),
 										String.valueOf(power2.getNumericCellValue()),
 										cable.getStringCellValue(),
 										s.getSheetName()
 									));
-//									System.out.println("Add " + name);
 								}
 							}
 						}
@@ -261,7 +265,7 @@ public class Reader {
 		for (Entry<String, ArrayList<Receiver>> e: steerings.entrySet()) {
 			if (e.getKey().startsWith("1B"))
 				for (Receiver r: e.getValue()) {
-					Potentials.add(new Potential(e.getKey(), 100f, 2000f));
+					Potentials.add(new Potential(e.getKey(), 100f, 1800f));
 					r.ster1(e.getKey());
 				}
 			if (e.getKey().startsWith("2B"))
@@ -306,14 +310,14 @@ public class Reader {
 						String boardName = board.getStringCellValue();
 						String functName = function.getStringCellValue();
 
-						if (!boards.containsKey(boardName))
-							throw new RuntimeException("Tablica " + boardName + "nie istnieje w bilansie mocy.");
+						if (board(boardName) == null)
+							throw new RuntimeException("Tablica " + boardName + " nie istnieje w bilansie mocy.");
 
 //						LOGIC SHIFTED FOR BOARD
 						if (typeName.startsWith("DI"))
-							new SapOut(boards.get(boardName), functName);
+							new SapOut(board(boardName), functName);
 						else if (typeName.startsWith("DO"))
-							new SapIn(boards.get(boardName), functName);
+							new SapIn(board(boardName), functName);
 						else
 							throw new RuntimeException("Nieznany TYP " + typeName + " w liście sygnałów SSP.");
 					}
@@ -335,6 +339,14 @@ public class Reader {
 		for (Receiver r: receivers)
 			if (r.name.equalsIgnoreCase(name))
 				return r;
+
+		return null;
+	}
+
+	private static Board board(String name) {
+		for (Board b: boards)
+			if (b.name().equalsIgnoreCase(name))
+				return b;
 
 		return null;
 	}
