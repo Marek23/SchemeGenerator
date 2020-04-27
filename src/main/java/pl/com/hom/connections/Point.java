@@ -26,6 +26,8 @@ public class Point {
 	private EnumMap<Direction, Boolean> directions;
 	private Potential potential;
 
+	private int toPage;
+
 	@Override
 	public String toString() {
 		return "Point [ x=" + x + ", y=" + y + ", visibility=" + visibility + ", image=" + image
@@ -73,6 +75,26 @@ public class Point {
 			return new Point(page, point, Direction.Up);
 
 		throw new RuntimeException("Error while adding main point");
+	}
+
+	public static Point mainBeginPoint(Page page, Point point) {
+		if (point.potential.shortName().startsWith("MAIN") || point.potential.shortName().startsWith("GROUND"))
+			return new Point(page, point, Measures.BEGIN_MAIN_POINT, Direction.Left);
+
+		if (point.potential.shortName().startsWith("1B") || point.potential.shortName().startsWith("2B"))
+			return new Point(page, point, Measures.BEGIN_STEER_POINT, Direction.Left);
+
+		throw new RuntimeException("Error while adding begin main point");
+	}
+
+	public static Point mainEndPoint(Page page, Point point) {
+		if (point.potential.shortName().startsWith("MAIN") || point.potential.shortName().startsWith("GROUND"))
+			return new Point(page, point, Measures.END_MAIN_POINT, Direction.Left);
+
+		if (point.potential.shortName().startsWith("1B") || point.potential.shortName().startsWith("2B"))
+			return new Point(page, point, Measures.END_STEER_POINT, Direction.Left);
+
+		throw new RuntimeException("Error while adding end main point");
 	}
 
 	public static Point steerPoint(Page page, Point point) {
@@ -173,6 +195,8 @@ public class Point {
 
 		this.potential  = potential;
 		this.directions = dirs;
+
+		page.add(this);
 	}
 
 	private Point(Terminal parent, Direction direction) {
@@ -210,6 +234,29 @@ public class Point {
 
 		this.directions.put(Direction.Left, false);
 		this.directions.put(Direction.Right, false);
+
+		page.add(this);
+	}
+
+	private Point(Page page, Point point, float x, Direction direction) {
+		this.potential  = Potentials.potential(point.potential().shortName());
+
+		this.x = x;
+		this.y = this.potential.height();
+
+		this.name       = "Point";
+		this.visibility = true;
+		this.image      = getImage(name, page.getDocument());
+
+		this.width  = image.getWidth()  * Measures.SCALE;
+		this.height = image.getHeight() * Measures.SCALE;
+
+		this.directions = new EnumMap<Direction,Boolean>(Direction.class);
+		this.directions.put(direction, false);
+
+		this.directions.put(Direction.Left, false);
+
+		page.add(this);
 	}
 
 	private Point(Page page, Point point) {
@@ -230,6 +277,8 @@ public class Point {
 		this.directions.put(Direction.Down, false);
 		this.directions.put(Direction.Left, false);
 		this.directions.put(Direction.Right, false);
+
+		page.add(this);
 	}
 
 	public Potential potential() {
@@ -309,5 +358,13 @@ public class Point {
 			throw new RuntimeException("Direction " + d + " does not exist in point.");
 
 		directions.put(d, true);
+	}
+
+	public void toPage(int page) {
+		this.toPage = page;
+	}
+
+	public Integer toPage() {
+		return toPage;
 	}
 }

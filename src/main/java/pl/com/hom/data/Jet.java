@@ -15,7 +15,7 @@ public class Jet extends Receiver{
 		parent.add(this);
 	}
 
-	public void draw() {
-		new JetPage(parent, this.ster1, this.ster2).draw();
+	public JetPage page() {
+		return new JetPage(parent, this.ster1, this.ster2);
 	}
 }

@@ -156,7 +156,7 @@ public class Reader {
 
 	public static void generate() {
 		for (Board b: boards) {
-			b.generate();
+			b.draw();
 		}
 	}
 

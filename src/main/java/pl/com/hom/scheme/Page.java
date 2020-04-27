@@ -6,6 +6,7 @@ import java.util.Iterator;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfPage;
 
+import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
@@ -25,7 +26,7 @@ public class Page extends PdfPage{
 	protected ArrayList<Element>  elements;
 	protected ArrayList<Terminal> terminals;
 
-	private int nr;
+	protected int nr;
 
 	Printer printer;
 
@@ -56,8 +57,6 @@ public class Page extends PdfPage{
 
 	public void addElement(Element element) {
 		this.elements.add(element);
-
-		this.points.addAll(element.points());
 
 		addMainsPoints(element);
 	}
@@ -154,6 +153,32 @@ public class Page extends PdfPage{
 		this.points.addAll(points);
 	}
 
+	public void add(Point point) {
+		this.points.add(point);
+	}
+
+	public ArrayList<Point> mainPoints() {
+		ArrayList<Point> out = new ArrayList<Point>();
+
+		for (Point p: this.points)
+			if (p.toPage() == null
+			&&( p.potential().fullName().equals("MAINL1____")
+			||  p.potential().fullName().equals("MAINL2____")
+			||  p.potential().fullName().equals("MAINL3____")
+			||  p.potential().fullName().equals("MAINL3____")
+
+			||  p.potential().fullName().equals("GROUNDN___")
+			||  p.potential().fullName().equals("GROUNDDC__")
+			||  p.potential().fullName().equals("GROUNDPE__")
+
+			|| p.potential().fullName().startsWith("1B")
+			|| p.potential().fullName().startsWith("2B")
+			))
+				out.add(p);
+
+		return out;
+	}
+
 	private void addMainsPoints(Element element) {
 		for (Point point : element.points()) {
 			String shortName = point.potential().shortName();
@@ -176,6 +201,52 @@ public class Page extends PdfPage{
 		}
 	}
 
+	public boolean hasMainBeginPoint(Point p) {
+		String main = p.potential().shortName();
+
+		Iterator<Point> i = points.iterator();
+
+		Potential potential = Potentials.potential(main);
+		float height = potential.height();
+		
+		while (i.hasNext()) {
+			Point point = i.next();
+
+			if (main.startsWith("MAIN") || main.startsWith("GROUND"))
+				if (point.potential() == potential && point.widthPos()  == Measures.BEGIN_MAIN_POINT && point.heightPos() == height)
+					return true;
+
+			if (main.startsWith("1B") || main.startsWith("2B"))
+				if (point.potential() == potential && point.widthPos()  == Measures.BEGIN_STEER_POINT && point.heightPos() == height)
+					return true;
+		}
+
+		return false;
+	}
+
+	public boolean hasMainEndPoint(Point p) {
+		String main = p.potential().shortName();
+
+		Iterator<Point> i = points.iterator();
+
+		Potential potential = Potentials.potential(main);
+		float height = potential.height();
+		
+		while (i.hasNext()) {
+			Point point = i.next();
+
+			if (main.startsWith("MAIN") || main.startsWith("GROUND"))
+				if (point.potential() == potential && point.widthPos()  == Measures.END_MAIN_POINT && point.heightPos() == height)
+					return true;
+
+			if (main.startsWith("1B") || main.startsWith("2B"))
+				if (point.potential() == potential && point.widthPos()  == Measures.END_STEER_POINT && point.heightPos() == height)
+					return true;
+		}
+
+		return false;
+	}
+
 	private boolean hasMainPoint(String main, float width) {
 		Iterator<Point> i = points.iterator();
 
@@ -192,7 +263,7 @@ public class Page extends PdfPage{
 		return false;
 	}
 
-	public int getNr() {
+	public int nr() {
 		return nr;
 	}
 

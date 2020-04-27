@@ -3,9 +3,9 @@ package pl.com.hom.connections;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.configuration.Sequences;
 import pl.com.hom.scheme.Page;
 
+import static pl.com.hom.configuration.Sequences.sequence;
 import static pl.com.hom.configuration.Resource.getImage;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class Terminal {
 		if (potential.shortName().equals("GROUNDPE__"))
 			this.id = "PE";
 		else
-			this.id = String.valueOf(Sequences.sequence(group));
+			this.id = String.valueOf(sequence(group));
 
 		this.symbolX = this.x + 60f * Measures.SCALE;
 		this.symbolY = this.y;

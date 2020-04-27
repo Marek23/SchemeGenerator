@@ -83,7 +83,7 @@ public abstract class Element {
 	}
 
 	protected String symbol(Page parent, String type) {
-		String page = String.valueOf(parent.getNr());
+		String page = String.valueOf(parent.nr());
 
 		return  page + type + String.valueOf(sequence(page + type));
 	}

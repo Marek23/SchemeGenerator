@@ -33,6 +33,6 @@ public class JetPage extends Page {
 	}
 
 	private float coilX() {
-		return Measures.COIL + 50f * sequence("PAGE" + String.valueOf(this.getNr()) + "COIL");
+		return Measures.COIL + 50f * sequence("PAGE" + String.valueOf(this.nr) + "COIL");
 	}
 }

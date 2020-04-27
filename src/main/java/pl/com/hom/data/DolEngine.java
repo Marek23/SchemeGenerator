@@ -1,5 +1,7 @@
 package pl.com.hom.data;
 
+import pl.com.hom.scheme.JetPage;
+
 public class DolEngine extends Receiver{
 	public DolEngine(Board parent, String name, String current2, String power2, String cable, String switchboard) {
 		this.name = name;
@@ -11,5 +13,7 @@ public class DolEngine extends Receiver{
 	}
 
 	// TODO
-	public void draw() {}
+	public JetPage page() {
+		return new JetPage(parent, this.ster1, this.ster2);
+	}
 }
