@@ -3,7 +3,6 @@ package pl.com.hom.elements.plc;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
 import pl.com.hom.scheme.Page;
@@ -29,10 +28,10 @@ public class PlcModule extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(parent, this, "MAINDCPLC_", Direction.Up));
-		points.add(Point.upOrDownPotential(parent, this, "GROUNDDC__", Direction.Down));
-		points.add(Point.upOrDownPotential(parent, this, "GROUNDPE__PLC", Direction.Down));
+		points.add(Point.up(parent, this, 100f, false, "MAINDCPLC_"));
+		points.add(Point.down(parent, this, 200f, false, "GROUNDDC__"));
+		points.add(Point.down(parent, this, 300f, false, "GROUNDPE__PLC"));
 
-		parent.addElement(this);
+		parent.add(this);
 	}
 }

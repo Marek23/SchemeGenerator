@@ -37,10 +37,10 @@ public class Page extends PdfPage{
 		this.nr  = sequence("page");
 		this.printer = new Printer(this);
 
-		this.points    = new ArrayList<Point>();
-		this.lines     = new ArrayList<Line>();
-		this.elements  = new ArrayList<Element>();
-		this.terminals = new ArrayList<Terminal>();
+		this.points         = new ArrayList<Point>();
+		this.lines          = new ArrayList<Line>();
+		this.elements       = new ArrayList<Element>();
+		this.terminals      = new ArrayList<Terminal>();
 
 		this.printer = new Printer(this);
 	}
@@ -55,10 +55,10 @@ public class Page extends PdfPage{
 			System.out.println(l);
 	}
 
-	public void addElement(Element element) {
+	public void add(Element element) {
 		this.elements.add(element);
 
-		addMainsPoints(element);
+		addMainPoints(element);
 	}
 
 	protected void createLines() {
@@ -157,101 +157,73 @@ public class Page extends PdfPage{
 		this.points.add(point);
 	}
 
-	public ArrayList<Point> mainPoints() {
-		ArrayList<Point> out = new ArrayList<Point>();
-
-		for (Point p: this.points)
-			if (p.toPage() == null
-			&&( p.potential().fullName().equals("MAINL1____")
-			||  p.potential().fullName().equals("MAINL2____")
-			||  p.potential().fullName().equals("MAINL3____")
-			||  p.potential().fullName().equals("MAINL3____")
-
-			||  p.potential().fullName().equals("GROUNDN___")
-			||  p.potential().fullName().equals("GROUNDDC__")
-			||  p.potential().fullName().equals("GROUNDPE__")
-
-			|| p.potential().fullName().startsWith("1B")
-			|| p.potential().fullName().startsWith("2B")
-			))
-				out.add(p);
-
-		return out;
-	}
-
-	private void addMainsPoints(Element element) {
+	private void addMainPoints(Element element) {
 		for (Point point : element.points()) {
 			String shortName = point.potential().shortName();
 			String fullName  = point.potential().fullName();
 
 			float width  = point.widthPos();
-
-			if (shortName.startsWith("MAIN") || shortName.startsWith("GROUND"))
+			float height = point.potential().height();
+			if (point.has(Direction.Up) && shortName.startsWith("MAIN"))
 			{
-				if (!hasMainPoint(shortName, width))
-					if (point.has(Direction.Up) || point.has(Direction.Down))
-						this.points.add(Point.mainPoint(this, point));
+				if (!hasPoint(shortName, width, height)) {
+					Point.supply(this, point, Direction.Down);
+
+					if (!hasPoint(shortName, Measures.BEGIN_MAIN_POINT, point.potential().height()))
+						Point.page(this, Measures.BEGIN_MAIN_POINT, point.potential().height(), shortName);
+
+					if (!hasPoint(shortName, Measures.END_MAIN_POINT, point.potential().height()))
+						Point.page(this, Measures.END_MAIN_POINT,     point.potential().height(), shortName);
+				}
 			}
-			else if (shortName.startsWith("1B") || shortName.startsWith("2B"))
+
+			if (point.has(Direction.Down) && shortName.startsWith("GROUND"))
 			{
-				if (!hasMainPoint(fullName, width))
-					if (point.has(Direction.Up))
-						this.points.add(Point.steerPoint(this, point));
+				if (!hasPoint(shortName, width, height)) {
+					Point.supply(this, point, Direction.Up);
+
+					if (!hasPoint(shortName, Measures.BEGIN_MAIN_POINT, point.potential().height()))
+						Point.page(this, Measures.BEGIN_MAIN_POINT, point.potential().height(), shortName);
+
+					if (!hasPoint(shortName, Measures.END_MAIN_POINT, point.potential().height()))
+						Point.page(this, Measures.END_MAIN_POINT,     point.potential().height(), shortName);
+				}
+			}
+
+			if (point.has(Direction.Up) && shortName.startsWith("GROUND"))
+			{
+				if (!hasPoint(shortName, width, height))
+				{
+					Point.supply(this, point, Direction.Down);
+
+					if (!hasPoint(shortName, Measures.BEGIN_MAIN_POINT, point.potential().height()))
+						Point.page(this, Measures.BEGIN_MAIN_POINT, point.potential().height(), shortName);
+
+					if (!hasPoint(shortName, Measures.END_MAIN_POINT, point.potential().height()))
+						Point.page(this, Measures.END_MAIN_POINT,     point.potential().height(), shortName);
+				}
+			}
+
+			if (point.has(Direction.Up) && (shortName.startsWith("1B") || shortName.startsWith("2B")))
+			{
+				if (!hasPoint(fullName, width, height))
+				{
+					Point.supply(this, point, Direction.Down);
+
+					if (!hasPoint(fullName, Measures.BEGIN_STEER_POINT, point.potential().height()))
+						Point.page(this, Measures.BEGIN_STEER_POINT, point.potential().height(), fullName);
+
+					if (!hasPoint(fullName, Measures.END_STEER_POINT, point.potential().height()))
+						Point.page(this, Measures.END_STEER_POINT,     point.potential().height(), fullName);
+				}
 			}
 		}
 	}
 
-	public boolean hasMainBeginPoint(Point p) {
-		String main = p.potential().shortName();
-
+	private boolean hasPoint(String main, float width, float height) {
 		Iterator<Point> i = points.iterator();
 
 		Potential potential = Potentials.potential(main);
-		float height = potential.height();
-		
-		while (i.hasNext()) {
-			Point point = i.next();
-
-			if (main.startsWith("MAIN") || main.startsWith("GROUND"))
-				if (point.potential() == potential && point.widthPos()  == Measures.BEGIN_MAIN_POINT && point.heightPos() == height)
-					return true;
-
-			if (main.startsWith("1B") || main.startsWith("2B"))
-				if (point.potential() == potential && point.widthPos()  == Measures.BEGIN_STEER_POINT && point.heightPos() == height)
-					return true;
-		}
-
-		return false;
-	}
-
-	public boolean hasMainEndPoint(Point p) {
-		String main = p.potential().shortName();
-
-		Iterator<Point> i = points.iterator();
-
-		Potential potential = Potentials.potential(main);
-		float height = potential.height();
-		
-		while (i.hasNext()) {
-			Point point = i.next();
-
-			if (main.startsWith("MAIN") || main.startsWith("GROUND"))
-				if (point.potential() == potential && point.widthPos()  == Measures.END_MAIN_POINT && point.heightPos() == height)
-					return true;
-
-			if (main.startsWith("1B") || main.startsWith("2B"))
-				if (point.potential() == potential && point.widthPos()  == Measures.END_STEER_POINT && point.heightPos() == height)
-					return true;
-		}
-
-		return false;
-	}
-
-	private boolean hasMainPoint(String main, float width) {
-		Iterator<Point> i = points.iterator();
-
-		Potential potential = Potentials.potential(main);
-		float height = potential.height();
 		
 		while (i.hasNext()) {
 			Point point = i.next();
@@ -267,7 +239,7 @@ public class Page extends PdfPage{
 		return nr;
 	}
 
-	public void terminal(Terminal t) {
+	public void add(Terminal t) {
 		terminals.add(t);
 	}
 }

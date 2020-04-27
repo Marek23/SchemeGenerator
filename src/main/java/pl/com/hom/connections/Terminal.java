@@ -8,8 +8,6 @@ import pl.com.hom.scheme.Page;
 import static pl.com.hom.configuration.Sequences.sequence;
 import static pl.com.hom.configuration.Resource.getImage;
 
-import java.util.ArrayList;
-
 public class Terminal {
 	private PdfFormXObject image;
 	private String name;
@@ -50,12 +48,10 @@ public class Terminal {
 
 		this.group = group;
 
-		ArrayList<Point> points = new ArrayList<Point>();
+		Point.up(parent, this, point.widthPos(), false, point.potential().fullName());
+		Point.down(parent, this, point.widthPos(), false, point.potential().fullName());
 
-		points.add(Point.upOrDownTerminal(this,  Direction.Up));
-		points.add(Point.upOrDownTerminal(this, Direction.Down));
-
-		parent.addAll(points);
+		parent.add(this);
 	}
 
 	public float widthPos() {

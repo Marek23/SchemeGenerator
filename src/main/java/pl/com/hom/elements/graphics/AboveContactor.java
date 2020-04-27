@@ -5,7 +5,6 @@ import static pl.com.hom.configuration.Resource.getImage;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
 import pl.com.hom.scheme.Page;
@@ -24,10 +23,10 @@ public class AboveContactor extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(parent, this, "L1________INHORLINE", Direction.Down));
-		points.add(Point.upOrDownPotential(parent, this, "L2________INHORLINE", Direction.Down));
-		points.add(Point.upOrDownPotential(parent, this, "L3________INHORLINE", Direction.Down));
+		points.add(Point.down(parent, this, 100f, false, "L1________"));
+		points.add(Point.down(parent, this, 200f, false, "L2________"));
+		points.add(Point.down(parent, this, 300f, false, "L3________"));
 
-		parent.addElement(this);
+		parent.add(this);
 	}
 }

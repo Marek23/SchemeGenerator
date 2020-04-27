@@ -16,10 +16,10 @@ public class UpLeftPhases extends Element {
 
 		this.points = new ArrayList<Point>();
 
-		points.add(Point.upLeftPoint(parent, this, "L1________"));
-		points.add(Point.upLeftPoint(parent, this, "L2________"));
-		points.add(Point.upLeftPoint(parent, this, "L3________"));
+		points.add(Point.upLeft(parent, this, 100f, 100f, false, "L1________"));
+		points.add(Point.upLeft(parent, this, 200f, 200f, false, "L2________"));
+		points.add(Point.upLeft(parent, this, 300f, 300f, false, "L3________"));
 
-		parent.addElement(this);
+		parent.add(this);
 	}
 }

@@ -3,7 +3,6 @@ package pl.com.hom.elements.graphics;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
 import pl.com.hom.elements.bridges.UpDownRightPhases;
@@ -12,8 +11,6 @@ import pl.com.hom.scheme.Page;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class Mks extends Element {
-	public static String techSymbol = "MKS";
-
 	public Mks(Page parent, float x, float y) {
 		this.name       = "Mks";
 		this.visibility = true;
@@ -32,15 +29,16 @@ public class Mks extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.leftPoint(parent, this, "L1________INVERLINE"));
-		points.add(Point.leftPoint(parent, this, "L2________INVERLINE"));
-		points.add(Point.leftPoint(parent, this, "L3________INVERLINE"));
+		points.add(Point.left(parent, this, 100f, false, "L1________"));
+		points.add(Point.left(parent, this, 200f, false, "L2________"));
+		points.add(Point.left(parent, this, 300f, false, "L3________"));
 
-		points.add(Point.upOrDownPotential(parent, this, "MAINDC24__", Direction.Up));
-		points.add(Point.upOrDownPotential(parent, this, "GROUNDDC__", Direction.Down));
-		points.add(Point.upOrDownPotential(parent, this, "GROUNDPE__", Direction.Down));
+		points.add(Point.up(parent, this, 100f, false, "MAINDC24__"));
 
-		parent.addElement(this);
+		points.add(Point.down(parent, this, 100f, false, "GROUNDDC__"));
+		points.add(Point.down(parent, this, 200f, false, "GROUNDPE__"));
+
+		parent.add(this);
 	}
 
 	public void jetControl(Page parent) {

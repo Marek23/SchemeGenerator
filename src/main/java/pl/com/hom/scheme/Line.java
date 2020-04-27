@@ -28,6 +28,11 @@ public abstract class Line {
 		return startPoint.widthPos();
 	}
 
+	@Override
+	public String toString() {
+		return "Line [startPoint=" + startPoint + ", endPoint=" + endPoint + "]";
+	}
+
 	public float getEndHeight() {
 		return endPoint.heightPos();
 	}

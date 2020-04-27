@@ -16,10 +16,10 @@ public class UpDownRightPhases extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upDownRightBridge(parent, this, "L1________"));
-		points.add(Point.upDownRightBridge(parent, this, "L2________"));
-		points.add(Point.upDownRightBridge(parent, this, "L3________"));
+		points.add(Point.upDownRight(parent, this, 100f, 100f, true, "L1________"));
+		points.add(Point.upDownRight(parent, this, 200f, 200f, true, "L2________"));
+		points.add(Point.upDownRight(parent, this, 300f, 300f, true, "L3________"));
 
-		parent.addElement(this);
+		parent.add(this);
 	}
 }

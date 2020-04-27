@@ -3,7 +3,6 @@ package pl.com.hom.elements.plc;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.elements.Element;
@@ -30,19 +29,19 @@ public class PlcCpu extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(parent, this, "MAINDCPLC_", Direction.Up));
-		points.add(Point.upOrDownPotential(parent, this, "GROUNDDC__", Direction.Down));
-		points.add(Point.upOrDownPotential(parent, this, "GROUNDPE__PLC", Direction.Down));
+		points.add(Point.up(parent, this, 100f, false, "MAINDCPLC_"));
+		points.add(Point.down(parent, this, 100f, false, "GROUNDDC__"));
+		points.add(Point.down(parent, this, 200f, false, "GROUNDPE__"));
 
-		Point a = Point.upOrDownPotential(parent, this, "A+________", Direction.Down);
-		Point b = Point.upOrDownPotential(parent, this, "B-________", Direction.Down);
+		Point a = Point.down(parent, this, 500f, false, "A+________");
+		Point b = Point.down(parent, this, 600f, false, "B-________");
 
 		points.add(a);
 		points.add(b);
 
-		parent.terminal(new Terminal(parent, a, "XT"));
-		parent.terminal(new Terminal(parent, b, "XT"));
+		parent.add(new Terminal(parent, a, "XT"));
+		parent.add(new Terminal(parent, b, "XT"));
 
-		parent.addElement(this);
+		parent.add(this);
 	}
 }

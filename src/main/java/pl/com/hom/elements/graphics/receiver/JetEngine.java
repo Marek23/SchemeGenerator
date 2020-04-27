@@ -26,28 +26,28 @@ public class JetEngine extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.leftPoint(parent, this, "L1________LEFT"));
-		points.add(Point.leftPoint(parent, this, "L2________LEFT"));
-		points.add(Point.leftPoint(parent, this, "L3________LEFT"));
+		points.add(Point.left(parent, this, 300f, false, "L1________"));
+		points.add(Point.left(parent, this, 200f, false, "L2________"));
+		points.add(Point.left(parent, this, 100f, false, "L3________"));
 
-		points.add(Point.rightPoint(parent, this, "L1________"));
-		points.add(Point.rightPoint(parent, this, "L2________"));
-		points.add(Point.rightPoint(parent, this, "L3________"));
+		points.add(Point.right(parent, this, 100f, false, "L1________"));
+		points.add(Point.right(parent, this, 200f, false, "L2________"));
+		points.add(Point.right(parent, this, 300f, false, "L3________"));
 
-		Point pe = Point.pe(parent, this, 200f * Measures.SCALE, 0f);
+		Point pe = Point.pe(parent, this, 200f, 0f, false);
 		points.add(pe);
 		
-		parent.addElement(this);
+		parent.add(this);
 
 		Element left  = new UpRightPhases(parent, Measures.SECOND_JET_COL, y);
 		Element right = new UpLeftPhases(parent, Measures.THIRD_JET_COL, y);
 
 		for (Point p: left.points())
-			parent.terminal(new Terminal(parent, p, "X2"));
+			parent.add(new Terminal(parent, p, "X2"));
 
 		for (Point p: right.points())
-			parent.terminal(new Terminal(parent, p, "X2"));
+			parent.add(new Terminal(parent, p, "X2"));
 
-		parent.terminal(new Terminal(parent, pe, "X2"));
+		parent.add(new Terminal(parent, pe, "X2"));
 	}
 }

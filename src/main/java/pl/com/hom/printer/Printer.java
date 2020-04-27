@@ -38,6 +38,7 @@ public class Printer extends PdfCanvas{
 			this.setLineWidth(1f);
 			this.setStrokeColorRgb(0.2f, 0.8f, 0.2f);
 			this.setLineDash(8f, 3f);
+			System.out.println(line.toString());
 		}
 		else {
 			this.setLineWidth(0.5f);

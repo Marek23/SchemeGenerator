@@ -3,7 +3,6 @@ package pl.com.hom.elements.plc;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
 import pl.com.hom.scheme.Page;
@@ -29,9 +28,9 @@ public class PlcIn extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(parent, this, "PLCINPUT__", Direction.Up));
+		points.add(Point.up(parent, this, 200f, false, "PLCINPUT__"));
 
-		parent.addElement(this);
+		parent.add(this);
 	}
 
 	public PlcIn(Page parent, PlcCpu cpu, float x, float y) {
@@ -52,8 +51,8 @@ public class PlcIn extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.upOrDownPotential(parent, this, "PLCINPUT__", Direction.Up));
+		points.add(Point.up(parent, this, 200f, false, "PLCINPUT__"));
 
-		parent.addElement(this);
+		parent.add(this);
 	}
 }

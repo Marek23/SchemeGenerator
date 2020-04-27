@@ -31,7 +31,7 @@ public final class Measures {
 	public final static float TERMINAL_HEIGHT = 420f;
 
 	public final static float BEGIN_MAIN_POINT  = 20f;
-	public final static float BEGIN_STEER_POINT = 420f;
-	public final static float END_MAIN_POINT    = 700f;
+	public final static float BEGIN_STEER_POINT = 520f;
+	public final static float END_MAIN_POINT    = 800f;
 	public final static float END_STEER_POINT   = 700f;
 }

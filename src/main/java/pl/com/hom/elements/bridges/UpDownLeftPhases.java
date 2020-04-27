@@ -1,9 +1,7 @@
 package pl.com.hom.elements.bridges;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 
-import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
 import pl.com.hom.scheme.Page;
@@ -18,15 +16,10 @@ public class UpDownLeftPhases extends Element {
 
 		points = new ArrayList<Point>();
 
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Left, false);
-		dirs.put(Direction.Up, false);
-		dirs.put(Direction.Down, false);
+		points.add(Point.upDownLeft(parent, this, 100f, 300f, true, "L1________"));
+		points.add(Point.upDownLeft(parent, this, 200f, 200f, true, "L2________"));
+		points.add(Point.upDownLeft(parent, this, 300f, 100f, true, "L3________"));
 
-		points.add(Point.upDownLeftBridge(parent, this, "L1________LEFT"));
-		points.add(Point.upDownLeftBridge(parent, this, "L2________LEFT"));
-		points.add(Point.upDownLeftBridge(parent, this, "L3________LEFT"));
-
-		parent.addElement(this);
+		parent.add(this);
 	}
 }

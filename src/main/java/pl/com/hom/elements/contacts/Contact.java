@@ -5,7 +5,6 @@ import static pl.com.hom.configuration.Resource.getImage;
 import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.Point;
 import pl.com.hom.elements.Element;
 import pl.com.hom.scheme.Page;
@@ -32,9 +31,9 @@ public class Contact extends Element {
 		points = new ArrayList<Point>();
 		childs = new ArrayList<Element>();
 
-		points.add(Point.upOrDownPotential(parent, this, steerPotential, Direction.Up));
-		points.add(Point.upOrDownPotential(parent, this, "GROUNDN___ELEM", Direction.Down));
+		points.add(Point.up(parent, this, 100f, true, steerPotential));
+		points.add(Point.down(parent, this, 100f, true, "GROUNDN___"));
 
-		parent.addElement(this);
+		parent.add(this);
 	}
 }

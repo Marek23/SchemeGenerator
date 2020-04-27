@@ -66,24 +66,19 @@ public class Board extends PdfDocument {
 			System.out.println(r.toString());
 	}
 
-	private void addMainPoints() {
-		for (int i = pages.size()-1; i > -1; i--)
-		{
-			Page page = pages.get(i);
-
-			ArrayList<Point> points = new ArrayList<Point>();
-			for (Point p: page.mainPoints()) {
-
-				if (!page.hasMainBeginPoint(p)) {
-					points.add(Point.mainBeginPoint(page, p));
-				}
-				else {
-					
-				}
-				
-			}
-
-		}
-		
-	}
+//	private void addMainPoints() {
+//		for (int i = 0; i < pages.size(); i++) {
+//			Page from = pages.get(i);
+//
+//			for (int j = 0; j < pages.size(); j++) {
+//				Page to = pages.get(j);
+//
+//				while()
+//			}
+//
+//		}
+//
+//
+//		
+//	}
 }
