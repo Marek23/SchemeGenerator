@@ -2,7 +2,6 @@ package pl.com.hom.data;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -38,9 +37,11 @@ public class Board extends PdfDocument {
 
 	public void draw() {
 		for (Receiver r: receivers)
-			if (r instanceof Jet) {
+			if (r instanceof TwoGearEngine) {
 				pages.add(r.page());
 			}
+
+		targets();
 
 		for(Page p: pages)
 			p.draw();
@@ -66,19 +67,21 @@ public class Board extends PdfDocument {
 			System.out.println(r.toString());
 	}
 
-//	private void addMainPoints() {
-//		for (int i = 0; i < pages.size(); i++) {
-//			Page from = pages.get(i);
-//
-//			for (int j = 0; j < pages.size(); j++) {
-//				Page to = pages.get(j);
-//
-//				while()
-//			}
-//
-//		}
-//
-//
-//		
-//	}
+	private void targets() {
+		for (int i = 0; i < pages.size()-1; i++) {
+			Page from = pages.get(i);
+
+			int j = i+1;
+			while (j < pages.size() && from.pendingEnds()) {
+				Page to = pages.get(j++);
+				for (Point f: from.ends())
+					for (Point t: to.begins())
+						if (f.potential() == t.potential())
+						{
+							f.target(t);
+							t.target(f);
+						}
+			}
+		}
+	}
 }

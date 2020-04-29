@@ -4,16 +4,17 @@ import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
-import pl.com.hom.elements.Element;
+import pl.com.hom.element.Element;
+import pl.com.hom.element.main.PlcCpu;
 import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class PlcIn extends Element {
-	public PlcIn(Page parent, PlcModule module, float x, float y) {
+	public PlcIn(Page page, PlcModule module, float x, float y) {
 		this.name       = "PlcModule";
 		this.visibility = true;
-		this.image      = getImage(name, parent.getDocument());
+		this.image      = getImage(name, page);
 
 		this.x = x;
 		this.y = y;
@@ -28,15 +29,15 @@ public class PlcIn extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.up(parent, this, 200f, false, "PLCINPUT__"));
+		points.add(Point.up(page, this, 200f, false, "PLCINPUT"));
 
-		parent.add(this);
+		page.add(this);
 	}
 
-	public PlcIn(Page parent, PlcCpu cpu, float x, float y) {
+	public PlcIn(Page page, PlcCpu cpu, float x, float y) {
 		this.name       = "PlcModule";
 		this.visibility = true;
-		this.image      = getImage(name, parent.getDocument());
+		this.image      = getImage(name, page);
 
 		this.x = x;
 		this.y = y;
@@ -51,8 +52,8 @@ public class PlcIn extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.up(parent, this, 200f, false, "PLCINPUT__"));
+		points.add(Point.up(page, this, 200f, false, "PLCINPUT"));
 
-		parent.add(this);
+		page.add(this);
 	}
 }

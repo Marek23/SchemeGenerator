@@ -1,7 +1,4 @@
-package pl.com.hom.scheme;
-
-import pl.com.hom.connections.Direction;
-import pl.com.hom.connections.Point;
+package pl.com.hom.connections;
 
 public class VerticalLine extends Line{
 	public VerticalLine(Point from, Point to) {

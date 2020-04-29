@@ -7,30 +7,33 @@ import java.util.HashMap;
 import java.net.MalformedURLException;
 
 import com.itextpdf.kernel.PdfException;
-import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.canvas.wmf.WmfImageData;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
+
+import pl.com.hom.scheme.Page;
 
 public final class Resource {
 	private static ArrayList<String> imageNames = new ArrayList<String>(Arrays.asList(
 		"FirstGearContactor.wmf",
 		"SecGearContactor.wmf",
-		"JetBridgeContactor.wmf",
+		"BridgeContactor.wmf",
 		"Contactor.wmf",
 		"Terminal.wmf",
 		"ThreePhaseFuse.wmf",
 		"ThreePhaseEngine.wmf",
-		"JetEngine.wmf",
+		"TwoGearEngine.wmf",
 		"Point.wmf",
 		"AboveContactorBridge.wmf",
-		"CoilContactor.wmf",
+		"CurrentCoil.wmf",
 		"Point.wmf",
 		"Mks.wmf",
 		"MotorFuse3.wmf",
 		"ThermalFuse3.wmf",
 		"PlcCpu.wmf",
 		"PlcModule.wmf",
-		"Contact.wmf"
+		"Contact.wmf",
+		"ContactorPointer.wmf",
+		"Softstart.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;
@@ -49,7 +52,7 @@ public final class Resource {
 		}
 	}
 
-	public static PdfFormXObject getImage(String name, PdfDocument parent) {
-		 return new PdfFormXObject(graphics.get(name), parent);
+	public static PdfFormXObject getImage(String name, Page parent) {
+		 return new PdfFormXObject(graphics.get(name), parent.getDocument());
 	}
 }

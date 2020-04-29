@@ -7,13 +7,15 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
-import pl.com.hom.elements.Element;
+import pl.com.hom.element.Element;
 import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 public class Point {
 	private float x;
 	private float y;
+
+	private Page page;
 
 	private float width;
 	private float height;
@@ -26,7 +28,7 @@ public class Point {
 	private EnumMap<Direction, Boolean> directions;
 	private Potential potential;
 
-	private int toPage;
+	private int target;
 
 	@Override
 	public String toString() {
@@ -86,7 +88,7 @@ public class Point {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 
-		Potential potential = Potentials.potential("GROUNDPE__");
+		Potential potential = Potentials.potential("GROUNDPE");
 
 		float scaledX = x * Measures.SCALE;
 		float scaledY = y * Measures.SCALE;
@@ -205,6 +207,8 @@ public class Point {
 		this.x = x;
 		this.y = y;
 
+		this.page = page;
+
 		if (parent != null)
 		{
 			this.x += parent.widthPos();
@@ -215,7 +219,7 @@ public class Point {
 		if (this.visibility) {
 			this.name       = "Point";
 			this.visibility = true;
-			this.image      = getImage(name, page.getDocument());
+			this.image      = getImage(name, page);
 
 			this.width  = image.getWidth()  * Measures.SCALE;
 			this.height = image.getHeight() * Measures.SCALE;
@@ -231,11 +235,13 @@ public class Point {
 		this.x = x;
 		this.y = y;
 
+		this.page = page;
+
 		this.visibility = visibility;
 		if (this.visibility) {
 			this.name       = "Point";
 			this.visibility = true;
-			this.image      = getImage(name, page.getDocument());
+			this.image      = getImage(name, page);
 
 			this.width  = image.getWidth()  * Measures.SCALE;
 			this.height = image.getHeight() * Measures.SCALE;
@@ -251,11 +257,13 @@ public class Point {
 		this.x = parent.widthPos()  + x;
 		this.y = parent.heightPos() + y;
 
+		this.page = page;
+
 		this.visibility = visibility;
 		if (visibility) {
 			this.name       = "Point";
 			this.visibility = true;
-			this.image      = getImage(name, page.getDocument());
+			this.image      = getImage(name, page);
 
 			this.width  = image.getWidth()  * Measures.SCALE;
 			this.height = image.getHeight() * Measures.SCALE;
@@ -303,6 +311,14 @@ public class Point {
     	return x;
     }
 
+    public float targetWidth() {
+    	return x;
+    }
+
+    public float targetHeight() {
+    	return y + 3f;
+    }
+
     public float height() {
     	return height;
     }
@@ -311,6 +327,9 @@ public class Point {
     	return width;
     }
 
+    public Page page() {
+    	return page;
+    }
 	public boolean equals(Object o) { 
     	if (o == this) return true; 
 
@@ -346,11 +365,11 @@ public class Point {
 		directions.put(d, true);
 	}
 
-	public void toPage(int page) {
-		this.toPage = page;
+	public void target(Point target) {
+		this.target = target.page.nr();
 	}
 
-	public Integer toPage() {
-		return toPage;
+	public Integer target() {
+		return this.target;
 	}
 }

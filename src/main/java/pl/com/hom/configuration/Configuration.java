@@ -9,7 +9,5 @@ public class Configuration {
 		Resource.initializeImages();
 		Potentials.initialize();
 		Reader.init();
-
-		Sequences.sequence("page");
 	}
 }

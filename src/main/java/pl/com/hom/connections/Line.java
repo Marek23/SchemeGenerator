@@ -1,7 +1,4 @@
-package pl.com.hom.scheme;
-
-import pl.com.hom.connections.Point;
-import pl.com.hom.connections.Potential;
+package pl.com.hom.connections;
 
 public abstract class Line {
 	private Potential potential;

@@ -3,11 +3,11 @@ package pl.com.hom.elements.bridges;
 import java.util.ArrayList;
 
 import pl.com.hom.connections.Point;
-import pl.com.hom.elements.Element;
+import pl.com.hom.element.Element;
 import pl.com.hom.scheme.Page;
 
 public class UpRightPhases extends Element {
-	public UpRightPhases (Page parent, float x, float y) {
+	public UpRightPhases (Page page, float x, float y) {
 		this.visibility = false;
 		this.image      = null;
 
@@ -16,10 +16,14 @@ public class UpRightPhases extends Element {
 
 		this.points = new ArrayList<Point>();
 
-		points.add(Point.upRight(parent, this, 100f, 300f, false, "L1________"));
-		points.add(Point.upRight(parent, this, 200f, 200f, false, "L2________"));
-		points.add(Point.upRight(parent, this, 300f, 100f, false, "L3________"));
+		points.add(Point.upRight(page, this, 100f, 300f, false, "L1"));
+		points.add(Point.upRight(page, this, 200f, 200f, false, "L2"));
+		points.add(Point.upRight(page, this, 300f, 100f, false, "L3"));
 
-		parent.add(this);
+		page.add(this);
+	}
+
+	public Element child() {
+		return null;
 	}
 }

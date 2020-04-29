@@ -1,7 +1,4 @@
-package pl.com.hom.scheme;
-
-import pl.com.hom.connections.Direction;
-import pl.com.hom.connections.Point;
+package pl.com.hom.connections;
 
 public class HorizontalLine extends Line{
 	public HorizontalLine(Point from, Point to) {

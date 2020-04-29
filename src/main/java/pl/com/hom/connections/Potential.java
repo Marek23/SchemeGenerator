@@ -13,12 +13,12 @@ public class Potential {
 		this.height    = height * Measures.SCALE;
 	}
 
-	public String shortName() {
-		return potential.substring(0, 10);
+	public String name() {
+		return potential;
 	}
 
-	public String fullName() {
-		return potential;
+	public String prettyName() {
+		return potential.replaceAll("MAIN", "").replaceAll("GROUND", "");
 	}
 
 	public float width() {

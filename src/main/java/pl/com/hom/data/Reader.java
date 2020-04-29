@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.CellType;
 
+import static pl.com.hom.configuration.Sequences.sequence;
 public class Reader {
 	private static HSSFWorkbook workbookB;
 	private static HSSFWorkbook workbookM;
@@ -29,7 +30,7 @@ public class Reader {
 	public static HashMap<String, Integer> colS;
 
 	public static HashMap<String, ArrayList<Receiver>> steerings;
-
+	public static HashMap<String, String> pretty;
 	public static ArrayList<Board> boards;
 
 	public static ArrayList<Receiver> receivers;
@@ -100,6 +101,8 @@ public class Reader {
         receivers = new ArrayList<Receiver>();
         steerings = new HashMap<String, ArrayList<Receiver>>();
 
+        pretty = new HashMap<String, String>();
+
 		for (Row r: workbookB.getSheetAt(0))
 			for(Cell c: r)
 				if (c.getCellType() == CellType.STRING)
@@ -143,9 +146,6 @@ public class Reader {
 		for (String c: signalCols)
 			if(!colS.containsKey(c))
 				throw new RuntimeException(signals + ": brakująca kolumna " + c);
-
-//		for (String c: colM.keySet())
-//			System.out.println("Matrix key: " + c);
 	}
 
 	public static void read() {
@@ -197,7 +197,7 @@ public class Reader {
 							String runMethod = r.getCell(atIn(colB, "ZASILANIE / SPOSÓB ROZRUCHU")).getStringCellValue();
 
 							if (current1.getNumericCellValue() > 0d && power1.getNumericCellValue() > 0d) {
-								receivers.add(new Jet(
+								receivers.add(new TwoGearEngine(
 									board(boardName),
 									name,
 									String.valueOf(current1.getNumericCellValue()),
@@ -240,8 +240,9 @@ public class Reader {
 					Receiver rec   = receiver(recName);
 
 					if (rec != null) {
-						String key1B = "1B" + receiver(recName).board().name();
-						String key2B = "2B" + receiver(recName).board().name();
+						String board = rec.board().name();
+						String key1B = "1B" + board;
+						String key2B = "2B" + board;
 
 						for (String s: scenarios) {
 							Cell scenario = r.getCell(atIn(colM, s));
@@ -255,32 +256,32 @@ public class Reader {
 							if (scenName.toUpperCase().trim().startsWith("1B")) key1B += s;
 							if (scenName.toUpperCase().trim().startsWith("2B")) key2B += s;
 						}
-						addSteering(rec, key1B);
-						addSteering(rec, key2B);
+						System.out.println("F: " + key1B);
+						System.out.println("F: " + key2B);
+
+						String prettyB1 = pretty1B(board, key1B);
+						String prettyB2 = pretty2B(board, key2B);
+
+						System.out.println("P: " + prettyB1);
+						System.out.println("P: " + prettyB2);
+						addSteering1B(rec, prettyB1);
+						addSteering2B(rec, prettyB2);
 					}
 				}
 			}
 		}
 
-		for (Entry<String, ArrayList<Receiver>> e: steerings.entrySet()) {
-			if (e.getKey().startsWith("1B"))
-				for (Receiver r: e.getValue()) {
-					Potentials.add(new Potential(e.getKey(), 100f, 1800f));
-					r.ster1(e.getKey());
-				}
-			if (e.getKey().startsWith("2B"))
-				for (Receiver r: e.getValue()) {
-					Potentials.add(new Potential(e.getKey(), 100f, 1900f));
-					r.ster2(e.getKey());
-				}
-		}
-
 //		TESTS
-		for (Entry<String, ArrayList<Receiver>> e: steerings.entrySet()) {
-			System.out.println("Steering key: " + e.getKey());
-			for (Receiver r: e.getValue())
-				System.out.println(r);
-		}
+//		for (Entry<String, ArrayList<Receiver>> e: steerings.entrySet()) {
+//			System.out.println("Steering key: " + e.getKey());
+//			for (Receiver r: e.getValue()) {
+//				System.out.println(r);
+//			}
+//		}
+
+		for (Entry<String, String> e: pretty.entrySet()) {
+		System.out.println("Steering key: " + e.getKey() + " \\ " + e.getValue());
+	}
 	}
 
 	private static void readSignals() {
@@ -351,10 +352,39 @@ public class Reader {
 		return null;
 	}
 
-	private static void addSteering(Receiver receiver, String key) {
+	private static void addSteering1B(Receiver receiver, String key) {
 		if (steerings.containsKey(key))
 			steerings.get(key).add(receiver);
 		else
 			steerings.put(key, new ArrayList<Receiver>(Arrays.asList(receiver)));
+
+		Potentials.add(new Potential(key, 100f, 1800f));
+		receiver.ster1(key);
+	}
+
+	private static void addSteering2B(Receiver receiver, String key) {
+		if (steerings.containsKey(key))
+			steerings.get(key).add(receiver);
+		else
+			steerings.put(key, new ArrayList<Receiver>(Arrays.asList(receiver)));
+
+		Potentials.add(new Potential(key, 100f, 1900f));
+		receiver.ster2(key);
+	}
+
+	private static String pretty1B(String board, String key) {
+		if (!pretty.containsKey(key)) {
+			pretty.put(key, "1BSt" + String.valueOf(sequence(board + "1B")));
+		}
+
+		return pretty.get(key);
+	}
+
+	private static String pretty2B(String board, String key) {
+		if (!pretty.containsKey(key)) {
+			pretty.put(key, "2BSt" + String.valueOf(sequence(board + "2B")));
+		}
+
+		return pretty.get(key);
 	}
 }

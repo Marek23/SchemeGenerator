@@ -28,7 +28,7 @@ public class Terminal {
 
 	public Terminal(Page parent, Point point, String group) {
 		this.name  = "Terminal";
-		this.image = getImage(name, parent.getDocument());
+		this.image = getImage(name, parent);
 
 		this.potential = point.potential();
 
@@ -38,7 +38,7 @@ public class Terminal {
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 
-		if (potential.shortName().equals("GROUNDPE__"))
+		if (potential.name().equals("GROUNDPE"))
 			this.id = "PE";
 		else
 			this.id = String.valueOf(sequence(group));
@@ -48,8 +48,8 @@ public class Terminal {
 
 		this.group = group;
 
-		Point.up(parent, this, point.widthPos(), false, point.potential().fullName());
-		Point.down(parent, this, point.widthPos(), false, point.potential().fullName());
+		Point.up(parent, this, point.widthPos(), false, point.potential().name());
+		Point.down(parent, this, point.widthPos(), false, point.potential().name());
 
 		parent.add(this);
 	}

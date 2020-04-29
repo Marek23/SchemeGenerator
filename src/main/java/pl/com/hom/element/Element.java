@@ -1,10 +1,12 @@
-package pl.com.hom.elements;
+package pl.com.hom.element;
 
 import java.util.ArrayList;
 
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
+import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
+import pl.com.hom.element.pointer.Pointer;
 import pl.com.hom.scheme.Page;
 
 import static pl.com.hom.configuration.Sequences.sequence;
@@ -14,13 +16,16 @@ public abstract class Element {
 	protected String desc;
 	protected String name;
 	protected String symbol;
+	protected Page   page;
 
 	protected PdfFormXObject image;
 	protected boolean        visibility;
-	
+
+	protected Element parent;
+
 	protected ArrayList<Point> points;
 
-	protected ArrayList<Element> childs;
+	protected ArrayList<Pointer> pointers;
 
 	protected float x;
 	protected float y;
@@ -28,8 +33,14 @@ public abstract class Element {
 	protected float symbolX;
 	protected float symbolY;
 
+	protected float parentX;
+	protected float parentY;
+	protected int parentPageNr;
+
 	protected float width;
 	protected float height;
+
+	protected float pointerY;
 
 	public boolean visible() {
 		return visibility;
@@ -37,17 +48,6 @@ public abstract class Element {
 
 	public ArrayList<Point> points() {
 		return this.points;
-	}
-
-	public void unlinkColumnPoints() {
-		for (Point p : points)
-			p.unlinkVertical();
-	}
-
-	public void showPoints() {
-		for (Point p : points) {
-			System.out.println(p.toString());
-		}
 	}
 
 	public float width() {
@@ -82,10 +82,41 @@ public abstract class Element {
 		return this.symbol;
 	}
 
-	protected String symbol(Page parent, String type) {
-		String page = String.valueOf(parent.nr());
-
-		return  page + type + String.valueOf(sequence(page + type));
+	public Page page() {
+		return page;
 	}
 
+	protected String symbol(Page page, String type) {
+		String pageNr = String.valueOf(page.nr());
+
+		return  pageNr + type + String.valueOf(sequence(page + type));
+	}
+
+	public float pointerHeightPos() {
+		float height = Measures.POINTERS_BEGIN_HEIGHT;
+		for (Pointer p: pointers)
+			height += (p.height() + Measures.POINTERS_SPACE);
+
+		return height;
+	}
+
+	public void add(Pointer p) {
+		this.pointers.add(p);
+	}
+
+	public float parentWidthPos() {
+		return parentX;
+	}
+
+	public float parentHeightPos() {
+		return parentY;
+	}
+
+	public int parentPageNr() {
+		return parentPageNr;
+	}
+
+	public Element parent() {
+		return parent;
+	}
 }
