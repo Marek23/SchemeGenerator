@@ -10,7 +10,7 @@ import pl.com.hom.scheme.Page;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class MotorFuse3 extends Element {
-	public MotorFuse3(Page page, float x, float y, int number) {
+	public MotorFuse3(Page page, float x, float y, boolean main) {
 		this.name       = "MotorFuse3";
 		this.visibility = true;
 		this.image      = getImage(name, page);
@@ -28,9 +28,16 @@ public class MotorFuse3 extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.up(page, this, 100f, false, "MAINL1"));
-		points.add(Point.up(page, this, 200f, false, "MAINL2"));
-		points.add(Point.up(page, this, 300f, false, "MAINL3"));
+		if (main) {
+			points.add(Point.up(page, this, 100f, false, "MAINL1"));
+			points.add(Point.up(page, this, 200f, false, "MAINL2"));
+			points.add(Point.up(page, this, 300f, false, "MAINL3"));
+		}
+		else {
+			points.add(Point.up(page, this, 100f, false, "L1"));
+			points.add(Point.up(page, this, 200f, false, "L2"));
+			points.add(Point.up(page, this, 300f, false, "L3"));
+		}
 
 		points.add(Point.down(page, this, 100f, false, "L1"));
 		points.add(Point.down(page, this, 200f, false, "L2"));

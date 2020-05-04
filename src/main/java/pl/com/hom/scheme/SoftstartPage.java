@@ -2,35 +2,32 @@ package pl.com.hom.scheme;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.data.Board;
-import pl.com.hom.element.main.CurrentCoil;
+import pl.com.hom.element.main.Ckf;
 import pl.com.hom.element.main.Mks;
-import pl.com.hom.element.main.MotorFuse3;
-import pl.com.hom.element.main.ThermalFuse3;
-import pl.com.hom.element.receiver.TwoGearEngine;
-import pl.com.hom.printer.Printer;
+import pl.com.hom.element.main.Softstart;
+import pl.com.hom.element.main.ThreePhaseFuse;
+import pl.com.hom.element.receiver.ThreePhaseEngine;
+import pl.com.hom.elements.bridges.DownRightPhases;
+import pl.com.hom.elements.bridges.UpDownLeftPhases;
 
-import static pl.com.hom.configuration.Sequences.sequence;
 public class SoftstartPage extends Page {
 	private static final long serialVersionUID = 1L;
-	Printer printer;
 
-	public SoftstartPage(Board board, String firstGearPot, String secGearPot) {
+	public SoftstartPage(Board board, String ster1, String ster2) {
 		super(board);
 
-		CurrentCoil coil1 = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, firstGearPot);
-		coil1.firstGear(this);
+		new ThreePhaseFuse(this, Measures.THIRD_WIDTH, Measures.FUSE_HEIGHT);
 
-		CurrentCoil coil2 = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, secGearPot);
-		coil2.secondGear(this);
+		new UpDownLeftPhases(this, Measures.THIRD_WIDTH, Measures.CKF_BRIDGE_HEIGHT);
+		new DownRightPhases(this, Measures.FIRST_WIDTH, Measures.CKF_BRIDGE_HEIGHT);
 
+		new Ckf(this, Measures.FIRST_WIDTH, Measures.CKF_HEIGHT);
 
-		Mks mks = new Mks(this,Measures.MKS_COL, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
-		mks.jetControl(this);
+		new Softstart(this, Measures.THIRD_WIDTH, Measures.SOFTSTART_HEIGHT, "L10");
 
-		new TwoGearEngine(this, Measures.JET_ENGINE_COL, Measures.RECEIVER_HEIGHT);
-	}
+		Mks mks = new Mks(this,Measures.MKS_WIDTH, Measures.MKS_HEIGHT);
+		mks.control(this);
 
-	private float coilX() {
-		return Measures.COIL + Measures.COIL_SPACE * sequence("PAGE" + String.valueOf(this.nr) + "COIL");
+		new ThreePhaseEngine(this, Measures.THIRD_WIDTH, Measures.RECEIVER_HEIGHT);
 	}
 }

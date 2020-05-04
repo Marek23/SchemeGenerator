@@ -308,4 +308,8 @@ public class Page extends PdfPage{
 
 		return null;
 	}
+
+	protected float coilX() {
+		return Measures.COIL + Measures.COIL_SPACE * sequence("PAGE" + String.valueOf(this.nr) + "COIL");
+	}
 }

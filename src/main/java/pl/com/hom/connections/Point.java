@@ -137,6 +137,32 @@ public class Point {
 		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
 	}
 
+	public static Point downLeft(Page page, Element parent, float x, float y, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Down, false);
+		dirs.put(Direction.Left, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		float scaledX = x * Measures.SCALE;
+		float scaledY = y * Measures.SCALE;
+
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+	}
+
+	public static Point downRight(Page page, Element parent, float x, float y, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Down, false);
+		dirs.put(Direction.Right, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		float scaledX = x * Measures.SCALE;
+		float scaledY = y * Measures.SCALE;
+
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+	}
+
 	public static Point upRight(Page page, Element parent, float x, float y, boolean visibility, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);

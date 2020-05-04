@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
-import pl.com.hom.element.pointer.ContactMksPointer;
+import pl.com.hom.element.pointer.ContactCkfPointer;
 import pl.com.hom.element.pointer.Pointer;
 import pl.com.hom.element.Element;
 import pl.com.hom.scheme.Page;
 
-public class MksContact extends Element {
-	public MksContact (Page page, Element parent, float x, float y) {
-		this.name       = "MksContact";
+public class CkfContact extends Element {
+	public CkfContact (Page page, Element parent, float x, float y) {
+		this.name       = "CkfContact";
 		this.visibility = true;
 		this.image      = getImage(name, page);
 		this.parent     = parent;
@@ -36,6 +36,6 @@ public class MksContact extends Element {
 		points.add(Point.down(page, this, 100f, false, "CONTROL"));
 
 		this.parent = parent;
-		parent.add(new ContactMksPointer(this, parent.widthPos(), parent.pointerHeightPos()));
+		parent.add(new ContactCkfPointer(this, parent.widthPos(), parent.pointerHeightPos()));
 	}
 }

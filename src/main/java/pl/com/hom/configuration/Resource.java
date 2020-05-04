@@ -33,7 +33,8 @@ public final class Resource {
 		"PlcModule.wmf",
 		"Contact.wmf",
 		"ContactorPointer.wmf",
-		"Softstart.wmf"
+		"Softstart.wmf",
+		"Ckf.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

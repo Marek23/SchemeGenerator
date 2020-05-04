@@ -12,7 +12,7 @@ import pl.com.hom.scheme.Page;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class Contactor extends Element {
-	public Contactor (Page page, CurrentCoil parent, float x, float y) {
+	public Contactor (Page page, CurrentCoil parent, float x, float y, boolean reverse) {
 		this.name       = "FirstGearContactor";
 		this.visibility = true;
 		this.image      = getImage(name, page);
@@ -35,9 +35,16 @@ public class Contactor extends Element {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.up(page, this, 100f, false, "L1"));
-		points.add(Point.up(page, this, 200f, false, "L2"));
-		points.add(Point.up(page, this, 300f, false, "L3"));
+		if (reverse) {
+			points.add(Point.up(page, this, 100f, false, "L3"));
+			points.add(Point.up(page, this, 200f, false, "L2"));
+			points.add(Point.up(page, this, 300f, false, "L1"));
+		}
+		else {
+			points.add(Point.up(page, this, 100f, false, "L1"));
+			points.add(Point.up(page, this, 200f, false, "L2"));
+			points.add(Point.up(page, this, 300f, false, "L3"));			
+		}
 
 		points.add(Point.down(page, this, 100f, false, "L1"));
 		points.add(Point.down(page, this, 200f, false, "L2"));

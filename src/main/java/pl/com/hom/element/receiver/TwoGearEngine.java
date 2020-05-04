@@ -39,8 +39,8 @@ public class TwoGearEngine extends Element {
 		
 		page.add(this);
 
-		Element left  = new UpRightPhases(page, Measures.FIRST_JET_COL, y);
-		Element right = new UpLeftPhases(page, Measures.SEC_JET_COL, y);
+		Element left  = new UpRightPhases(page, Measures.FIRST_WIDTH, y);
+		Element right = new UpLeftPhases(page, Measures.THIRD_WIDTH, y);
 
 		for (Point p: left.points())
 			page.add(new Terminal(page, p, "X2"));

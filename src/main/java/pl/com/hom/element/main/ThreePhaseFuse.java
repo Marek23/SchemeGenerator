@@ -10,7 +10,7 @@ import pl.com.hom.scheme.Page;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class ThreePhaseFuse extends Element {
-	public ThreePhaseFuse(Page page, float x, float y, int number) {
+	public ThreePhaseFuse(Page page, float x, float y) {
 		this.name       = "ThreePhaseFuse";
 		this.visibility = true;
 		this.image      = getImage(name, page);

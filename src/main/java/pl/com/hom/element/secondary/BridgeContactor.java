@@ -45,8 +45,9 @@ public class BridgeContactor extends Element {
 		points.add(Point.down(page, this, 200f, false, "L2"));
 		points.add(Point.down(page, this, 300f, false, "L3"));
 
-		new AboveContactor(page, this.x, Measures.ABOVE_CONTACTOR_BRIDGE);
-		new UpLeftPhases(page, this.x, Measures.UNDER_CONTACTOR_BRIDGE_HEIGHT);
+		new AboveContactor(page, x, y - Measures.CONTACTOR_HEIGHT_DIST);
+
+		new UpLeftPhases(page, x, y + this.height() + Measures.CONTACTOR_HEIGHT_DIST);
 
 		page.add(this);
 

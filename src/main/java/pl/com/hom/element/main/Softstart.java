@@ -15,7 +15,8 @@ public class Softstart extends Element {
 		this.visibility = true;
 		this.image      = getImage(name, page);
 
-		this.x = x;
+//		fix bo L1 przesunięte do 400f
+		this.x = x - 300f * Measures.SCALE;
 		this.y = y;
 		
 		this.width  = image.getWidth()  * Measures.SCALE;
@@ -23,21 +24,21 @@ public class Softstart extends Element {
 		
 		this.symbol = symbol(page, "TR");
 
-		this.symbolX = x - 22f;
-		this.symbolY = y + this.height()/1.5f;
+		this.symbolX = x - 300f * Measures.SCALE - 22f;
+		this.symbolY = y + this.height()/1.3f;
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.up(page, this, 100f, false, "L1"));
-		points.add(Point.up(page, this, 200f, false, "L2"));
-		points.add(Point.up(page, this, 300f, false, "L3"));
-		points.add(Point.up(page, this, 500f, false, "MAINL10"));
-		points.add(Point.up(page, this, 500f, false, steerPotential));
+		points.add(Point.up(page, this, 400f, false, "L1"));
+		points.add(Point.up(page, this, 500f, false, "L2"));
+		points.add(Point.up(page, this, 600f, false, "L3"));
+		points.add(Point.up(page, this, 100f, false, "MAINL10"));
+		points.add(Point.left(page, this, 200f, false, steerPotential));
 
-		points.add(Point.down(page, this, 100f, false, "L1"));
-		points.add(Point.down(page, this, 200f, false, "L2"));
-		points.add(Point.down(page, this, 300f, false, "L3"));
-		points.add(Point.down(page, this, 500f, false, "GROUNDN"));
+		points.add(Point.down(page, this, 400f, false, "L1"));
+		points.add(Point.down(page, this, 500f, false, "L2"));
+		points.add(Point.down(page, this, 600f, false, "L3"));
+		points.add(Point.down(page, this, 100f, false, "GROUNDN"));
 		
 		page.add(this);
 	}

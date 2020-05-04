@@ -26,7 +26,7 @@ public class Mks extends Element {
 		this.symbol = symbol(page, "MKS");
 
 		this.symbolX = x - 20f;
-		this.symbolY = 595.0f - y;
+		this.symbolY = y;
 
 		points = new ArrayList<Point>();
 		pointers = new ArrayList<Pointer>();
@@ -43,8 +43,7 @@ public class Mks extends Element {
 		page.add(this);
 	}
 
-	public void jetControl(Page page) {
-		float x = Measures.SEC_JET_COL;
-		new UpDownRightPhases(page, x, this.y);
+	public void control(Page page) {
+		new UpDownRightPhases(page, Measures.THIRD_WIDTH, this.y, false);
 	}
 }

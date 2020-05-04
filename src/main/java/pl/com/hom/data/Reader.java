@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Potential;
+import pl.com.hom.scheme.BiDirectionTwoGearPage;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -197,7 +198,7 @@ public class Reader {
 							String runMethod = r.getCell(atIn(colB, "ZASILANIE / SPOSÓB ROZRUCHU")).getStringCellValue();
 
 							if (current1.getNumericCellValue() > 0d && power1.getNumericCellValue() > 0d) {
-								receivers.add(new TwoGearEngine(
+								receivers.add(new BiDirectionTwoGearEngine(
 									board(boardName),
 									name,
 									String.valueOf(current1.getNumericCellValue()),
@@ -211,6 +212,17 @@ public class Reader {
 							else if (current2.getNumericCellValue() > 0d && power2.getNumericCellValue() > 0d) {
 								if (runMethod.equalsIgnoreCase("Rozruch bezpośredni")) {
 									receivers.add(new DolEngine(
+										board(boardName),
+										name,
+										String.valueOf(current2.getNumericCellValue()),
+										String.valueOf(power2.getNumericCellValue()),
+										cable.getStringCellValue(),
+										s.getSheetName()
+									));
+								}
+
+								if (runMethod.equalsIgnoreCase("Rozruch softstart")) {
+									receivers.add(new BiDirectionSoftstart(
 										board(boardName),
 										name,
 										String.valueOf(current2.getNumericCellValue()),

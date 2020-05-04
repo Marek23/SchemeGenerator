@@ -37,7 +37,7 @@ public class Board extends PdfDocument {
 
 	public void draw() {
 		for (Receiver r: receivers)
-			if (r instanceof TwoGearEngine) {
+			if (r instanceof TwoGearEngine || r instanceof BiDirectionTwoGearEngine || r instanceof BiDirectionSoftstart || r instanceof Softstart) {
 				pages.add(r.page());
 			}
 

@@ -10,7 +10,7 @@ import pl.com.hom.scheme.Page;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class ThermalFuse3 extends Element {
-	public ThermalFuse3(Page page, float x, float y, int number) {
+	public ThermalFuse3(Page page, float x, float y) {
 		this.name       = "ThermalFuse3";
 		this.visibility = true;
 		this.image      = getImage(name, page);
