@@ -4,6 +4,6 @@ public class SapOut extends Signal{
 	public SapOut(Board parent, String function){
 		super(function);
 
-		parent.add(this);
+		parent.addSapOutput(this);
 	}
 }

@@ -317,6 +317,10 @@ public class Page extends PdfPage{
 		return Measures.COIL + Measures.COIL_SPACE * sequence(board.name() + "PAGE" + String.valueOf(this.nr) + "COIL");
 	}
 
+	protected float plcX() {
+		return Measures.PLC_MODULE_MARGIN + Measures.PLC_WIDTH_DIST * (sequence(board.name() + "PAGE" + String.valueOf(this.nr) + "PLC") -1);
+	}
+
 	public Board board() {
 		return board;
 	}

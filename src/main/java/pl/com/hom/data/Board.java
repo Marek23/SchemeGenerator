@@ -7,9 +7,9 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
 import pl.com.hom.connections.Point;
-import pl.com.hom.element.main.Mks;
-import pl.com.hom.page.Errors;
+import pl.com.hom.page.MksErrors;
 import pl.com.hom.page.Page;
+import pl.com.hom.page.Plc;
 
 public class Board extends PdfDocument {
 	private static final long serialVersionUID = 1L;
@@ -19,8 +19,11 @@ public class Board extends PdfDocument {
 	private String power;
 	private String cable;
 
+	private MksErrors mksErr;
+
 	private ArrayList<Receiver> receivers;
-	private ArrayList<Signal>   signals;
+	private ArrayList<Signal>   sapInput;
+	private ArrayList<Signal>   sapOutput;
 	private ArrayList<Page>     pages;
 
 	public Board(String name) throws FileNotFoundException {
@@ -29,8 +32,9 @@ public class Board extends PdfDocument {
 		this.name = name;
 
 		this.receivers = new ArrayList<Receiver>();
-		this.signals   = new ArrayList<Signal>();
-		this.pages     = new ArrayList<Page>();
+		this.sapInput  = new ArrayList<Signal>();
+		this.sapOutput = new ArrayList<Signal>();
+		this.pages  = new ArrayList<Page>();
 	}
 
 	public String name() {
@@ -38,19 +42,40 @@ public class Board extends PdfDocument {
 	}
 
 	public void draw() {
+		int mkls      = (int) Math.ceil(sapInput.size()/4);
+		int sapInputs = mkls * 8;
+
+		int plcInputs = sapInputs;
+		int plcOutputs = sapOutput.size() + Reader.steerings(this.name);
+
+		int modules = 0;
+		int temp = 4;
+		while (temp < plcOutputs) {
+			modules++;
+			temp += 8;
+		}
+
+		temp = 8 + modules * 8;
+		while (temp < plcInputs) {
+			modules++;
+			temp += 8;
+		}
+
+		pages.add(new Plc(this, modules));
+
 		for (Receiver r: receivers)
-			if (r instanceof TwoGear || r instanceof BiDirectionJet || r instanceof BiDirectionSoftstart || r instanceof Softstart) {
-				Page page = r.page();
-				pages.add(page);
-			}
+			pages.add(r.page());
 
 		targets();
 
-		
-		Errors mksErr = new Errors(this);
+		for(Page p: pages) {
+			if (p.mks() != null) {
+				if (mksErr == null)
+					mksErr = new MksErrors(this);
 
-		for(Page p: pages)
-			mksErr.addMks(p.mks());
+				mksErr.add(p.mks());
+			}
+		}
 
 		pages.add(mksErr);
 
@@ -60,8 +85,12 @@ public class Board extends PdfDocument {
 		this.close();
 	}
 
-	public void add(Signal signal) {
-		this.signals.add(signal);
+	public void addSapInput(Signal signal) {
+		this.sapInput.add(signal);
+	}
+
+	public void addSapOutput(Signal signal) {
+		this.sapOutput.add(signal);
 	}
 
 	public void add(Receiver receiver) {
@@ -71,8 +100,6 @@ public class Board extends PdfDocument {
 	public void show() {
 		System.out.println(name);
 		System.out.println("SIGNALS");
-		for (Signal s: signals)
-			System.out.println(s.toString());
 		System.out.println("Receivers");
 		for (Receiver r: receivers)
 			System.out.println(r.toString());

@@ -20,7 +20,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.CellType;
 
 import static pl.com.hom.configuration.Sequences.sequence;
-public class Reader {
+
+public final class Reader {
 	private static HSSFWorkbook workbookB;
 	private static HSSFWorkbook workbookM;
 	private static HSSFWorkbook workbookS;
@@ -35,6 +36,8 @@ public class Reader {
 
 	public static ArrayList<Receiver> receivers;
 	public static ArrayList<String>   scenarios;
+
+	private static HashMap<String, Integer> steeringsCounter;
 
 	public static void init() throws IOException
 	{
@@ -60,11 +63,15 @@ public class Reader {
 
         boards = new ArrayList<Board>();
 
+        steeringsCounter = new HashMap<String, Integer>();
+
 		Iterator<Sheet> i = workbookB.sheetIterator();
 		while(i.hasNext()) {
 			String name = i.next().getSheetName();
 
 			boards.add(new Board(name));
+
+			steeringsCounter.put(name, 0);
 		}
 
         ArrayList<String> balanceCols = new ArrayList<String>(Arrays.asList(
@@ -275,6 +282,7 @@ public class Reader {
 
 						System.out.println("P: " + prettyB1);
 						System.out.println("P: " + prettyB2);
+
 						addSteering1B(rec, prettyB1);
 						addSteering2B(rec, prettyB2);
 					}
@@ -386,6 +394,7 @@ public class Reader {
 	private static String pretty1B(String board, String key) {
 		if (!pretty.containsKey(key)) {
 			pretty.put(key, "1BSt" + String.valueOf(sequence(board + "1B")));
+			steeringsCounter.put(board, steeringsCounter.get(board) + 1);
 		}
 
 		return pretty.get(key);
@@ -394,8 +403,13 @@ public class Reader {
 	private static String pretty2B(String board, String key) {
 		if (!pretty.containsKey(key)) {
 			pretty.put(key, "2BSt" + String.valueOf(sequence(board + "2B")));
+			steeringsCounter.put(board, steeringsCounter.get(board) + 1);
 		}
 
 		return pretty.get(key);
+	}
+
+	public static int steerings(String board) {
+		return steeringsCounter.get(board);
 	}
 }

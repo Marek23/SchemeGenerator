@@ -26,9 +26,9 @@ public class Terminal {
 	private float width;
 	private float height;
 
-	public Terminal(Page parent, Point point, String group) {
+	public Terminal(Page page, Point point, String group) {
 		this.name  = "Terminal";
-		this.image = getImage(name, parent);
+		this.image = getImage(name, page);
 
 		this.potential = point.potential();
 
@@ -41,17 +41,17 @@ public class Terminal {
 		if (potential.name().equals("GROUNDPE"))
 			this.id = "PE";
 		else
-			this.id = String.valueOf(sequence(parent.board().name() + group));
+			this.id = String.valueOf(sequence(page.board().name() + group));
 
 		this.symbolX = this.x + 60f * Measures.SCALE;
 		this.symbolY = this.y;
 
 		this.group = group;
 
-		Point.up(parent, this, point.widthPos(), false, point.potential().name());
-		Point.down(parent, this, point.widthPos(), false, point.potential().name());
+		Point.up(page, this, true, point.potential().name());
+		Point.down(page, this, true, point.potential().name());
 
-		parent.add(this);
+		page.add(this);
 	}
 
 	public float widthPos() {

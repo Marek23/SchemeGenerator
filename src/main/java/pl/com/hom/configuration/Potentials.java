@@ -34,8 +34,8 @@ public final class Potentials {
 		add(new Potential("MAINDC24", 100f, 300f));
 		add(new Potential("MAINDCPLC", 100f, 360f));
 
-		add(new Potential("A+", 500f, -1f));
-		add(new Potential("B-", 600f, -1f));
+		add(new Potential("A+", 500f, 1f));
+		add(new Potential("B-", 600f, 1f));
 
 		add(new Potential("1B", -1f, 1500f));
 		add(new Potential("2B", -1f, 1550f));

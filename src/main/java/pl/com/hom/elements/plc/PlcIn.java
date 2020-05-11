@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
-import pl.com.hom.element.main.PlcCpu;
+import pl.com.hom.element.main.Plc;
 import pl.com.hom.page.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
@@ -34,7 +34,7 @@ public class PlcIn extends Element {
 		page.add(this);
 	}
 
-	public PlcIn(Page page, PlcCpu cpu, float x, float y) {
+	public PlcIn(Page page, Plc cpu, float x, float y) {
 		this.name       = "PlcModule";
 		this.visibility = true;
 		this.image      = getImage(name, page);

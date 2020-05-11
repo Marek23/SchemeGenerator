@@ -58,7 +58,6 @@ public final class Resource {
 	}
 
 	public static PdfFormXObject getImage(String name, Page parent) {
-		System.out.println("Getting name " + name + parent);
 		 return new PdfFormXObject(graphics.get(name), parent.getDocument());
 	}
 }

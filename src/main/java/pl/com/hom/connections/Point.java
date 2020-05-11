@@ -60,28 +60,24 @@ public class Point {
 		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);
 	}
 
-	public static Point up(Page page, Terminal parent, float x, boolean visibility, String potName) {
+	public static Point up(Page page, Terminal parent, boolean visibility, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 
 		Potential potential = Potentials.potential(potName);
 
-		float scaledX = x * Measures.SCALE;
-		float scaledY = 0;
-
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);
+		return new Point(page, parent, potential, 0f, 0f, dirs, visibility);
 	}
 
-	public static Point down(Page page, Terminal parent, float x, boolean visibility, String potName) {
+	public static Point down(Page page, Terminal parent, boolean visibility, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Down, false);
 
 		Potential potential = Potentials.potential(potName);
 
-		float scaledX = x * Measures.SCALE;
 		float scaledY = parent.height();
 
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);
+		return new Point(page, parent, potential, 0f, scaledY, dirs, visibility);
 	}
 
 	public static Point pe(Page page, Element parent, float x, float y, boolean visibility) {
@@ -341,7 +337,7 @@ public class Point {
 	}
 
 	private Point(Page page, Terminal parent, Potential potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
-		this.x = parent.widthPos()  + x;
+		this.x = parent.widthPos() + x;
 		this.y = parent.heightPos() + y;
 
 		this.page = page;

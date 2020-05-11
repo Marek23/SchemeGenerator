@@ -4,6 +4,6 @@ public class SapIn extends Signal{
 	public SapIn(Board parent, String function){
 		super(function);
 
-		parent.add(this);
+		parent.addSapInput(this);
 	}
 }
