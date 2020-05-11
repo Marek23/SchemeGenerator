@@ -41,7 +41,8 @@ public final class Measures {
 	public final static float COIL        = 450f;
 	public final static float COIL_HEIGHT = 350f;
 	public final static float COIL_SPACE  = 70f;
-
+	public final static float CURRENT_COIL_SAVETY = 280f;
+	
 	public final static float RECEIVER_HEIGHT = 500f;
 	public final static float TERMINAL_HEIGHT = 470f;
 

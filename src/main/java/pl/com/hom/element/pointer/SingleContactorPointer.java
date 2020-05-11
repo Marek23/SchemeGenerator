@@ -5,9 +5,9 @@ import static pl.com.hom.configuration.Resource.getImage;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.element.Element;
 
-public class ContactorPointer extends Pointer {
-	public ContactorPointer(Element secondary, Element main) {
-		this.name   = "ContactorPointer";
+public class SingleContactorPointer extends Pointer {
+	public SingleContactorPointer(Element secondary, Element main) {
+		this.name   = "SingleContactorPointer";
 		this.parent = secondary;
 		this.page   = main.page();
 		this.image = getImage(name, page);

@@ -1,4 +1,4 @@
-package pl.com.hom.scheme;
+package pl.com.hom.page;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Line;
@@ -8,11 +8,11 @@ import pl.com.hom.element.main.PlcCpu;
 import pl.com.hom.elements.plc.PlcModule;
 import pl.com.hom.printer.Printer;
 
-public class PlcPage extends Page {
+public class Plc extends Page {
 	private static final long serialVersionUID = 1L;
 	Printer printer;
 
-	public PlcPage(Board board) {
+	public Plc(Board board) {
 		super(board);
 
 		new PlcCpu(this, Measures.PLC_WIDTH, Measures.PLC_HEIGHT);

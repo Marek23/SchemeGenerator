@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 public class UpDownRightPhases extends Element {
 	public UpDownRightPhases(Page page, float x, float y, boolean revert) {

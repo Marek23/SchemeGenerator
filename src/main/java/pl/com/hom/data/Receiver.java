@@ -1,6 +1,6 @@
 package pl.com.hom.data;
 
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 public abstract class Receiver {
 	protected String name;
@@ -8,8 +8,8 @@ public abstract class Receiver {
 	protected String current2;
 	protected String power1;
 	protected String power2;
-	protected String ster1;
-	protected String ster2;
+	protected String steering1;
+	protected String steering2;
 	protected String cable;
 	protected String runMethod;
 
@@ -19,17 +19,12 @@ public abstract class Receiver {
 		return this.name;
 	}
 
-	public void sters(String ster1, String ster2) {
-		this.ster1 = ster1;
-		this.ster2 = ster2;
+	public void steering1(String steering1) {
+		this.steering1 = steering1;
 	}
 
-	public void ster1(String ster1) {
-		this.ster1 = ster1;
-	}
-
-	public void ster2(String ster2) {
-		this.ster2 = ster2;
+	public void steering2(String steering2) {
+		this.steering2 = steering2;
 	}
 
 	public abstract Page page();
@@ -37,7 +32,7 @@ public abstract class Receiver {
 	@Override
 	public String toString() {
 		return "Engine [name=" + name + ", current1=" + current1 + ", current2=" + current2 + ", power1=" + power1
-				+ ", power2=" + power2 + ", ster1=" + ster1 + ", ster2=" + ster2 + ", cable=" + cable + ", switchboard="
+				+ ", power2=" + power2 + ", ster1=" + steering1 + ", ster2=" + steering2 + ", cable=" + cable + ", switchboard="
 				+ ", runMethod=" + runMethod + "]";
 	}
 

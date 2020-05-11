@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
@@ -17,6 +17,7 @@ public class MotorFuse3 extends Element {
 
 		this.x = x;
 		this.y = y;
+		this.page = page;
 		
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;

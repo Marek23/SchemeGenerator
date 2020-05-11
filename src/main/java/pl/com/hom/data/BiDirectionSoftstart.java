@@ -1,6 +1,6 @@
 package pl.com.hom.data;
 
-import pl.com.hom.scheme.BiDirectionSoftstartPage;
+import pl.com.hom.page.Page;
 
 public class BiDirectionSoftstart extends Receiver{
 	public BiDirectionSoftstart(Board parent, String name, String current2, String power2, String cable, String switchboard) {
@@ -13,7 +13,7 @@ public class BiDirectionSoftstart extends Receiver{
 		parent.add(this);
 	}
 
-	public BiDirectionSoftstartPage page() {
-		return new BiDirectionSoftstartPage(parent, this.ster1, this.ster2);
+	public Page page() {
+		return new pl.com.hom.page.BiDirectionSoftstart(parent, this.steering1, this.steering2);
 	}
 }

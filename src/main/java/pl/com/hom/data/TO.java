@@ -1,6 +1,6 @@
 package pl.com.hom.data;
 
-import pl.com.hom.scheme.TwoGearPage;
+import pl.com.hom.page.Jet;
 
 public class TO extends Receiver{
 	public TO(Board parent, String name, String current1, String current2, String power1, String power2, String cable, String switchboard) {
@@ -13,7 +13,7 @@ public class TO extends Receiver{
 	}
 
 	// TODO
-	public TwoGearPage page() {
-		return new TwoGearPage(parent, this.ster1, this.ster2);
+	public Jet page() {
+		return new Jet(parent, this.steering1, this.steering2);
 	}
 }

@@ -1,6 +1,6 @@
 package pl.com.hom.data;
 
-import pl.com.hom.scheme.SoftstartPage;
+import pl.com.hom.page.Page;
 
 public class Softstart extends Receiver{
 	public Softstart(Board parent, String name, String current2, String power2, String cable, String switchboard) {
@@ -13,7 +13,7 @@ public class Softstart extends Receiver{
 		parent.add(this);
 	}
 
-	public SoftstartPage page() {
-		return new SoftstartPage(parent, this.ster1, this.ster2);
+	public Page page() {
+		return new pl.com.hom.page.Softstart(parent, this.steering1, this.steering2);
 	}
 }

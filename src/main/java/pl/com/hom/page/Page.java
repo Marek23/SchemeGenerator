@@ -1,4 +1,4 @@
-package pl.com.hom.scheme;
+package pl.com.hom.page;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +26,8 @@ import static pl.com.hom.configuration.Sequences.sequence;
 public class Page extends PdfPage{
 	protected static final long serialVersionUID = 7351148506505896070L;
 
+	protected Board board;
+
 	protected ArrayList<Point>    points;
 	protected ArrayList<Point>    begins;
 	protected ArrayList<Point>    ends;
@@ -42,7 +44,9 @@ public class Page extends PdfPage{
 		super(board, PageSize.A4.rotate());
 		board.addPage(this);
 
-		this.nr  = sequence("page");
+		this.board = board;
+
+		this.nr  = sequence(board.name() + "page");
 		this.printer = new Printer(this);
 
 		this.points         = new ArrayList<Point>();
@@ -310,6 +314,10 @@ public class Page extends PdfPage{
 	}
 
 	protected float coilX() {
-		return Measures.COIL + Measures.COIL_SPACE * sequence("PAGE" + String.valueOf(this.nr) + "COIL");
+		return Measures.COIL + Measures.COIL_SPACE * sequence(board.name() + "PAGE" + String.valueOf(this.nr) + "COIL");
+	}
+
+	public Board board() {
+		return board;
 	}
 }

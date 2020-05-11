@@ -1,4 +1,4 @@
-package pl.com.hom.scheme;
+package pl.com.hom.page;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.data.Board;
@@ -11,10 +11,10 @@ import pl.com.hom.element.receiver.ThreePhaseEngine;
 import pl.com.hom.elements.bridges.DownRightPhases;
 import pl.com.hom.elements.bridges.UpDownLeftPhases;
 
-public class BiDirectionSoftstartPage extends Page {
+public class BiDirectionSoftstart extends Page {
 	private static final long serialVersionUID = 1L;
 
-	public BiDirectionSoftstartPage(Board board, String ster1, String ster2) {
+	public BiDirectionSoftstart(Board board, String ster1, String ster2) {
 		super(board);
 
 		new UpDownLeftPhases(this, Measures.THIRD_WIDTH, Measures.CKF_BRIDGE_HEIGHT);

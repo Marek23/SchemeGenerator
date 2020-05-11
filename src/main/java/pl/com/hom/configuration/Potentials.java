@@ -14,7 +14,7 @@ public final class Potentials {
 		add(new Potential("L2", 200f, 200f));
 		add(new Potential("L3", 300f, 300f));
 
-		add(new Potential("DC24", 100f, -1f));
+		add(new Potential("DC24", 100f, 100f));
 		add(new Potential("DCPLC", 100f, -1f));
 		add(new Potential("L10", 100f, 600f));
 

@@ -14,7 +14,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Potential;
-import pl.com.hom.scheme.BiDirectionTwoGearPage;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -198,7 +197,7 @@ public class Reader {
 							String runMethod = r.getCell(atIn(colB, "ZASILANIE / SPOSÓB ROZRUCHU")).getStringCellValue();
 
 							if (current1.getNumericCellValue() > 0d && power1.getNumericCellValue() > 0d) {
-								receivers.add(new BiDirectionTwoGearEngine(
+								receivers.add(new TwoGear(
 									board(boardName),
 									name,
 									String.valueOf(current1.getNumericCellValue()),
@@ -371,7 +370,7 @@ public class Reader {
 			steerings.put(key, new ArrayList<Receiver>(Arrays.asList(receiver)));
 
 		Potentials.add(new Potential(key, 100f, 1800f));
-		receiver.ster1(key);
+		receiver.steering1(key);
 	}
 
 	private static void addSteering2B(Receiver receiver, String key) {
@@ -381,7 +380,7 @@ public class Reader {
 			steerings.put(key, new ArrayList<Receiver>(Arrays.asList(receiver)));
 
 		Potentials.add(new Potential(key, 100f, 1900f));
-		receiver.ster2(key);
+		receiver.steering2(key);
 	}
 
 	private static String pretty1B(String board, String key) {

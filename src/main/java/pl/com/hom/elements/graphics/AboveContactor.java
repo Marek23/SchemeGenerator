@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 public class AboveContactor extends Element {
 	public AboveContactor (Page page, float x, float y) {

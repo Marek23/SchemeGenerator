@@ -3,7 +3,7 @@ package pl.com.hom.element.pointer;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.element.Element;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 public abstract class Pointer {
 	protected Page page;

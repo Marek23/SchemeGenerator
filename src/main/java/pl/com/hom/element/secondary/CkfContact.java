@@ -8,8 +8,8 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.pointer.ContactCkfPointer;
 import pl.com.hom.element.pointer.Pointer;
+import pl.com.hom.page.Page;
 import pl.com.hom.element.Element;
-import pl.com.hom.scheme.Page;
 
 public class CkfContact extends Element {
 	public CkfContact (Page page, Element parent, float x, float y) {
@@ -20,6 +20,7 @@ public class CkfContact extends Element {
 
 		this.x = x;
 		this.y = y;
+		this.page = page;
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
@@ -36,6 +37,6 @@ public class CkfContact extends Element {
 		points.add(Point.down(page, this, 100f, false, "CONTROL"));
 
 		this.parent = parent;
-		parent.add(new ContactCkfPointer(this, parent.widthPos(), parent.pointerHeightPos()));
+		new ContactCkfPointer(this, parent);
 	}
 }

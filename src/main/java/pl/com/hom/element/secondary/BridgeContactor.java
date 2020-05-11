@@ -9,7 +9,7 @@ import pl.com.hom.element.main.CurrentCoil;
 import pl.com.hom.element.pointer.ContactorPointer;
 import pl.com.hom.elements.bridges.UpLeftPhases;
 import pl.com.hom.elements.graphics.AboveContactor;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
@@ -22,6 +22,7 @@ public class BridgeContactor extends Element {
 
 		this.x = x;
 		this.y = y;
+		this.page = page;
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
@@ -52,6 +53,6 @@ public class BridgeContactor extends Element {
 		page.add(this);
 
 		this.parent = parent;
-		parent.add(new ContactorPointer(this, parent.widthPos(), parent.pointerHeightPos()));
+		new ContactorPointer(this, parent);
 	}
 }

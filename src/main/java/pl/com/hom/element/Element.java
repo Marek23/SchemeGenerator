@@ -7,7 +7,7 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.pointer.Pointer;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 import static pl.com.hom.configuration.Sequences.sequence;
 
@@ -17,6 +17,8 @@ public abstract class Element {
 	protected String name;
 	protected String symbol;
 	protected Page   page;
+
+	protected String steering;
 
 	protected PdfFormXObject image;
 	protected boolean        visibility;
@@ -88,8 +90,9 @@ public abstract class Element {
 
 	protected String symbol(Page page, String type) {
 		String pageNr = String.valueOf(page.nr());
+		String board  = page.board().name();
 
-		return  pageNr + type + String.valueOf(sequence(page + type));
+		return  pageNr + type + String.valueOf(sequence(board + page + type));
 	}
 
 	public float pointerHeightPos() {
@@ -118,5 +121,9 @@ public abstract class Element {
 
 	public Element parent() {
 		return parent;
+	}
+
+	public String steering() {
+		return steering;
 	}
 }

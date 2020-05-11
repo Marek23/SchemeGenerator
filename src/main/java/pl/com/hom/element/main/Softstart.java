@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
@@ -18,7 +18,8 @@ public class Softstart extends Element {
 //		fix bo L1 przesunięte do 400f
 		this.x = x - 300f * Measures.SCALE;
 		this.y = y;
-		
+		this.page = page;
+
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 		

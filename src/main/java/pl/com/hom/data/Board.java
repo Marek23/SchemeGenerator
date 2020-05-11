@@ -7,7 +7,9 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
 import pl.com.hom.connections.Point;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.element.main.Mks;
+import pl.com.hom.page.Errors;
+import pl.com.hom.page.Page;
 
 public class Board extends PdfDocument {
 	private static final long serialVersionUID = 1L;
@@ -37,11 +39,20 @@ public class Board extends PdfDocument {
 
 	public void draw() {
 		for (Receiver r: receivers)
-			if (r instanceof TwoGearEngine || r instanceof BiDirectionTwoGearEngine || r instanceof BiDirectionSoftstart || r instanceof Softstart) {
-				pages.add(r.page());
+			if (r instanceof TwoGear || r instanceof BiDirectionJet || r instanceof BiDirectionSoftstart || r instanceof Softstart) {
+				Page page = r.page();
+				pages.add(page);
 			}
 
 		targets();
+
+		
+		Errors mksErr = new Errors(this);
+
+		for(Page p: pages)
+			mksErr.addMks(p.mks());
+
+		pages.add(mksErr);
 
 		for(Page p: pages)
 			p.draw();

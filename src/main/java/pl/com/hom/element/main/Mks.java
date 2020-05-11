@@ -6,8 +6,9 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
 import pl.com.hom.element.pointer.Pointer;
+import pl.com.hom.element.secondary.MksContact;
 import pl.com.hom.elements.bridges.UpDownRightPhases;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 
@@ -19,6 +20,7 @@ public class Mks extends Element {
 
 		this.x = x;
 		this.y = y;
+		this.page = page;
 		
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
@@ -45,5 +47,13 @@ public class Mks extends Element {
 
 	public void control(Page page) {
 		new UpDownRightPhases(page, Measures.THIRD_WIDTH, this.y, false);
+	}
+
+	public void secondary(Page page, float x, float y) {
+		new MksContact(page, this, x, y, false);	
+	}
+
+	public void secondaryMain(Page page, float x, float y) {
+		new MksContact(page, this, x, y, true);
 	}
 }

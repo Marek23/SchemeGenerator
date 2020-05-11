@@ -10,7 +10,7 @@ import com.itextpdf.kernel.PdfException;
 import com.itextpdf.kernel.pdf.canvas.wmf.WmfImageData;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 public final class Resource {
 	private static ArrayList<String> imageNames = new ArrayList<String>(Arrays.asList(
@@ -27,6 +27,8 @@ public final class Resource {
 		"CurrentCoil.wmf",
 		"Point.wmf",
 		"Mks.wmf",
+		"MksContact.wmf",
+		"ContactMksPointer.wmf",
 		"MotorFuse3.wmf",
 		"ThermalFuse3.wmf",
 		"PlcCpu.wmf",
@@ -34,7 +36,9 @@ public final class Resource {
 		"Contact.wmf",
 		"ContactorPointer.wmf",
 		"Softstart.wmf",
-		"Ckf.wmf"
+		"Ckf.wmf",
+		"SingleContactor.wmf",
+		"SingleContactorPointer.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;
@@ -54,6 +58,7 @@ public final class Resource {
 	}
 
 	public static PdfFormXObject getImage(String name, Page parent) {
+		System.out.println("Getting name " + name + parent);
 		 return new PdfFormXObject(graphics.get(name), parent.getDocument());
 	}
 }

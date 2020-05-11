@@ -6,22 +6,23 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.element.Element;
 
 public class ContactMksPointer extends Pointer {
-	public ContactMksPointer(Element parent, float x, float y) {
+	public ContactMksPointer(Element secondary, Element main) {
 		this.name   = "ContactMksPointer";
-		this.parent = parent;
-		this.page   = parent.page();
+		this.parent = secondary;
+		this.page   = main.page();
 		this.image = getImage(name, page);
 
-		this.x = x;
-		this.y = y;
+		this.x = main.widthPos();
+		this.y = main.pointerHeightPos();
 
 		this.width  = image.getWidth()  * Measures.SCALE;
 		this.height = image.getHeight() * Measures.SCALE;
 
 		this.parentX = x - Measures.POINTER_PARENT_NR_X_MARGIN;
 		this.parentY = this.y + Measures.POINTER_PARENT_NR_Y_MARGIN;
-		this.parentPage = parent.page().nr();
+		this.parentPage = secondary.page().nr();
 
-		this.page.add(this);
+		page.add(this);
+		main.add(this);
 	}
 }

@@ -8,7 +8,7 @@ import pl.com.hom.connections.Terminal;
 import pl.com.hom.element.Element;
 import pl.com.hom.elements.bridges.UpLeftPhases;
 import pl.com.hom.elements.bridges.UpRightPhases;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 import static pl.com.hom.configuration.Resource.getImage;
 

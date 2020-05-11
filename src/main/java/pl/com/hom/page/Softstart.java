@@ -1,19 +1,18 @@
-package pl.com.hom.scheme;
+package pl.com.hom.page;
 
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.data.Board;
 import pl.com.hom.element.main.Ckf;
 import pl.com.hom.element.main.Mks;
-import pl.com.hom.element.main.Softstart;
 import pl.com.hom.element.main.ThreePhaseFuse;
 import pl.com.hom.element.receiver.ThreePhaseEngine;
 import pl.com.hom.elements.bridges.DownRightPhases;
 import pl.com.hom.elements.bridges.UpDownLeftPhases;
 
-public class SoftstartPage extends Page {
+public class Softstart extends Page {
 	private static final long serialVersionUID = 1L;
 
-	public SoftstartPage(Board board, String ster1, String ster2) {
+	public Softstart(Board board, String ster1, String ster2) {
 		super(board);
 
 		new ThreePhaseFuse(this, Measures.THIRD_WIDTH, Measures.FUSE_HEIGHT);
@@ -23,7 +22,7 @@ public class SoftstartPage extends Page {
 
 		new Ckf(this, Measures.FIRST_WIDTH, Measures.CKF_HEIGHT);
 
-		new Softstart(this, Measures.THIRD_WIDTH, Measures.SOFTSTART_HEIGHT, "L10");
+		new pl.com.hom.element.main.Softstart(this, Measures.THIRD_WIDTH, Measures.SOFTSTART_HEIGHT, "L10");
 
 		Mks mks = new Mks(this,Measures.MKS_WIDTH, Measures.MKS_HEIGHT);
 		mks.control(this);

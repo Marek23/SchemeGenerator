@@ -3,7 +3,7 @@ package pl.com.hom.connections;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.scheme.Page;
+import pl.com.hom.page.Page;
 
 import static pl.com.hom.configuration.Sequences.sequence;
 import static pl.com.hom.configuration.Resource.getImage;
@@ -41,7 +41,7 @@ public class Terminal {
 		if (potential.name().equals("GROUNDPE"))
 			this.id = "PE";
 		else
-			this.id = String.valueOf(sequence(group));
+			this.id = String.valueOf(sequence(parent.board().name() + group));
 
 		this.symbolX = this.x + 60f * Measures.SCALE;
 		this.symbolY = this.y;
