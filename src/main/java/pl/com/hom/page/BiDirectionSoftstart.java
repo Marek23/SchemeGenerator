@@ -1,7 +1,7 @@
 package pl.com.hom.page;
 
+import pl.com.hom.board.Board;
 import pl.com.hom.configuration.Measures;
-import pl.com.hom.data.Board;
 import pl.com.hom.element.main.Ckf;
 import pl.com.hom.element.main.CurrentCoil;
 import pl.com.hom.element.main.Mks;

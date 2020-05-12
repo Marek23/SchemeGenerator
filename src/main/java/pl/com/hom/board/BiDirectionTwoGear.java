@@ -1,4 +1,4 @@
-package pl.com.hom.data;
+package pl.com.hom.board;
 
 import pl.com.hom.page.BiDirectionJet;
 

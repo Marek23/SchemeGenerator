@@ -1,8 +1,8 @@
 package pl.com.hom.page;
 
+import pl.com.hom.board.Board;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
-import pl.com.hom.data.Board;
 
 public class Errors extends Page {
 	protected enum Direction {Up, Down};

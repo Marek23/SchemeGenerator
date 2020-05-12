@@ -33,12 +33,16 @@ public final class Resource {
 		"ThermalFuse3.wmf",
 		"PlcCpu.wmf",
 		"PlcModule.wmf",
+		"PlcSignalUp.wmf",
+		"PlcSignalDown.wmf",
 		"Contact.wmf",
 		"ContactorPointer.wmf",
 		"Softstart.wmf",
 		"Ckf.wmf",
 		"SingleContactor.wmf",
-		"SingleContactorPointer.wmf"
+		"SingleContactorPointer.wmf",
+		"SteeringContact.wmf",
+		"SteeringCoil.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

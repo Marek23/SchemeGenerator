@@ -25,8 +25,11 @@ public final class Measures {
 	public final static float MKS_HEIGHT = 350f;
 
 	public final static float PLC_HEIGHT = 150f;
+	public final static float PLC_SIGNAL_HEIGHT = 250f;
 	public final static float PLC_WIDTH_DIST    = 70f;
+	public final static float PLC_SIGNAL_WIDTH_DIST = 100f;
 	public final static float PLC_MODULE_MARGIN = 160f;
+	public final static float PLC_SIGNAL_MARGIN = 50f;
 
 	public final static float PLCINPUTHEIGHT  = 150f;
 	public final static float PLCOUTPUTHEIGHT = 150f;
@@ -59,4 +62,8 @@ public final class Measures {
 	public final static float POINTERS_SPACE = 10f;
 	public final static float POINTER_PARENT_NR_X_MARGIN = 5f;
 	public final static float POINTER_PARENT_NR_Y_MARGIN = 5f;
+
+	public final static float STEERING_HEIGHT = 80f;
+	public final static float STEERING_COIL_HEIGHT = 350f;
+	public final static float STEERING_PAGE_AFTER_CONTACT_HEIGHT = 200f;
 }

@@ -8,27 +8,17 @@ import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.page.Page;
 import pl.com.hom.element.Element;
-import pl.com.hom.element.main.Plc;
 import pl.com.hom.element.main.SteeringCoil;
 
-public class PlcSignal extends Element {
-	private String steeringName;
-
-	private float steeringX;
-	private float steeringY;
-
-	public PlcSignal(Page page, Plc parent, String type, String steeringName, float x, float y, boolean up) {
-		if (up)
-			this.name = "PlcSignalUp";
-		else
-			this.name = "PlcSignalDown";
-
+public class SteeringContact extends Element {
+	public SteeringContact(Page page, SteeringCoil parent, PlcSignal signal) {
+		this.name       = "SteeringContact";
 		this.visibility = true;
 		this.image      = getImage(name, page);
 		this.page       = page;
 
-		this.x = x;
-		this.y = y;
+		this.x = signal.widthPos() + 100f * Measures.SCALE;
+		this.y = Measures.STEERING_HEIGHT;
 		this.page = page;
 
 		this.width  = image.getWidth()  * Measures.SCALE;
@@ -43,39 +33,21 @@ public class PlcSignal extends Element {
 		this.parentY = this.heightPos() + this.height()/1.5f + 10f;
 		this.parentPageNr = parent.page().nr();
 
-		this.steeringX = this.widthPos() - 22f;
-		this.steeringY = this.heightPos() + this.height()/1.5f;
-		this.steeringName = steeringName;
-
 		points = new ArrayList<Point>();
 
-		if (up)
-			points.add(Point.up(page, this, 200f, false, "DC24"));
-		else
-			points.add(Point.down(page, this, 200f, false, "DC24"));
-
-		this.parent = parent;
-		parent.add(this, type);
+		points.add(Point.up(page, this, 100f, false, "MAINL10"));
+		points.add(Point.down(page, this, 100f, false, signal.steeringName()));
 
 		page.add(this);
 
+		this.parent = parent;
+
+		float xSter = this.x + 400f * Measures.SCALE;
+		float ySter = Measures.STEERING_PAGE_AFTER_CONTACT_HEIGHT;
+		Point.upRight(page, this.x + 100f * Measures.SCALE, ySter, signal.steeringName());
+		page.end(Point.leftRight(page, xSter, ySter, signal.steeringName()));
+
 //		TODO
 //		new ContactMksPointer(this, parent);
-	}
-
-	public float steeringX() {
-		return steeringX;
-	}
-
-	public float steeringY() {
-		return steeringY;
-	}
-
-	public String steeringName() {
-		return steeringName;
-	}
-
-	public void addSteeringCoil() {
-		new SteeringCoil(this.page, this);
 	}
 }

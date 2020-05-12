@@ -1,19 +1,24 @@
-package pl.com.hom.data;
+package pl.com.hom.board;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
 import pl.com.hom.connections.Point;
+import pl.com.hom.data.Reader;
+import pl.com.hom.data.Signal;
 import pl.com.hom.page.MksErrors;
 import pl.com.hom.page.Page;
 import pl.com.hom.page.Plc;
+import pl.com.hom.page.Steering;
 
 public class Board extends PdfDocument {
 	private static final long serialVersionUID = 1L;
-
+	
+	private static final long MAX_PLC_SIGNALS_AT_PAGE = 8;
 	private String name;
 	private String current;
 	private String power;
@@ -26,6 +31,8 @@ public class Board extends PdfDocument {
 	private ArrayList<Signal>   sapOutput;
 	private ArrayList<Page>     pages;
 
+	private ArrayList<pl.com.hom.element.main.Plc> plcs;
+
 	public Board(String name) throws FileNotFoundException {
 		super(new PdfWriter(name + ".pdf"));
 
@@ -34,7 +41,8 @@ public class Board extends PdfDocument {
 		this.receivers = new ArrayList<Receiver>();
 		this.sapInput  = new ArrayList<Signal>();
 		this.sapOutput = new ArrayList<Signal>();
-		this.pages  = new ArrayList<Page>();
+		this.pages = new ArrayList<Page>();
+		this.plcs  = new ArrayList<pl.com.hom.element.main.Plc>();
 	}
 
 	public String name() {
@@ -46,7 +54,7 @@ public class Board extends PdfDocument {
 		int sapInputs = mkls * 8;
 
 		int plcInputs = sapInputs;
-		int plcOutputs = sapOutput.size() + Reader.steerings(this.name);
+		int plcOutputs = sapOutput.size() + Reader.steerings(this.name).size();
 
 		int modules = 0;
 		int temp = 4;
@@ -61,12 +69,28 @@ public class Board extends PdfDocument {
 			temp += 8;
 		}
 
-		pages.add(new Plc(this, modules));
+		Plc plcPage = new Plc(this, modules);
+		this.plcs = plcPage.plcs();
+		pages.add(plcPage);
+
+		
+		Iterator<String> s = Reader.steerings(this.name).iterator();
+
+		while(s.hasNext()) {
+			ArrayList<String> patch = new ArrayList<String>();
+
+			for (int i = 0; i < MAX_PLC_SIGNALS_AT_PAGE; i++) {
+				if (s.hasNext())
+					patch.add(s.next());
+				else
+					break;
+			}
+
+			pages.add(new Steering(this, patch));
+		}
 
 		for (Receiver r: receivers)
 			pages.add(r.page());
-
-		targets();
 
 		for(Page p: pages) {
 			if (p.mks() != null) {
@@ -78,6 +102,8 @@ public class Board extends PdfDocument {
 		}
 
 		pages.add(mksErr);
+
+		targets();
 
 		for(Page p: pages)
 			p.draw();
@@ -121,5 +147,24 @@ public class Board extends PdfDocument {
 						}
 			}
 		}
+
+		for (Page p: pages)
+			p.clearPendingEdges();
+	}
+
+	public pl.com.hom.element.main.Plc nextInput() {
+		for (pl.com.hom.element.main.Plc p: plcs)
+			if (p.input() > 0)
+				return p;
+
+		throw new RuntimeException("Run out of plc modules for inputs.");
+	}
+
+	public pl.com.hom.element.main.Plc nextOutput() {
+		for (pl.com.hom.element.main.Plc p: plcs)
+			if (p.output() > 0)
+				return p;
+
+		throw new RuntimeException("Run out of plc modules for outputs.");
 	}
 }

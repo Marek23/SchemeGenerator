@@ -1,10 +1,10 @@
 package pl.com.hom.page;
 
+import pl.com.hom.board.Board;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
-import pl.com.hom.data.Board;
 import pl.com.hom.element.main.CurrentCoil;
 import pl.com.hom.element.main.Mks;
 import pl.com.hom.element.main.MotorFuse3;

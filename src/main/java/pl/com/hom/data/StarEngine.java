@@ -1,5 +1,7 @@
 package pl.com.hom.data;
 
+import pl.com.hom.board.Board;
+import pl.com.hom.board.Receiver;
 import pl.com.hom.page.Jet;
 
 public class StarEngine extends Receiver{

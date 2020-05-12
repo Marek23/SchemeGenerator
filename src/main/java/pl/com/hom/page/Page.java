@@ -1,11 +1,13 @@
 package pl.com.hom.page;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfPage;
 
+import pl.com.hom.board.Board;
 import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Direction;
@@ -15,7 +17,6 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.connections.VerticalLine;
-import pl.com.hom.data.Board;
 import pl.com.hom.element.pointer.Pointer;
 import pl.com.hom.element.Element;
 import pl.com.hom.element.main.Mks;
@@ -297,6 +298,22 @@ public class Page extends PdfPage{
 		return false;
 	}
 
+	public void clearPendingEdges() {
+		ArrayList<Point> unmodified = new ArrayList<Point>(ends);
+		for(Point p: unmodified)
+			if (p.target() == 0) {
+				ends.remove(p);
+				points.remove(p);
+			}
+
+		unmodified = new ArrayList<Point>(begins);
+		for(Point p: unmodified)
+			if (p.target() == 0) {
+				begins.remove(p);
+				points.remove(p);
+			}
+	}
+
 	public boolean pendingBegins() {
 		for(Point p: begins)
 			if (p.target() == 0)
@@ -319,6 +336,14 @@ public class Page extends PdfPage{
 
 	protected float plcX() {
 		return Measures.PLC_MODULE_MARGIN + Measures.PLC_WIDTH_DIST * (sequence(board.name() + "PAGE" + String.valueOf(this.nr) + "PLC") -1);
+	}
+
+	protected float plcSignalX() {
+		return Measures.PLC_SIGNAL_MARGIN + Measures.PLC_SIGNAL_WIDTH_DIST * (sequence(board.name() + "PAGE" + String.valueOf(this.nr) + "PLCSIGNAL") -1);
+	}
+
+	public void end(Point p) {
+		this.ends.add(p);
 	}
 
 	public Board board() {

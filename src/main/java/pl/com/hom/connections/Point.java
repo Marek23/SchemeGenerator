@@ -245,6 +245,25 @@ public class Point {
 		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
 	}
 
+	public static Point left(Page page, float x, float y, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Left, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		return new Point(page, potential, x, y, dirs, false);	
+	}
+
+	public static Point leftRight(Page page, float x, float y, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Left, false);
+		dirs.put(Direction.Right, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		return new Point(page, potential, x, y, dirs, false);	
+	}
+
 	public static Point right(Page page, Element parent, float y, boolean visibility,String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Right, false);

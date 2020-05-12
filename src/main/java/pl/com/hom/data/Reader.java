@@ -12,6 +12,10 @@ import java.util.Map.Entry;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import pl.com.hom.board.BiDirectionSoftstart;
+import pl.com.hom.board.Board;
+import pl.com.hom.board.Receiver;
+import pl.com.hom.board.TwoGear;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Potential;
 
@@ -31,13 +35,11 @@ public final class Reader {
 	public static HashMap<String, Integer> colS;
 
 	public static HashMap<String, ArrayList<Receiver>> steerings;
-	public static HashMap<String, String> pretty;
+	public static HashMap<String, String> prettySteerings;
 	public static ArrayList<Board> boards;
 
 	public static ArrayList<Receiver> receivers;
 	public static ArrayList<String>   scenarios;
-
-	private static HashMap<String, Integer> steeringsCounter;
 
 	public static void init() throws IOException
 	{
@@ -63,15 +65,11 @@ public final class Reader {
 
         boards = new ArrayList<Board>();
 
-        steeringsCounter = new HashMap<String, Integer>();
-
 		Iterator<Sheet> i = workbookB.sheetIterator();
 		while(i.hasNext()) {
 			String name = i.next().getSheetName();
 
 			boards.add(new Board(name));
-
-			steeringsCounter.put(name, 0);
 		}
 
         ArrayList<String> balanceCols = new ArrayList<String>(Arrays.asList(
@@ -108,7 +106,7 @@ public final class Reader {
         receivers = new ArrayList<Receiver>();
         steerings = new HashMap<String, ArrayList<Receiver>>();
 
-        pretty = new HashMap<String, String>();
+        prettySteerings = new HashMap<String, String>();
 
 		for (Row r: workbookB.getSheetAt(0))
 			for(Cell c: r)
@@ -274,6 +272,7 @@ public final class Reader {
 							if (scenName.toUpperCase().trim().startsWith("1B")) key1B += s;
 							if (scenName.toUpperCase().trim().startsWith("2B")) key2B += s;
 						}
+
 						System.out.println("F: " + key1B);
 						System.out.println("F: " + key2B);
 
@@ -298,7 +297,7 @@ public final class Reader {
 //			}
 //		}
 
-		for (Entry<String, String> e: pretty.entrySet()) {
+		for (Entry<String, String> e: prettySteerings.entrySet()) {
 		System.out.println("Steering key: " + e.getKey() + " \\ " + e.getValue());
 	}
 	}
@@ -357,7 +356,7 @@ public final class Reader {
 
 	private static Receiver receiver(String name) {
 		for (Receiver r: receivers)
-			if (r.name.equalsIgnoreCase(name))
+			if (r.name().equalsIgnoreCase(name))
 				return r;
 
 		return null;
@@ -392,24 +391,27 @@ public final class Reader {
 	}
 
 	private static String pretty1B(String board, String key) {
-		if (!pretty.containsKey(key)) {
-			pretty.put(key, "1BSt" + String.valueOf(sequence(board + "1B")));
-			steeringsCounter.put(board, steeringsCounter.get(board) + 1);
+		if (!prettySteerings.containsKey(key)) {
+			prettySteerings.put(key, "1BSt" + String.valueOf(sequence(board + "1B")));
 		}
 
-		return pretty.get(key);
+		return prettySteerings.get(key);
 	}
 
 	private static String pretty2B(String board, String key) {
-		if (!pretty.containsKey(key)) {
-			pretty.put(key, "2BSt" + String.valueOf(sequence(board + "2B")));
-			steeringsCounter.put(board, steeringsCounter.get(board) + 1);
+		if (!prettySteerings.containsKey(key)) {
+			prettySteerings.put(key, "2BSt" + String.valueOf(sequence(board + "2B")));
 		}
 
-		return pretty.get(key);
+		return prettySteerings.get(key);
 	}
 
-	public static int steerings(String board) {
-		return steeringsCounter.get(board);
+	public static ArrayList<String> steerings(String board) {
+		ArrayList<String> out = new ArrayList<String>();
+		for (Entry<String, String> e: prettySteerings.entrySet())
+			if (e.getKey().contains(board))
+				out.add(e.getValue());
+
+		return out;
 	}
 }

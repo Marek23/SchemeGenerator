@@ -15,6 +15,8 @@ public class Plc extends Element {
 	private ArrayList<PlcSignal>  inputs;
 	private ArrayList<PlcSignal> outputs;
 
+	private int MAX_INPUTS = 8;
+	private int MAX_OUTPUTS;
 	public Plc(Page page, String type, float x, float y) {
 		this.name = "Plc" + type;
 		this.visibility = true;
@@ -39,6 +41,8 @@ public class Plc extends Element {
 		points.add(Point.down(page, this, 400f, false, "GROUNDPE"));
 
 		if (type == "Cpu") {
+			MAX_OUTPUTS = 4;
+
 			Point a = Point.down(page, this, 500f, false, "A+");
 			Point b = Point.down(page, this, 600f, false, "B-");
 
@@ -48,7 +52,34 @@ public class Plc extends Element {
 			page.add(new Terminal(page, a, "XT"));
 			page.add(new Terminal(page, b, "XT"));
 		}
+		else {
+			MAX_OUTPUTS = 8;
+		}
+
+		this.outputs = new ArrayList<PlcSignal>();
+		this.inputs  = new ArrayList<PlcSignal>();
 
 		page.add(this);
+	}
+
+	public int output() {
+		if (this.outputs.size() < MAX_OUTPUTS)
+			return this.outputs.size() + 1;
+		else
+			return -1;
+	}
+
+	public int input() {
+		if (this.inputs.size() < MAX_INPUTS)
+			return this.inputs.size() + 1;
+		else
+			return -1;
+	}
+
+	public void add(PlcSignal signal, String type){
+		if (type.equals("Y"))
+			outputs.add(signal);
+		if (type.equals("X"))
+			inputs.add(signal);
 	}
 }
