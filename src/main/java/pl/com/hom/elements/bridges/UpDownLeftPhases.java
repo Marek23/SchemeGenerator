@@ -22,8 +22,4 @@ public class UpDownLeftPhases extends Element {
 
 		page.add(this);
 	}
-
-	public Element child() {
-		return null;
-	}
 }

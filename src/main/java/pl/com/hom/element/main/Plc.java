@@ -2,37 +2,46 @@ package pl.com.hom.element.main;
 
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.element.Element;
 import pl.com.hom.element.secondary.PlcSignal;
 import pl.com.hom.page.Page;
 
+import static pl.com.hom.configuration.Measures.scaled;
+import static pl.com.hom.configuration.Heights.y;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class Plc extends Element {
+	private static float xSymbolMargin = 20f;
+	private static float ySymbolMargin = 10f;
+
 	private ArrayList<PlcSignal>  inputs;
 	private ArrayList<PlcSignal> outputs;
 
 	private int MAX_INPUTS = 8;
 	private int MAX_OUTPUTS;
-	public Plc(Page page, String type, float x, float y) {
+
+	public Plc(Page page, String type, float x) {
 		this.name = "Plc" + type;
 		this.visibility = true;
 		this.image      = getImage(name, page);
 
-		this.x = x;
-		this.y = y;
+		if (type.equalsIgnoreCase("Cpu"))
+			this.x = scaled(500f);
+		else
+			this.x = x;
+
+		this.y = y("plc");
 		this.page = page;
 		
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 		
 		this.symbol = symbol(page, "S");
 
-		this.symbolX = x + 20f;
-		this.symbolY = y - 10f;
+		this.symbolX = x + xSymbolMargin;
+		this.symbolY = y - ySymbolMargin;
 
 		points = new ArrayList<Point>();
 

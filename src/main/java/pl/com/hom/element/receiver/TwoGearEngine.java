@@ -2,7 +2,6 @@ package pl.com.hom.element.receiver;
 
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.element.Element;
@@ -10,19 +9,21 @@ import pl.com.hom.elements.bridges.UpLeftPhases;
 import pl.com.hom.elements.bridges.UpRightPhases;
 import pl.com.hom.page.Page;
 
+import static pl.com.hom.configuration.Widths.x;
+import static pl.com.hom.configuration.Heights.y;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class TwoGearEngine extends Element {
-	public TwoGearEngine(Page page, float x, float y) {
+	public TwoGearEngine(Page page) {
 		this.name       = "TwoGearEngine";
 		this.visibility = true;
 		this.image      = getImage(name, page);
 
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 
-		this.x = x;
-		this.y = y;
+		this.x = x("2");
+		this.y = y("receiver");
 
 		points = new ArrayList<Point>();
 
@@ -39,8 +40,8 @@ public class TwoGearEngine extends Element {
 		
 		page.add(this);
 
-		Element left  = new UpRightPhases(page, Measures.FIRST_WIDTH, y);
-		Element right = new UpLeftPhases(page, Measures.THIRD_WIDTH, y);
+		Element left  = new UpRightPhases(page, x("1"), y);
+		Element right = new UpLeftPhases(page, x("3"), y);
 
 		for (Point p: left.points())
 			page.add(new Terminal(page, p, "X2"));

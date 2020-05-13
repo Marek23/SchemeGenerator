@@ -1,14 +1,12 @@
 package pl.com.hom.page;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfPage;
 
 import pl.com.hom.board.Board;
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Direction;
 import pl.com.hom.connections.HorizontalLine;
@@ -22,7 +20,9 @@ import pl.com.hom.element.Element;
 import pl.com.hom.element.main.Mks;
 import pl.com.hom.printer.Printer;
 
+import static pl.com.hom.configuration.Widths.x;
 import static pl.com.hom.configuration.Sequences.sequence;
+import static pl.com.hom.configuration.Sequences.sequence0;
 
 public class Page extends PdfPage{
 	protected static final long serialVersionUID = 7351148506505896070L;
@@ -39,10 +39,11 @@ public class Page extends PdfPage{
 
 	protected int nr;
 
-	Printer printer;
+	private Printer printer;
 
 	public Page(Board board) {
 		super(board, PageSize.A4.rotate());
+
 		board.addPage(this);
 
 		this.board = board;
@@ -50,25 +51,15 @@ public class Page extends PdfPage{
 		this.nr  = sequence(board.name() + "page");
 		this.printer = new Printer(this);
 
-		this.points         = new ArrayList<Point>();
-		this.begins         = new ArrayList<Point>();
-		this.ends           = new ArrayList<Point>();
-		this.lines          = new ArrayList<Line>();
-		this.elements       = new ArrayList<Element>();
-		this.pointers       = new ArrayList<Pointer>();
-		this.terminals      = new ArrayList<Terminal>();
+		this.points    = new ArrayList<Point>();
+		this.begins    = new ArrayList<Point>();
+		this.ends      = new ArrayList<Point>();
+		this.lines     = new ArrayList<Line>();
+		this.elements  = new ArrayList<Element>();
+		this.pointers  = new ArrayList<Pointer>();
+		this.terminals = new ArrayList<Terminal>();
 
 		this.printer = new Printer(this);
-	}
-
-	public void showPoints() {
-		for (Point p : points)
-			System.out.println(p);
-	}
-
-	public void showLines() {
-		for (Line l : lines)
-			System.out.println(l);
 	}
 
 	public void add(Element element) {
@@ -198,11 +189,11 @@ public class Page extends PdfPage{
 				if (!hasPoint(name, width, height)) {
 					Point.supply(this, point, Direction.Down);
 
-					if (!hasPoint(name, Measures.BEGIN_MAIN_POINT, point.potential().height()))
-						begins.add(Point.page(this, Measures.BEGIN_MAIN_POINT, point.potential().height(), name));
+					if (!hasPoint(name, x("pageBegin"), point.potential().height()))
+						begins.add(Point.page(this, x("pageBegin"), point.potential().height(), name));
 
-					if (!hasPoint(name, Measures.END_MAIN_POINT, point.potential().height()))
-						ends.add(Point.page(this, Measures.END_MAIN_POINT, point.potential().height(), name));
+					if (!hasPoint(name, x("pageEnd"), point.potential().height()))
+						ends.add(Point.page(this, x("pageEnd"), point.potential().height(), name));
 				}
 			}
 
@@ -211,11 +202,11 @@ public class Page extends PdfPage{
 				if (!hasPoint(name, width, height)) {
 					Point.supply(this, point, Direction.Up);
 
-					if (!hasPoint(name, Measures.BEGIN_MAIN_POINT, point.potential().height()))
-						begins.add(Point.page(this, Measures.BEGIN_MAIN_POINT, point.potential().height(), name));
+					if (!hasPoint(name, x("pageBegin"), point.potential().height()))
+						begins.add(Point.page(this, x("pageBegin"), point.potential().height(), name));
 
-					if (!hasPoint(name, Measures.END_MAIN_POINT, point.potential().height()))
-						ends.add(Point.page(this, Measures.END_MAIN_POINT, point.potential().height(), name));
+					if (!hasPoint(name, x("pageEnd"), point.potential().height()))
+						ends.add(Point.page(this, x("pageEnd"), point.potential().height(), name));
 				}
 			}
 
@@ -225,25 +216,25 @@ public class Page extends PdfPage{
 				{
 					Point.supply(this, point, Direction.Down);
 
-					if (!hasPoint(name, Measures.BEGIN_MAIN_POINT, point.potential().height()))
-						begins.add(Point.page(this, Measures.BEGIN_MAIN_POINT, point.potential().height(), name));
+					if (!hasPoint(name, x("pageBegin"), point.potential().height()))
+						begins.add(Point.page(this, x("pageBegin"), point.potential().height(), name));
 
-					if (!hasPoint(name, Measures.END_MAIN_POINT, point.potential().height()))
-						ends.add(Point.page(this, Measures.END_MAIN_POINT, point.potential().height(), name));
+					if (!hasPoint(name, x("pageEnd"), point.potential().height()))
+						ends.add(Point.page(this, x("pageEnd"), point.potential().height(), name));
 				}
 			}
 
-			if (point.has(Direction.Up) && (name.startsWith("1B") || name.startsWith("2B")))
+			if (point.has(Direction.Up) && (name.startsWith("1B") || name.startsWith("2B") || name.startsWith("LEW") || name.startsWith("PRA")))
 			{
 				if (!hasPoint(name, width, height))
 				{
 					Point.supply(this, point, Direction.Down);
 
-					if (!hasPoint(name, Measures.BEGIN_STEER_POINT, point.potential().height()))
-						begins.add(Point.page(this, Measures.BEGIN_STEER_POINT, point.potential().height(), name));
+					if (!hasPoint(name, x("steeringBegin"), point.potential().height()))
+						begins.add(Point.page(this, x("steeringBegin"), point.potential().height(), name));
 
-					if (!hasPoint(name, Measures.END_STEER_POINT, point.potential().height()))
-						ends.add(Point.page(this, Measures.END_STEER_POINT, point.potential().height(), name));
+					if (!hasPoint(name, x("steeringEnd"), point.potential().height()))
+						ends.add(Point.page(this, x("steeringEnd"), point.potential().height(), name));
 				}
 			}
 		}
@@ -331,15 +322,15 @@ public class Page extends PdfPage{
 	}
 
 	protected float coilX() {
-		return Measures.COIL + Measures.COIL_SPACE * sequence(board.name() + "PAGE" + String.valueOf(this.nr) + "COIL");
+		return x("coilsBegin") + x("coilSpace") * sequence0(board.name() + "PAGE" + String.valueOf(this.nr) + "COIL");
 	}
 
-	protected float plcX() {
-		return Measures.PLC_MODULE_MARGIN + Measures.PLC_WIDTH_DIST * (sequence(board.name() + "PAGE" + String.valueOf(this.nr) + "PLC") -1);
+	protected float plcModuleX() {
+		return x("plcModuleBegin") + x("plcModuleWidth") * (sequence0(board.name() + "PAGE" + String.valueOf(this.nr) + "PLC"));
 	}
 
 	protected float plcSignalX() {
-		return Measures.PLC_SIGNAL_MARGIN + Measures.PLC_SIGNAL_WIDTH_DIST * (sequence(board.name() + "PAGE" + String.valueOf(this.nr) + "PLCSIGNAL") -1);
+		return x("plcSignalBegin") + x("plcSignalWidth") * (sequence0(board.name() + "PAGE" + String.valueOf(this.nr) + "PLCSIGNAL"));
 	}
 
 	public void end(Point p) {

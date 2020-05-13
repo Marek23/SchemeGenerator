@@ -3,14 +3,14 @@ package pl.com.hom.connections;
 import java.util.EnumMap;
 import java.util.Map.Entry;
 
-import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
-
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.element.Element;
 import pl.com.hom.page.Page;
+import pl.com.hom.util.Image;
 
+import static pl.com.hom.configuration.Measures.scaled;
 import static pl.com.hom.configuration.Resource.getImage;
+
 public class Point {
 	private float x;
 	private float y;
@@ -22,19 +22,13 @@ public class Point {
 
 	private String name;
 
-	private boolean        visibility;
-	private PdfFormXObject image;
+	private boolean visibility;
+	private Image   image;
 
 	private EnumMap<Direction, Boolean> directions;
 	private Potential potential;
 
 	private int target;
-
-	@Override
-	public String toString() {
-		return "Point [ x=" + x + ", y=" + y + ", visibility=" + visibility + ", image=" + image
-				+ ", directions=" + directions + ", potential=" + potential + "]";
-	}
 
 	public static Point up(Page page, Element parent, float x, boolean visibility, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
@@ -42,8 +36,8 @@ public class Point {
 
 		Potential potential = Potentials.potential(potName);
 
-		float scaledX = x * Measures.SCALE;
-		float scaledY = 0;
+		float scaledX = scaled(x);
+		float scaledY = 0f;
 
 		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);
 	}
@@ -54,30 +48,10 @@ public class Point {
 
 		Potential potential = Potentials.potential(potName);
 
-		float scaledX = x * Measures.SCALE;
+		float scaledX = scaled(x);
 		float scaledY = parent.height();
 
 		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);
-	}
-
-	public static Point up(Page page, Terminal parent, boolean visibility, String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Up, false);
-
-		Potential potential = Potentials.potential(potName);
-
-		return new Point(page, parent, potential, 0f, 0f, dirs, visibility);
-	}
-
-	public static Point down(Page page, Terminal parent, boolean visibility, String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Down, false);
-
-		Potential potential = Potentials.potential(potName);
-
-		float scaledY = parent.height();
-
-		return new Point(page, parent, potential, 0f, scaledY, dirs, visibility);
 	}
 
 	public static Point pe(Page page, Element parent, float x, float y, boolean visibility) {
@@ -86,8 +60,8 @@ public class Point {
 
 		Potential potential = Potentials.potential("GROUNDPE");
 
-		float scaledX = x * Measures.SCALE;
-		float scaledY = y * Measures.SCALE;
+		float scaledX = scaled(x);
+		float scaledY = scaled(y);
 
 		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);
 	}
@@ -100,8 +74,8 @@ public class Point {
 
 		Potential potential = Potentials.potential(potName);
 
-		float scaledX = x * Measures.SCALE;
-		float scaledY = y * Measures.SCALE;
+		float scaledX = scaled(x);
+		float scaledY = scaled(y);
 
 		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
 	}
@@ -114,11 +88,115 @@ public class Point {
 
 		Potential potential = Potentials.potential(potName);
 
-		float scaledX = x * Measures.SCALE;
-		float scaledY = y * Measures.SCALE;
+		float scaledX = scaled(x);
+		float scaledY = scaled(y);
 
 		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
 	}
+
+	public static Point upRight(Page page, Element parent, float x, float y, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Right, false);
+		dirs.put(Direction.Up, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		float scaledX = scaled(x);
+		float scaledY = scaled(y);
+
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+	}
+
+	public static Point upLeft(Page page, Element parent, float x, float y, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Up, false);
+		dirs.put(Direction.Left, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		float scaledX = scaled(x);
+		float scaledY = scaled(y);
+
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+	}
+
+	public static Point downLeft(Page page, Element parent, float x, float y, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Down, false);
+		dirs.put(Direction.Left, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		float scaledX = scaled(x);
+		float scaledY = scaled(y);
+
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+	}
+
+	public static Point downRight(Page page, Element parent, float x, float y, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Down, false);
+		dirs.put(Direction.Right, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		float scaledX = scaled(x);
+		float scaledY = scaled(y);
+
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+	}
+
+	public static Point left(Page page, Element parent, float y, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Left, false);
+	
+		Potential potential = Potentials.potential(potName);
+	
+		float scaledX = 0f;
+		float scaledY = scaled(y);
+	
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+	}
+
+	public static Point right(Page page, Element parent, float y, boolean visibility,String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Right, false);
+		
+		Potential potential = Potentials.potential(potName);
+		
+		float scaledX = parent.width();
+		float scaledY = scaled(y);
+		
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+	}
+
+
+
+	public static Point up(Page page, Terminal parent, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Up, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		float scaledX = 0f;
+		float scaledY = parent.height();
+
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);
+	}
+
+	public static Point down(Page page, Terminal parent, boolean visibility, String potName) {
+		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
+		dirs.put(Direction.Down, false);
+
+		Potential potential = Potentials.potential(potName);
+
+		float scaledX = 0f;
+		float scaledY = parent.height();
+
+		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);
+	}
+
+
 
 	public static Point upDownRight(Page page, float x, float y, boolean visibility, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
@@ -131,70 +209,34 @@ public class Point {
 		return new Point(page, potential, x, y, dirs, visibility);	
 	}
 
-	public static Point upLeft(Page page, Element parent, float x, float y, boolean visibility, String potName) {
+	public static Point upLeft(Page page, float x, float y, boolean visibility, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Left, false);
 
 		Potential potential = Potentials.potential(potName);
 
-		float scaledX = x * Measures.SCALE;
-		float scaledY = y * Measures.SCALE;
-
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+		return new Point(page, potential, x, y, dirs, visibility);	
 	}
 
-	public static Point upLeft(Page page, float x, float y, String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Up, false);
-		dirs.put(Direction.Left, false);
-
-		Potential potential = Potentials.potential(potName);
-
-		return new Point(page, potential, x, y, dirs, false);	
-	}
-
-	public static Point upRight(Page page, float x, float y, String potName) {
+	public static Point upRight(Page page, float x, float y, boolean visibility, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Up, false);
 		dirs.put(Direction.Right, false);
 
 		Potential potential = Potentials.potential(potName);
 
-		return new Point(page, potential, x, y, dirs, false);	
+		return new Point(page, potential, x, y, dirs, visibility);	
 	}
 
-	public static Point downLeft(Page page, float x, float y, String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Down, false);
-		dirs.put(Direction.Left, false);
-
-		Potential potential = Potentials.potential(potName);
-
-		return new Point(page, potential, x, y, dirs, false);	
-	}
-
-	public static Point downRight(Page page, float x, float y, String potName) {
+	public static Point downRight(Page page, float x, float y, boolean visibility, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
 		dirs.put(Direction.Down, false);
 		dirs.put(Direction.Right, false);
 
 		Potential potential = Potentials.potential(potName);
 
-		return new Point(page, potential, x, y, dirs, false);	
-	}
-
-	public static Point downLeft(Page page, Element parent, float x, float y, boolean visibility, String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Down, false);
-		dirs.put(Direction.Left, false);
-
-		Potential potential = Potentials.potential(potName);
-
-		float scaledX = x * Measures.SCALE;
-		float scaledY = y * Measures.SCALE;
-
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
+		return new Point(page, potential, x, y, dirs, visibility);	
 	}
 
 	public static Point downLeft(Page page, float x, float y, boolean visibility, String potName) {
@@ -205,44 +247,6 @@ public class Point {
 		Potential potential = Potentials.potential(potName);
 
 		return new Point(page, potential, x, y, dirs, visibility);	
-	}
-
-	public static Point downRight(Page page, Element parent, float x, float y, boolean visibility, String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Down, false);
-		dirs.put(Direction.Right, false);
-
-		Potential potential = Potentials.potential(potName);
-
-		float scaledX = x * Measures.SCALE;
-		float scaledY = y * Measures.SCALE;
-
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
-	}
-
-	public static Point upRight(Page page, Element parent, float x, float y, boolean visibility, String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Up, false);
-		dirs.put(Direction.Right, false);
-
-		Potential potential = Potentials.potential(potName);
-
-		float scaledX = x * Measures.SCALE;
-		float scaledY = y * Measures.SCALE;
-
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
-	}
-
-	public static Point left(Page page, Element parent, float y, boolean visibility, String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Left, false);
-
-		Potential potential = Potentials.potential(potName);
-
-		float scaledX = 0f;
-		float scaledY = y * Measures.SCALE;
-
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
 	}
 
 	public static Point left(Page page, float x, float y, String potName) {
@@ -264,17 +268,7 @@ public class Point {
 		return new Point(page, potential, x, y, dirs, false);	
 	}
 
-	public static Point right(Page page, Element parent, float y, boolean visibility,String potName) {
-		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
-		dirs.put(Direction.Right, false);
 
-		Potential potential = Potentials.potential(potName);
-
-		float scaledX = parent.width();
-		float scaledY = y * Measures.SCALE;
-
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, visibility);	
-	}
 
 	public static Point page(Page page, float x, float y, String potName) {
 		EnumMap<Direction, Boolean> dirs = new EnumMap<Direction, Boolean>(Direction.class);
@@ -284,11 +278,7 @@ public class Point {
 
 		Potential potential = Potentials.potential(potName);
 
-		float scaledX = x;
-		float scaledY = y;
-
-		Element parent = null;
-		return new Point(page, parent, potential, scaledX, scaledY, dirs, false);	
+		return new Point(page, potential, x, y, dirs, false);	
 	}
 
 	public static Point supply(Page page, Point point, Direction direction) {
@@ -299,11 +289,11 @@ public class Point {
 
 		Potential potential = point.potential();
 
-		float scaledX = point.widthPos();
-		float scaledY = potential.height();
-
-		return new Point(page, potential, scaledX, scaledY, dirs, true);	
+		return new Point(page, potential, point.widthPos(), potential.height(), dirs, true);	
 	}
+
+
+
 
 	private Point(Page page, Element parent, Potential potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
 		this.x = x;
@@ -323,8 +313,8 @@ public class Point {
 			this.visibility = true;
 			this.image      = getImage(name, page);
 
-			this.width  = image.getWidth()  * Measures.SCALE;
-			this.height = image.getHeight() * Measures.SCALE;
+			this.width  = image.getWidth();
+			this.height = image.getHeight();
 		}
 
 		this.potential  = potential;
@@ -345,8 +335,8 @@ public class Point {
 			this.visibility = true;
 			this.image      = getImage(name, page);
 
-			this.width  = image.getWidth()  * Measures.SCALE;
-			this.height = image.getHeight() * Measures.SCALE;
+			this.width  = image.getWidth();
+			this.height = image.getHeight();
 		}
 
 		this.potential  = potential;
@@ -367,8 +357,8 @@ public class Point {
 			this.visibility = true;
 			this.image      = getImage(name, page);
 
-			this.width  = image.getWidth()  * Measures.SCALE;
-			this.height = image.getHeight() * Measures.SCALE;
+			this.width  = image.getWidth();
+			this.height = image.getHeight();
 		}
 
 		this.potential  = potential;
@@ -449,7 +439,7 @@ public class Point {
     	return potEqual && dirEqual;  
 	}
 
-	public PdfFormXObject image() {
+	public Image image() {
 		return this.image;
 	}
 

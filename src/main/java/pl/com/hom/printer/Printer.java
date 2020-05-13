@@ -11,20 +11,22 @@ import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Line;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.element.pointer.Pointer;
 import pl.com.hom.element.Element;
 
+import static pl.com.hom.configuration.Measures.scale;
+import static pl.com.hom.configuration.Measures.scaled;
+
 public class Printer extends PdfCanvas{
 	private static final long serialVersionUID = 1L;
+	private static float scale = scale();
 	private Canvas canvas;
 
 	private int small  = 9;
 	private int normal = 12;
-	private int large  = 14;
 
 	private PdfFont f;
 
@@ -83,7 +85,7 @@ public class Printer extends PdfCanvas{
 		}
 
 		if (e.visible())
-			this.addXObject(e.image(), new Rectangle(e.widthPos(), 595.0f - e.heightPos() - e.height(), Measures.SCALE,Measures.SCALE));
+			this.addXObject(e.image(), new Rectangle(e.widthPos(), 595.0f - e.heightPos() - e.height(), scale,scale));
 	}
 
 	public void addPointer(Pointer p) {
@@ -94,21 +96,21 @@ public class Printer extends PdfCanvas{
 		this.showText("/" + String.valueOf(p.parentPage()));
 		this.endText();
 
-		this.addXObject(p.image(), new Rectangle(p.widthPos(), 595.0f - p.heightPos() - p.height(), Measures.SCALE,Measures.SCALE));
+		this.addXObject(p.image(), new Rectangle(p.widthPos(), 595.0f - p.heightPos() - p.height(), scale,scale));
 	}
 
 	public void addTerminal(Terminal t) {
 		canvas.setFontSize(normal);
 
 		this.beginText();
-		canvas.showTextAligned(t.fullName(), (int)(t.widthNamePos() - Measures.TERMINAL_DRAW_MARGIN), (int)(595.0f - t.heightNamePos()), TextAlignment.CENTER, VerticalAlignment.MIDDLE, 1.5707963268f);
+		canvas.showTextAligned(t.fullName(), t.widthNamePos() - scaled(200f), (595.0f - t.heightNamePos()), TextAlignment.CENTER, VerticalAlignment.MIDDLE, 1.5707963268f);
 		this.endText();
-		this.addXObject(t.image(), new Rectangle(t.widthPos() - Measures.TERMINAL_DRAW_MARGIN, 595.0f - t.heightPos() - t.height(), Measures.SCALE,Measures.SCALE));
+		this.addXObject(t.image(), new Rectangle(t.widthPos() - scaled(100f), 595.0f - t.heightPos() - t.height(), scale,scale));
 	}
 
 	public void addPoint(Point p) {
 		if (p.isVisibile())
-			this.addXObject(p.image(), new Rectangle(p.widthPos() - p.width()/2, 595.0f - p.heightPos() -  p.height()/2, Measures.SCALE,Measures.SCALE));
+			this.addXObject(p.image(), new Rectangle(p.widthPos() - p.width()/2, 595.0f - p.heightPos() - p.height()/2, scale,scale));
 	}
 
 	public void addBeginPoint(Point p) {

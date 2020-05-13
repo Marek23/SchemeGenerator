@@ -13,4 +13,13 @@ public final class Sequences {
 
 		return group.get(g);
 	}
+
+	public static int sequence0(String g) {
+		if (group.containsKey(g))
+			group.put(g, group.get(g)+1);
+		else
+			group.put(g, 0);
+
+		return group.get(g);
+	}
 }

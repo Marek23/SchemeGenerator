@@ -12,9 +12,11 @@ import java.util.Map.Entry;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import pl.com.hom.board.BiDirectionSoftstart;
 import pl.com.hom.board.Board;
+import pl.com.hom.board.DolEngine;
+import pl.com.hom.board.Jet;
 import pl.com.hom.board.Receiver;
+import pl.com.hom.board.Softstart;
 import pl.com.hom.board.TwoGear;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Potential;
@@ -202,16 +204,28 @@ public final class Reader {
 							String runMethod = r.getCell(atIn(colB, "ZASILANIE / SPOSÓB ROZRUCHU")).getStringCellValue();
 
 							if (current1.getNumericCellValue() > 0d && power1.getNumericCellValue() > 0d) {
-								receivers.add(new TwoGear(
-									board(boardName),
-									name,
-									String.valueOf(current1.getNumericCellValue()),
-									String.valueOf(current2.getNumericCellValue()),
-									String.valueOf(power1.getNumericCellValue()),
-									String.valueOf(power2.getNumericCellValue()),
-									cable.getStringCellValue(),
-									s.getSheetName()
-								));
+								if (power2.getNumericCellValue() > 2)
+									receivers.add(new TwoGear(
+										board(boardName),
+										name,
+										String.valueOf(current1.getNumericCellValue()),
+										String.valueOf(current2.getNumericCellValue()),
+										String.valueOf(power1.getNumericCellValue()),
+										String.valueOf(power2.getNumericCellValue()),
+										cable.getStringCellValue(),
+										s.getSheetName()
+									));
+								else
+									receivers.add(new Jet(
+											board(boardName),
+											name,
+											String.valueOf(current1.getNumericCellValue()),
+											String.valueOf(current2.getNumericCellValue()),
+											String.valueOf(power1.getNumericCellValue()),
+											String.valueOf(power2.getNumericCellValue()),
+											cable.getStringCellValue(),
+											s.getSheetName()
+										));
 							}
 							else if (current2.getNumericCellValue() > 0d && power2.getNumericCellValue() > 0d) {
 								if (runMethod.equalsIgnoreCase("Rozruch bezpośredni")) {
@@ -226,7 +240,7 @@ public final class Reader {
 								}
 
 								if (runMethod.equalsIgnoreCase("Rozruch softstart")) {
-									receivers.add(new BiDirectionSoftstart(
+									receivers.add(new Softstart(
 										board(boardName),
 										name,
 										String.valueOf(current2.getNumericCellValue()),
@@ -260,46 +274,80 @@ public final class Reader {
 						String key1B = "1B" + board;
 						String key2B = "2B" + board;
 
+						int scenariosCounter  = 0;
+						int directionsCounter = 0;
+
+						boolean hasDirection  = false;  
+						String keyLeft  = "LEW" + board;
+						String keyRight = "PRA" + board;
+
+//						begin validation
 						for (String s: scenarios) {
 							Cell scenario = r.getCell(atIn(colM, s));
 
 							boolean valid = scenario != null && scenario.getCellType() == CellType.STRING && !scenario.getStringCellValue().isEmpty();
 
-							if (!valid) throw new RuntimeException("Błąd w wierszu: " + r.getRowNum() + " i kolumnie " + scenario.getColumnIndex() + " w matrycy sterowań.");
+							if (!valid) throw new RuntimeException("Błąd dla urządzenia: " + recName + " w scenariuszu " + s + " w matrycy sterowań.");
+
+							String scenName = scenario.getStringCellValue();
+
+							if (scenName.toUpperCase().contains("L") || scenName.toUpperCase().contains("P")) {
+								scenariosCounter++;
+								directionsCounter++;
+							}
+							else
+								if (!scenName.toUpperCase().trim().startsWith("WY"))
+									scenariosCounter++;
+							
+						}
+						if (directionsCounter > 0) {
+							hasDirection = true;
+
+							if (directionsCounter < scenariosCounter)
+								for (String s: scenarios) {
+									Cell scenario = r.getCell(atIn(colM, s));
+	
+									boolean valid = scenario != null && scenario.getCellType() == CellType.STRING && !scenario.getStringCellValue().isEmpty();
+	
+									if (!valid) throw new RuntimeException("Błąd dla urządzenia: " + recName + " w scenariuszu " + s + " w matrycy sterowań.");
+	
+									String scenName = scenario.getStringCellValue();
+	
+									if (!scenName.toUpperCase().trim().startsWith("WY") && (!scenName.toUpperCase().contains("L") && !scenName.toUpperCase().contains("P")))
+										throw new RuntimeException("Dla urządzenia: " + recName + " brak definicji kierunku w scenariuszu " + s + " matrycy sterowań.");
+								}
+							
+						}
+//						end validation
+
+						for (String s: scenarios) {
+							Cell scenario = r.getCell(atIn(colM, s));
 
 							String scenName = scenario.getStringCellValue();
 
 							if (scenName.toUpperCase().trim().startsWith("1B")) key1B += s;
 							if (scenName.toUpperCase().trim().startsWith("2B")) key2B += s;
-						}
 
-						System.out.println("F: " + key1B);
-						System.out.println("F: " + key2B);
+							if (scenName.toUpperCase().contains("LEW")) keyLeft  += s;
+							if (scenName.toUpperCase().contains("PRA")) keyRight += s;
+						}
 
 						String prettyB1 = pretty1B(board, key1B);
 						String prettyB2 = pretty2B(board, key2B);
-
-						System.out.println("P: " + prettyB1);
-						System.out.println("P: " + prettyB2);
-
 						addSteering1B(rec, prettyB1);
 						addSteering2B(rec, prettyB2);
+
+						if (hasDirection) {
+							System.out.println(recName + rec.getClass());
+							String prettyL = prettyL(board, keyLeft);
+							String prettyR = prettyR(board, keyRight);
+							addSteeringL(rec, prettyL);
+							addSteeringR(rec, prettyR);
+						}
 					}
 				}
 			}
 		}
-
-//		TESTS
-//		for (Entry<String, ArrayList<Receiver>> e: steerings.entrySet()) {
-//			System.out.println("Steering key: " + e.getKey());
-//			for (Receiver r: e.getValue()) {
-//				System.out.println(r);
-//			}
-//		}
-
-		for (Entry<String, String> e: prettySteerings.entrySet()) {
-		System.out.println("Steering key: " + e.getKey() + " \\ " + e.getValue());
-	}
 	}
 
 	private static void readSignals() {
@@ -390,6 +438,26 @@ public final class Reader {
 		receiver.steering2(key);
 	}
 
+	private static void addSteeringL(Receiver receiver, String key) {
+		if (steerings.containsKey(key))
+			steerings.get(key).add(receiver);
+		else
+			steerings.put(key, new ArrayList<Receiver>(Arrays.asList(receiver)));
+
+		Potentials.add(new Potential(key, 100f, 2000f));
+		receiver.steeringL(key);
+	}
+
+	private static void addSteeringR(Receiver receiver, String key) {
+		if (steerings.containsKey(key))
+			steerings.get(key).add(receiver);
+		else
+			steerings.put(key, new ArrayList<Receiver>(Arrays.asList(receiver)));
+
+		Potentials.add(new Potential(key, 100f, 2100f));
+		receiver.steeringR(key);
+	}
+
 	private static String pretty1B(String board, String key) {
 		if (!prettySteerings.containsKey(key)) {
 			prettySteerings.put(key, "1BSt" + String.valueOf(sequence(board + "1B")));
@@ -403,6 +471,23 @@ public final class Reader {
 			prettySteerings.put(key, "2BSt" + String.valueOf(sequence(board + "2B")));
 		}
 
+		return prettySteerings.get(key);
+	}
+
+	
+	private static String prettyL(String board, String key) {
+		if (!prettySteerings.containsKey(key)) {
+			prettySteerings.put(key, "LEW" + String.valueOf(sequence(board + "LEW")));
+		}
+		
+		return prettySteerings.get(key);
+	}
+
+	private static String prettyR(String board, String key) {
+		if (!prettySteerings.containsKey(key)) {
+			prettySteerings.put(key, "PRA" + String.valueOf(sequence(board + "PRA")));
+		}
+		
 		return prettySteerings.get(key);
 	}
 

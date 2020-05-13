@@ -1,17 +1,22 @@
 package pl.com.hom.element.secondary;
 
-import static pl.com.hom.configuration.Resource.getImage;
-
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
-import pl.com.hom.element.pointer.ContactCkfPointer;
-import pl.com.hom.element.pointer.Pointer;
 import pl.com.hom.page.Page;
 import pl.com.hom.element.Element;
+import pl.com.hom.element.pointer.ContactCkfPointer;
+import pl.com.hom.element.pointer.Pointer;
+
+import static pl.com.hom.configuration.Resource.getImage;
 
 public class CkfContact extends Element {
+	private static float xSymbolMargin = 20f;
+	private static float ySymbolMargin = 20f;
+
+	private static float xParentMargin = 12f;
+	private static float yParentMargin = 20f;
+
 	public CkfContact (Page page, Element parent, float x, float y) {
 		this.name       = "CkfContact";
 		this.visibility = true;
@@ -22,13 +27,19 @@ public class CkfContact extends Element {
 		this.y = y;
 		this.page = page;
 
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 		
 		this.symbol = parent.symbol();
 
-		this.symbolX = x - 18f;
-		this.symbolY = y + this.height()/1.5f;
+		ySymbolMargin = this.height()/1.5f;
+		this.symbolX = x - xSymbolMargin;
+		this.symbolY = y + ySymbolMargin;
+
+		yParentMargin = this.height()/1.5f + 10f;
+		this.parentX = this.widthPos() - xParentMargin;
+		this.parentY = this.heightPos() + yParentMargin;
+		this.parentPageNr = parent.page().nr();
 
 		points = new ArrayList<Point>();
 		pointers = new ArrayList<Pointer>();

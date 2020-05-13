@@ -16,6 +16,9 @@ public class TwoGear extends Receiver{
 	}
 
 	public Page page() {
-		return new pl.com.hom.page.TwoGear(parent, this.steering1, this.steering2);
+		if (steeringL != null && steeringR != null)
+			return new pl.com.hom.page.BiDirectionTwoGear(parent, this.steering1, this.steering2, this.steeringL, this.steeringR);
+		else
+			return new pl.com.hom.page.TwoGear(parent, this.steering1, this.steering2);
 	}
 }

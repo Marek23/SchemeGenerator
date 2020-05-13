@@ -2,17 +2,16 @@ package pl.com.hom.connections;
 
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.page.Page;
 
+import static pl.com.hom.configuration.Measures.scaled;
 import static pl.com.hom.configuration.Sequences.sequence;
 import static pl.com.hom.configuration.Resource.getImage;
+import static pl.com.hom.configuration.Heights.y;
 
 public class Terminal {
 	private PdfFormXObject image;
 	private String name;
-
-	private String group;
 
 	private Potential potential;
 
@@ -26,6 +25,8 @@ public class Terminal {
 	private float width;
 	private float height;
 
+	private static float xSymbolMargin = 22f;
+
 	public Terminal(Page page, Point point, String group) {
 		this.name  = "Terminal";
 		this.image = getImage(name, page);
@@ -33,23 +34,21 @@ public class Terminal {
 		this.potential = point.potential();
 
 		this.x = point.widthPos();
-		this.y = Measures.TERMINAL_HEIGHT;
+		this.y = y("terminal");
 
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 
 		if (potential.name().equals("GROUNDPE"))
 			this.id = "PE";
 		else
 			this.id = String.valueOf(sequence(page.board().name() + group));
 
-		this.symbolX = this.x + 60f * Measures.SCALE;
+		this.symbolX = this.x + xSymbolMargin;
 		this.symbolY = this.y;
 
-		this.group = group;
-
-		Point.up(page, this, true, point.potential().name());
-		Point.down(page, this, true, point.potential().name());
+		Point.up(page, this, false, point.potential().name());
+		Point.down(page, this, false, point.potential().name());
 
 		page.add(this);
 	}

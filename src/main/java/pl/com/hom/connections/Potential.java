@@ -1,6 +1,6 @@
 package pl.com.hom.connections;
 
-import pl.com.hom.configuration.Measures;
+import static pl.com.hom.configuration.Measures.scaled;
 
 public class Potential {
 	private String potential;
@@ -9,8 +9,8 @@ public class Potential {
 
 	public Potential(String potential, float width, float height) {
 		this.potential = potential;
-		this.width     = width  * Measures.SCALE;
-		this.height    = height * Measures.SCALE;
+		this.width     = scaled(width);
+		this.height    = scaled(height);
 	}
 
 	public String name() {

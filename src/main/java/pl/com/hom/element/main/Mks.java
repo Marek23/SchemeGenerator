@@ -2,7 +2,6 @@ package pl.com.hom.element.main;
 
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
 import pl.com.hom.element.pointer.Pointer;
@@ -10,24 +9,28 @@ import pl.com.hom.element.secondary.MksContact;
 import pl.com.hom.elements.bridges.UpDownRightPhases;
 import pl.com.hom.page.Page;
 
+import static pl.com.hom.configuration.Widths.x;
+import static pl.com.hom.configuration.Heights.y;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class Mks extends Element {
-	public Mks(Page page, float x, float y) {
+	private static float xSymbolMargin = 20f;
+
+	public Mks(Page page) {
 		this.name       = "Mks";
 		this.visibility = true;
 		this.image      = getImage(name, page);
 
-		this.x = x;
-		this.y = y;
+		this.x = x("mks");
+		this.y = y("mks");
 		this.page = page;
 		
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 		
 		this.symbol = symbol(page, "MKS");
 
-		this.symbolX = x - 20f;
+		this.symbolX = x - xSymbolMargin;
 		this.symbolY = y;
 
 		points = new ArrayList<Point>();
@@ -46,7 +49,7 @@ public class Mks extends Element {
 	}
 
 	public void control(Page page) {
-		new UpDownRightPhases(page, Measures.THIRD_WIDTH, this.y, false);
+		new UpDownRightPhases(page, x("3"), this.y, false);
 	}
 
 	public void secondary(Page page, float x, float y) {

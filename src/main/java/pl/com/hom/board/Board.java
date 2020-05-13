@@ -18,11 +18,8 @@ import pl.com.hom.page.Steering;
 public class Board extends PdfDocument {
 	private static final long serialVersionUID = 1L;
 	
-	private static final long MAX_PLC_SIGNALS_AT_PAGE = 8;
+	private static final long MAX_PLC_SIGNALS_AT_PAGE = 10;
 	private String name;
-	private String current;
-	private String power;
-	private String cable;
 
 	private MksErrors mksErr;
 
@@ -90,7 +87,10 @@ public class Board extends PdfDocument {
 		}
 
 		for (Receiver r: receivers)
-			pages.add(r.page());
+			if (r.steering1 == null || r.steering2 == null)
+				throw new RuntimeException("Brak sterowania dla  " + r.name + " w matrycy sterowań.");
+			else
+				pages.add(r.page());
 
 		for(Page p: pages) {
 			if (p.mks() != null) {
@@ -121,14 +121,6 @@ public class Board extends PdfDocument {
 
 	public void add(Receiver receiver) {
 		this.receivers.add(receiver);
-	}
-
-	public void show() {
-		System.out.println(name);
-		System.out.println("SIGNALS");
-		System.out.println("Receivers");
-		for (Receiver r: receivers)
-			System.out.println(r.toString());
 	}
 
 	private void targets() {

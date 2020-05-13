@@ -1,12 +1,15 @@
 package pl.com.hom.page;
 
 import pl.com.hom.board.Board;
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.element.main.CurrentCoil;
 import pl.com.hom.element.main.Mks;
 import pl.com.hom.element.main.MotorFuse3;
 import pl.com.hom.element.main.ThermalFuse3;
 import pl.com.hom.element.receiver.TwoGearEngine;
+import pl.com.hom.element.secondary.SingleContactor;
+
+import static pl.com.hom.configuration.Widths.x;
+import static pl.com.hom.configuration.Heights.y;
 
 public class Jet extends Page {
 	private static final long serialVersionUID = 1L;
@@ -14,18 +17,20 @@ public class Jet extends Page {
 	public Jet(Board board, String firstGearPot, String secGearPot) {
 		super(board);
 
-		CurrentCoil coil1 = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, firstGearPot);
-		coil1.firstGear(this);
+		CurrentCoil c1 = new CurrentCoil(this, coilX(), firstGearPot);
+		CurrentCoil c2 = new CurrentCoil(this, coilX(), secGearPot);
 
-		CurrentCoil coil2 = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, secGearPot);
-		coil2.secondJetGear(this);
+		c1.firstGear(this);
+		c2.secondJetGear(this);
 
-		new MotorFuse3(this, Measures.THIRD_WIDTH, Measures.FUSE_HEIGHT, true);
-		new ThermalFuse3(this, Measures.FIRST_WIDTH, Measures.FUSE_HEIGHT);
+		new SingleContactor(this, c1, c2);
+		new SingleContactor(this, c2, c1);
 
-		Mks mks = new Mks(this,Measures.MKS_WIDTH, Measures.MKS_HEIGHT);
-		mks.control(this);
+		new MotorFuse3(this, x("3"), y("mainPhuse"), true);
+		new ThermalFuse3(this, x("1"), y("mainPhuse"));
 
-		new TwoGearEngine(this, Measures.SEC_WIDTH, Measures.RECEIVER_HEIGHT);
+		new Mks(this).control(this);
+
+		new TwoGearEngine(this);
 	}
 }

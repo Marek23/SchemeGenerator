@@ -1,7 +1,6 @@
 package pl.com.hom.page;
 
 import pl.com.hom.board.Board;
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.element.main.Ckf;
 import pl.com.hom.element.main.Mks;
 import pl.com.hom.element.main.ThreePhaseFuse;
@@ -9,24 +8,27 @@ import pl.com.hom.element.receiver.ThreePhaseEngine;
 import pl.com.hom.elements.bridges.DownRightPhases;
 import pl.com.hom.elements.bridges.UpDownLeftPhases;
 
+import static pl.com.hom.configuration.Measures.scaled;
+import static pl.com.hom.configuration.Widths.x;
+import static pl.com.hom.configuration.Heights.y;
+
 public class Softstart extends Page {
 	private static final long serialVersionUID = 1L;
 
 	public Softstart(Board board, String ster1, String ster2) {
 		super(board);
 
-		new ThreePhaseFuse(this, Measures.THIRD_WIDTH, Measures.FUSE_HEIGHT);
+		new UpDownLeftPhases(this, x("softstart"), y("softstart") - y("spaceUp") - scaled(300f));
+		new DownRightPhases(this, x("1"), y("softstart") - y("spaceUp") - scaled(300f));
 
-		new UpDownLeftPhases(this, Measures.THIRD_WIDTH, Measures.CKF_BRIDGE_HEIGHT);
-		new DownRightPhases(this, Measures.FIRST_WIDTH, Measures.CKF_BRIDGE_HEIGHT);
+		new ThreePhaseFuse(this, x("3"), y("mainPhuse"));
 
-		new Ckf(this, Measures.FIRST_WIDTH, Measures.CKF_HEIGHT);
+		new Ckf(this, x("1"), y("ckf"));
 
-		new pl.com.hom.element.main.Softstart(this, Measures.THIRD_WIDTH, Measures.SOFTSTART_HEIGHT, "L10");
+		new pl.com.hom.element.main.Softstart(this, "L10");
 
-		Mks mks = new Mks(this,Measures.MKS_WIDTH, Measures.MKS_HEIGHT);
-		mks.control(this);
+		new Mks(this).control(this);
 
-		new ThreePhaseEngine(this, Measures.THIRD_WIDTH, Measures.RECEIVER_HEIGHT);
+		new ThreePhaseEngine(this);
 	}
 }

@@ -1,7 +1,6 @@
 package pl.com.hom.page;
 
 import pl.com.hom.board.Board;
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.configuration.Potentials;
 import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
@@ -13,6 +12,10 @@ import pl.com.hom.element.receiver.TwoGearEngine;
 import pl.com.hom.element.secondary.SingleContactor;
 import pl.com.hom.printer.Printer;
 
+import static pl.com.hom.configuration.Widths.x;
+import static pl.com.hom.configuration.Heights.y;
+import static pl.com.hom.configuration.Measures.scaled;
+
 public class TwoGear extends Page {
 	private static final long serialVersionUID = 1L;
 	Printer printer;
@@ -23,27 +26,26 @@ public class TwoGear extends Page {
 		Potential origin = Potentials.potential(secGearPot);
 		Potentials.add(new Potential("INTER" + secGearPot, origin.width(), origin.height()));
 
-		CurrentCoil coil1 = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, firstGearPot);
-		coil1.firstGear(this);
-
-		CurrentCoil coil2 = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, secGearPot);
-		coil2.secondGear(this);
-
-		CurrentCoil coil3 = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, "INTER" + secGearPot);
-		coil3.secondGearBridge(this);
+		CurrentCoil coil1 = new CurrentCoil(this, coilX(), firstGearPot);
+		CurrentCoil coil2 = new CurrentCoil(this, coilX(), secGearPot);
+		CurrentCoil coil3 = new CurrentCoil(this, coilX(), "INTER" + secGearPot);
 
 		new SingleContactor(this, coil2, coil1);
 		new SingleContactor(this, coil1, coil2);
 
-		Point.downLeft(this, coil3.widthPos() + 100f * Measures.SCALE, Measures.COIL_HEIGHT - 30f, false, "INTER" + secGearPot);
-		Point.upDownRight(this, coil2.widthPos() + 100f * Measures.SCALE, Measures.COIL_HEIGHT - 30f, true, "INTER" + secGearPot);
+		coil1.firstGear(this);
+		coil2.secondGear(this);
+		coil3.secondGearBridge(this);
 
-		new MotorFuse3(this, Measures.FIRST_WIDTH, Measures.FUSE_HEIGHT, true);
-		new ThermalFuse3(this, Measures.THIRD_WIDTH, Measures.FUSE_HEIGHT);
+		Point.downLeft(this, coil3.widthPos() + scaled(100f), y("coil") - 30f, false, "INTER" + secGearPot);
+		Point.upDownRight(this, coil2.widthPos() + scaled(100f), y("coil") - 30f, true, "INTER" + secGearPot);
 
-		Mks mks = new Mks(this,Measures.MKS_WIDTH, Measures.MKS_HEIGHT);
+		new MotorFuse3(this, x("1"), y("mainPhuse"), true);
+		new ThermalFuse3(this, x("3"), y("mainPhuse"));
+
+		Mks mks = new Mks(this);
 		mks.control(this);
 
-		new TwoGearEngine(this, Measures.SEC_WIDTH, Measures.RECEIVER_HEIGHT);
+		new TwoGearEngine(this);
 	}
 }

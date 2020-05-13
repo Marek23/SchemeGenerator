@@ -1,14 +1,18 @@
 package pl.com.hom.page;
 
 import pl.com.hom.board.Board;
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.element.main.CurrentCoil;
 import pl.com.hom.element.main.Mks;
 import pl.com.hom.element.main.MotorFuse3;
 import pl.com.hom.element.main.ThermalFuse3;
 import pl.com.hom.element.receiver.TwoGearEngine;
+import pl.com.hom.element.secondary.SingleContactor;
 import pl.com.hom.elements.bridges.DownLeftPhases;
 import pl.com.hom.elements.bridges.UpDownRightPhases;
+
+import static pl.com.hom.configuration.Measures.scaled;
+import static pl.com.hom.configuration.Widths.x;
+import static pl.com.hom.configuration.Heights.y;
 
 public class BiDirectionJet extends Page {
 	private static final long serialVersionUID = 1L;
@@ -16,27 +20,32 @@ public class BiDirectionJet extends Page {
 	public BiDirectionJet(Board board, String first, String sec, String left, String right) {
 		super(board);
 
-		CurrentCoil firstC = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, first);
-		firstC.firstGear(this);
+		CurrentCoil c1 = new CurrentCoil(this, coilX(), first);
+		CurrentCoil c2 = new CurrentCoil(this, coilX(), sec);
 
-		CurrentCoil secC = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, sec);
-		secC.secondGear(this);
+		c1.firstGear(this);
+		c2.secondDirJetGear(this);
 
-		CurrentCoil leftC = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, left);
-		leftC.biGearLeft(this);
+		new SingleContactor(this, c1, c2);
+		new SingleContactor(this, c2, c1);
 
-		CurrentCoil rightC = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, right);
-		rightC.biGearRight(this);
+		CurrentCoil cl = new CurrentCoil(this, coilX(), left);
+		CurrentCoil cr = new CurrentCoil(this, coilX(), right);
 
-		new UpDownRightPhases(this, Measures.FIRST_WIDTH, Measures.FUSE_DIR_HEIGHT - 400f * Measures.SCALE, true);
-		new DownLeftPhases(this, Measures.THIRD_WIDTH, Measures.FUSE_DIR_HEIGHT - 400f * Measures.SCALE);
+		cl.left(this, x("1"), "softstart");
+		cr.right(this, x("2"), "softstart");
 
-		new MotorFuse3(this, Measures.FIRST_WIDTH, Measures.FUSE_DIR_HEIGHT, false);
-		new ThermalFuse3(this, Measures.FIRST_WIDTH, Measures.FUSE_HEIGHT);
+		new SingleContactor(this, cl, cr);
+		new SingleContactor(this, cr, cl);
 
-		Mks mks = new Mks(this, Measures.MKS_WIDTH, Measures.MKS_HEIGHT);
-		mks.control(this);
+		new UpDownRightPhases(this, x("1"), y("directionPhuse") - y("spaceUp") - scaled(300f), true);
+		new DownLeftPhases(this, x("3"), y("directionPhuse") - y("spaceUp") - scaled(300f));
 
-		new TwoGearEngine(this, Measures.SEC_WIDTH, Measures.RECEIVER_HEIGHT);
+		new MotorFuse3(this, x("1"), y("directionPhuse"), false);
+		new ThermalFuse3(this, x("1"), y("mainPhuse"));
+
+		new Mks(this).control(this);
+
+		new TwoGearEngine(this);
 	}
 }

@@ -1,40 +1,46 @@
 package pl.com.hom.page;
 
 import pl.com.hom.board.Board;
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.element.main.Ckf;
 import pl.com.hom.element.main.CurrentCoil;
 import pl.com.hom.element.main.Mks;
 import pl.com.hom.element.main.Softstart;
 import pl.com.hom.element.main.ThreePhaseFuse;
 import pl.com.hom.element.receiver.ThreePhaseEngine;
+import pl.com.hom.element.secondary.SingleContactor;
 import pl.com.hom.elements.bridges.DownRightPhases;
 import pl.com.hom.elements.bridges.UpDownLeftPhases;
+
+import static pl.com.hom.configuration.Widths.x;
+import static pl.com.hom.configuration.Heights.y;
+import static pl.com.hom.configuration.Measures.scaled;
 
 public class BiDirectionSoftstart extends Page {
 	private static final long serialVersionUID = 1L;
 
-	public BiDirectionSoftstart(Board board, String ster1, String ster2) {
+	public BiDirectionSoftstart(Board board, String ster1, String ster2, String sterL, String sterR) {
 		super(board);
 
-		new UpDownLeftPhases(this, Measures.THIRD_WIDTH, Measures.CKF_BRIDGE_HEIGHT);
-		new DownRightPhases(this, Measures.FIRST_WIDTH, Measures.CKF_BRIDGE_HEIGHT);
+		new UpDownLeftPhases(this, x("softstart"), y("softstart") - y("spaceUp") - scaled(300f));
+		new DownRightPhases(this, x("1"), y("softstart") - y("spaceUp") - scaled(300f));
 
-		new ThreePhaseFuse(this, Measures.THIRD_WIDTH, Measures.FUSE_HEIGHT);
+		new ThreePhaseFuse(this, x("3"), y("mainPhuse"));
 
-		new Ckf(this, Measures.FIRST_WIDTH, Measures.CKF_HEIGHT);
+		new Ckf(this, x("1"), y("ckf"));
 
-		CurrentCoil left = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, ster1);
-		left.softstartLeft(this);
+		CurrentCoil cl = new CurrentCoil(this, coilX(), sterL);
+		CurrentCoil cr = new CurrentCoil(this, coilX(), sterR);
 
-		CurrentCoil right = new CurrentCoil(this, coilX(), Measures.COIL_HEIGHT, ster2);
-		right.softstartRight(this);
+		cl.left(this,  x("softstart"), "direction");
+		cr.right(this, x("softstart") + x("colSpace"), "direction");
 
-		new Softstart(this, Measures.THIRD_WIDTH, Measures.SOFTSTART_HEIGHT, "L10");
+		new SingleContactor(this, cl, cr);
+		new SingleContactor(this, cr, cl);
 
-		Mks mks = new Mks(this,Measures.MKS_WIDTH, Measures.MKS_HEIGHT);
-		mks.control(this);
+		new Softstart(this, "L10");
 
-		new ThreePhaseEngine(this, Measures.THIRD_WIDTH, Measures.RECEIVER_HEIGHT);
+		new Mks(this).control(this);
+
+		new ThreePhaseEngine(this);
 	}
 }

@@ -2,14 +2,17 @@ package pl.com.hom.element.main;
 
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
 import pl.com.hom.page.Page;
 
+import static pl.com.hom.configuration.Measures.scaled;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class MotorFuse3 extends Element {
+	private static float xSymbolMargin = 20f;
+	private static float ySymbolMargin;
+
 	public MotorFuse3(Page page, float x, float y, boolean main) {
 		this.name       = "MotorFuse3";
 		this.visibility = true;
@@ -19,13 +22,14 @@ public class MotorFuse3 extends Element {
 		this.y = y;
 		this.page = page;
 		
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 		
 		this.symbol = symbol(page, "F");
 
-		this.symbolX = x - 22f;
-		this.symbolY = y + this.height()/1.5f;
+		ySymbolMargin = this.height()/1.5f;
+		this.symbolX = x - xSymbolMargin;
+		this.symbolY = y + ySymbolMargin;
 
 		points = new ArrayList<Point>();
 
@@ -47,7 +51,7 @@ public class MotorFuse3 extends Element {
 		page.add(this);
 
 //		centrowanie obrazu:
-		float margin = 50f * Measures.SCALE;
+		float margin = scaled(50f);
 		this.x = x - margin;
 	}
 }

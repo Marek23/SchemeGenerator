@@ -1,7 +1,5 @@
-package pl.com.hom.data;
+package pl.com.hom.board;
 
-import pl.com.hom.board.Board;
-import pl.com.hom.board.Receiver;
 import pl.com.hom.page.Jet;
 
 public class DolEngine extends Receiver{

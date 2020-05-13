@@ -4,7 +4,6 @@ import static pl.com.hom.configuration.Resource.getImage;
 
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
 import pl.com.hom.page.Page;
@@ -18,8 +17,8 @@ public class AboveContactor extends Element {
 		this.x = x;
 		this.y = y;
 
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 
 		points = new ArrayList<Point>();
 

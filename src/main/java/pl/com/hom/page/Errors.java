@@ -1,8 +1,11 @@
 package pl.com.hom.page;
 
 import pl.com.hom.board.Board;
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
+
+import static pl.com.hom.configuration.Widths.x;
+import static pl.com.hom.configuration.Heights.y;
+import static pl.com.hom.configuration.Measures.scaled;
 
 public class Errors extends Page {
 	protected enum Direction {Up, Down};
@@ -13,10 +16,10 @@ public class Errors extends Page {
 	protected int row = 0;
 	protected int col = 0;
 
-	protected int rowMax = 9;
+	protected int rowMax = 3;
 
-	protected float rowDist = 300f * Measures.SCALE;
-	protected float colDist = 500f * Measures.SCALE;
+	protected float rowDist = scaled(300f);
+	protected float colDist = scaled(500f);
 
 	protected boolean first = true;
 
@@ -30,10 +33,10 @@ public class Errors extends Page {
 				row++;
 			}
 			else {
-				float y = Measures.ERROR_HEIGHT_MARGIN + (row + 1) * rowDist;
+				float y = y("errorsStart") + (row + 1) * rowDist;
 
-				Point.upRight(this, Measures.ERROR_WIDTH_MARGIN + col * colDist + 100f * Measures.SCALE, y, "DC24");
-				Point.upLeft(this, Measures.ERROR_WIDTH_MARGIN + (col + 1) * colDist + 100f * Measures.SCALE, y, "DC24");
+				Point.upRight(this, scaled(100f) + x("errorsStart") + col * colDist, y, false, "DC24");
+				Point.upLeft(this, scaled(100f) + x("errorsStart") + (col + 1) * colDist, y, false, "DC24");
 
 				col++;
 				dir = Direction.Up;
@@ -44,10 +47,8 @@ public class Errors extends Page {
 				row--;
 			}
 			else {
-				float y = Measures.ERROR_HEIGHT_MARGIN + (row - 1) * rowDist;
-
-				Point.downRight(this, Measures.ERROR_WIDTH_MARGIN + col * colDist + 100f * Measures.SCALE, y, "DC24");
-				Point.downLeft(this, Measures.ERROR_WIDTH_MARGIN + (col + 1) * colDist + 100f * Measures.SCALE, y, "DC24");
+				Point.downRight(this, scaled(100f) + x("errorsStart") + col * colDist, y("errorsStart"), false, "DC24");
+				Point.downLeft(this, scaled(100f) + x("errorsStart") +  (col + 1) * colDist, y("errorsStart"), false, "DC24");
 
 				col++;
 				dir = Direction.Down;

@@ -8,9 +8,9 @@ import java.net.MalformedURLException;
 
 import com.itextpdf.kernel.PdfException;
 import com.itextpdf.kernel.pdf.canvas.wmf.WmfImageData;
-import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.page.Page;
+import pl.com.hom.util.Image;
 
 public final class Resource {
 	private static ArrayList<String> imageNames = new ArrayList<String>(Arrays.asList(
@@ -24,7 +24,7 @@ public final class Resource {
 		"TwoGearEngine.wmf",
 		"Point.wmf",
 		"AboveContactorBridge.wmf",
-		"CurrentCoil.wmf",
+		"Coil.wmf",
 		"Point.wmf",
 		"Mks.wmf",
 		"MksContact.wmf",
@@ -41,8 +41,7 @@ public final class Resource {
 		"Ckf.wmf",
 		"SingleContactor.wmf",
 		"SingleContactorPointer.wmf",
-		"SteeringContact.wmf",
-		"SteeringCoil.wmf"
+		"SteeringContact.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;
@@ -61,7 +60,7 @@ public final class Resource {
 		}
 	}
 
-	public static PdfFormXObject getImage(String name, Page parent) {
-		 return new PdfFormXObject(graphics.get(name), parent.getDocument());
+	public static Image getImage(String name, Page parent) {
+		 return new Image(graphics.get(name), parent.getDocument());
 	}
 }

@@ -2,7 +2,6 @@ package pl.com.hom.element.main;
 
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.Element;
 import pl.com.hom.element.pointer.Pointer;
@@ -11,6 +10,8 @@ import pl.com.hom.page.Page;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class Ckf extends Element {
+	private static float xSymbolMargin = 20f;
+
 	public Ckf(Page page, float x, float y) {
 		this.name       = "Ckf";
 		this.visibility = true;
@@ -20,13 +21,13 @@ public class Ckf extends Element {
 		this.y = y;
 		this.page = page;
 		
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 		
 		this.symbol = symbol(page, "CKF");
 
-		this.symbolX = x - 20f;
-		this.symbolY = 595.0f - y;
+		this.symbolX = x - xSymbolMargin;
+		this.symbolY = y;
 
 		points = new ArrayList<Point>();
 		pointers = new ArrayList<Pointer>();

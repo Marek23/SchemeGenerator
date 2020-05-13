@@ -22,9 +22,9 @@ public final class Potentials {
 		add(new Potential("N", 200f, 100f));
 		add(new Potential("PE", 300f, 200f));
 
-		add(new Potential("GROUNDN", 100f, 3000f));
-		add(new Potential("GROUNDDC", 100f, 3050f));
-		add(new Potential("GROUNDPE", 200f, 3100f));
+		add(new Potential("GROUNDN", 100f, 3200f));
+		add(new Potential("GROUNDDC", 100f, 3250f));
+		add(new Potential("GROUNDPE", 200f, 3300f));
 
 		add(new Potential("MAINL1", 100f, 60f));
 		add(new Potential("MAINL2", 200f, 120f));

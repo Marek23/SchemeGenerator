@@ -2,15 +2,13 @@ package pl.com.hom.element;
 
 import java.util.ArrayList;
 
-import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
-
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.element.pointer.Pointer;
 import pl.com.hom.page.Page;
+import pl.com.hom.util.Image;
 
 import static pl.com.hom.configuration.Sequences.sequence;
-
+import static pl.com.hom.configuration.Heights.y;
 public abstract class Element {
 	protected String id;
 	protected String desc;
@@ -20,8 +18,8 @@ public abstract class Element {
 
 	protected String steering;
 
-	protected PdfFormXObject image;
-	protected boolean        visibility;
+	protected Image   image;
+	protected boolean visibility;
 
 	protected Element parent;
 
@@ -76,7 +74,7 @@ public abstract class Element {
 		return symbolY;
 	}
 
-	public PdfFormXObject image() {
+	public Image image() {
 		return this.image;
 	}
 
@@ -96,9 +94,9 @@ public abstract class Element {
 	}
 
 	public float pointerHeightPos() {
-		float height = Measures.POINTERS_BEGIN_HEIGHT;
+		float height = y("beginPointer");
 		for (Pointer p: pointers)
-			height += (p.height() + Measures.POINTERS_SPACE);
+			height += (p.height() + y("pointerSpace"));
 
 		return height;
 	}

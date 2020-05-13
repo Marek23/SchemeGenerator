@@ -14,6 +14,9 @@ public class Softstart extends Receiver{
 	}
 
 	public Page page() {
-		return new pl.com.hom.page.Softstart(parent, this.steering1, this.steering2);
+		if (steeringL != null && steeringR != null)
+			return new pl.com.hom.page.BiDirectionSoftstart(parent, this.steering1, this.steering2, this.steeringL, this.steeringR);
+		else
+			return new pl.com.hom.page.Softstart(parent, this.steering1, this.steering2);
 	}
 }

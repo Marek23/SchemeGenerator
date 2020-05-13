@@ -1,7 +1,5 @@
-package pl.com.hom.data;
+package pl.com.hom.board;
 
-import pl.com.hom.board.Board;
-import pl.com.hom.board.Receiver;
 import pl.com.hom.page.Page;
 
 public class Jet extends Receiver{
@@ -18,6 +16,10 @@ public class Jet extends Receiver{
 	}
 
 	public Page page() {
-		return new pl.com.hom.page.Jet(parent, this.steering1, this.steering2);
+		System.out.println(steeringL + steeringR);
+		if (steeringL != null && steeringR != null)
+			return new pl.com.hom.page.BiDirectionJet(parent, this.steering1, this.steering2, this.steeringL, this.steeringR);
+		else
+			return new pl.com.hom.page.Jet(parent, this.steering1, this.steering2);
 	}
 }

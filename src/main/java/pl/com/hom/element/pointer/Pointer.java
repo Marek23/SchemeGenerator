@@ -1,16 +1,15 @@
 package pl.com.hom.element.pointer;
 
-import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
-
 import pl.com.hom.element.Element;
 import pl.com.hom.page.Page;
+import pl.com.hom.util.Image;
 
 public abstract class Pointer {
 	protected Page page;
 	protected Element parent;
 	protected String name;
 
-	protected PdfFormXObject image;
+	protected Image image;
 
 	protected float x;
 	protected float y;
@@ -46,7 +45,7 @@ public abstract class Pointer {
 		return parentY;
 	}
 
-	public PdfFormXObject image() {
+	public Image image() {
 		return this.image;
 	}
 

@@ -1,36 +1,45 @@
 package pl.com.hom.element.secondary;
 
-import static pl.com.hom.configuration.Resource.getImage;
-
 import java.util.ArrayList;
 
-import pl.com.hom.configuration.Measures;
 import pl.com.hom.connections.Point;
 import pl.com.hom.page.Page;
 import pl.com.hom.element.Element;
 import pl.com.hom.element.main.SteeringCoil;
 
+import static pl.com.hom.configuration.Measures.scaled;
+import static pl.com.hom.configuration.Heights.y;
+import static pl.com.hom.configuration.Resource.getImage;
+
 public class SteeringContact extends Element {
+	private static float xSymbolMargin = 20f;
+	private static float ySymbolMargin = 20f;
+
+	private static float xParentMargin = -12f;
+	private static float yParentMargin = 20f;
+
 	public SteeringContact(Page page, SteeringCoil parent, PlcSignal signal) {
 		this.name       = "SteeringContact";
 		this.visibility = true;
 		this.image      = getImage(name, page);
 		this.page       = page;
 
-		this.x = signal.widthPos() + 100f * Measures.SCALE;
-		this.y = Measures.STEERING_HEIGHT;
+		this.x = signal.contactWidthPos();
+		this.y = y("steeringContact");
 		this.page = page;
 
-		this.width  = image.getWidth()  * Measures.SCALE;
-		this.height = image.getHeight() * Measures.SCALE;
+		this.width  = image.getWidth();
+		this.height = image.getHeight();
 		
 		this.symbol = parent.symbol();
 
-		this.symbolX = this.widthPos() - 22f;
-		this.symbolY = this.heightPos() + this.height()/1.5f;
+		ySymbolMargin = this.height()/1.5f;
+		this.symbolX = this.widthPos() - xSymbolMargin;
+		this.symbolY = this.heightPos() + ySymbolMargin;
 
-		this.parentX = this.widthPos() - 12f;
-		this.parentY = this.heightPos() + this.height()/1.5f + 10f;
+		yParentMargin = this.height()/1.5f + 10f;
+		this.parentX = this.widthPos() - xParentMargin;
+		this.parentY = this.heightPos() + yParentMargin;
 		this.parentPageNr = parent.page().nr();
 
 		points = new ArrayList<Point>();
@@ -42,9 +51,11 @@ public class SteeringContact extends Element {
 
 		this.parent = parent;
 
-		float xSter = this.x + 400f * Measures.SCALE;
-		float ySter = Measures.STEERING_PAGE_AFTER_CONTACT_HEIGHT;
-		Point.upRight(page, this.x + 100f * Measures.SCALE, ySter, signal.steeringName());
+		float xSter = this.x + scaled(400f);
+		float ySter = y("steeringPot");;
+
+		Point.upRight(page, this.x + scaled(100f), ySter, false, signal.steeringName());
+
 		page.end(Point.leftRight(page, xSter, ySter, signal.steeringName()));
 
 //		TODO

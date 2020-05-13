@@ -10,6 +10,8 @@ public abstract class Receiver {
 	protected String power2;
 	protected String steering1;
 	protected String steering2;
+	protected String steeringL;
+	protected String steeringR;
 	protected String cable;
 	protected String runMethod;
 
@@ -27,14 +29,15 @@ public abstract class Receiver {
 		this.steering2 = steering2;
 	}
 
-	public abstract Page page();
-
-	@Override
-	public String toString() {
-		return "Engine [name=" + name + ", current1=" + current1 + ", current2=" + current2 + ", power1=" + power1
-				+ ", power2=" + power2 + ", ster1=" + steering1 + ", ster2=" + steering2 + ", cable=" + cable + ", switchboard="
-				+ ", runMethod=" + runMethod + "]";
+	public void steeringL(String steeringL) {
+		this.steeringL = steeringL;
 	}
+
+	public void steeringR(String steeringR) {
+		this.steeringR = steeringR;
+	}
+
+	public abstract Page page();
 
 	public Board board() {
 		return parent;
