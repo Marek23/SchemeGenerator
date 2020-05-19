@@ -8,28 +8,24 @@ import pl.com.hom.element.Element;
 import pl.com.hom.element.main.Plc;
 import pl.com.hom.element.main.SteeringCoil;
 
-import static pl.com.hom.configuration.Heights.y;
 import static pl.com.hom.configuration.Measures.scaled;
 import static pl.com.hom.configuration.Resource.getImage;
 
 public class PlcSignal extends Element {
-	private static float xSymbolMargin = 20f;
+	private static float xSymbolMargin = 8f;
 	private static float ySymbolMargin = 20f;
 
-	private static float xParentMargin = -12f;
+	private static float xParentMargin = 3f;
 	private static float yParentMargin = 20f;
 
-	private static float xSteeringMargin = -12f;
-	private static float ySteeringMargin = 20f;
+	private static float xNumberMargin = 30f;
+	private static float yNumberMargin = 20f;
 
-	private String steeringName;
-
-	private float steeringX;
-	private float steeringY;
+	private String signal;
 
 	private float connectionPointWidth;
 
-	public PlcSignal(Page page, Plc parent, String type, String steeringName, float x, boolean up) {
+	public PlcSignal(Page page, Plc parent, String type, String signal, float x, float y, boolean up) {
 		if (up)
 			this.name = "PlcSignalUp";
 		else
@@ -40,7 +36,7 @@ public class PlcSignal extends Element {
 		this.page       = page;
 
 		this.x = x;
-		this.y = y("plcSignal");
+		this.y = y;
 		this.page = page;
 
 		this.width  = image.getWidth();
@@ -49,18 +45,19 @@ public class PlcSignal extends Element {
 		this.symbol = parent.symbol();
 
 		ySymbolMargin = this.height()/1.5f;
-		this.symbolX = this.widthPos() - xSymbolMargin;
+		this.symbolX = this.widthPos() + xSymbolMargin;
 		this.symbolY = this.heightPos() + ySymbolMargin;
 
 		yParentMargin = this.height()/1.5f + 10f;
-		this.parentX = this.widthPos() - xParentMargin;
+		this.parentX = this.widthPos() + xParentMargin;
 		this.parentY = this.heightPos() + yParentMargin;
 		this.parentPageNr = parent.page().nr();
 
-		ySteeringMargin = this.height()/1.5f;
-		this.steeringX = this.widthPos() - xSteeringMargin;
-		this.steeringY = this.heightPos() + ySteeringMargin;
-		this.steeringName = steeringName;
+		yNumberMargin = this.height()/1.5f + 10f;
+		this.numberX = this.widthPos() + xNumberMargin;
+		this.numberY = this.heightPos() + yNumberMargin;
+
+		this.signal = signal;
 
 		points = new ArrayList<Point>();
 
@@ -74,21 +71,14 @@ public class PlcSignal extends Element {
 		parent.add(this, type);
 
 		page.add(this);
-
-//		TODO
-//		new ContactMksPointer(this, parent);
 	}
 
-	public float steeringX() {
-		return steeringX;
+	public String signal() {
+		return signal;
 	}
 
-	public float steeringY() {
-		return steeringY;
-	}
-
-	public String steeringName() {
-		return steeringName;
+	public void number(String nr) {
+		this.number = nr;
 	}
 
 	public void addSteeringCoil() {

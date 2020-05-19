@@ -25,6 +25,9 @@ public class Printer extends PdfCanvas{
 	private static float scale = scale();
 	private Canvas canvas;
 
+	private float yRow = 80f;
+	private float xRow = 80f;
+
 	private int small  = 9;
 	private int normal = 12;
 
@@ -84,6 +87,14 @@ public class Printer extends PdfCanvas{
 			this.endText();
 		}
 
+		if (e.number() != null) {
+			this.setFontAndSize(this.f, small);
+			this.beginText();
+			this.moveText(e.numberWidthPos(), 595.0f - e.numberHeightPos());
+			this.showText(e.number());
+			this.endText();
+		}
+
 		if (e.visible())
 			this.addXObject(e.image(), new Rectangle(e.widthPos(), 595.0f - e.heightPos() - e.height(), scale,scale));
 	}
@@ -108,6 +119,26 @@ public class Printer extends PdfCanvas{
 		this.addXObject(t.image(), new Rectangle(t.widthPos() - scaled(100f), 595.0f - t.heightPos() - t.height(), scale,scale));
 	}
 
+	public void addPlcInput(String text) {
+		this.setFontAndSize(this.f, small);
+		this.beginText();
+		this.moveText(270f, 595f - yRow);
+		this.showText(text);
+		this.endText();
+
+		yRow += 10f;
+	}
+
+	public void addPlcOutput(String text) {
+		this.setFontAndSize(this.f, small);
+		this.beginText();
+		this.moveText(550f, 595f - xRow);
+		this.showText(text);
+		this.endText();
+
+		xRow += 10f;
+	}
+
 	public void addPoint(Point p) {
 		if (p.isVisibile())
 			this.addXObject(p.image(), new Rectangle(p.widthPos() - p.width()/2, 595.0f - p.heightPos() - p.height()/2, scale,scale));
@@ -118,7 +149,7 @@ public class Printer extends PdfCanvas{
 
 		if (p.target() > 0) {
 			this.beginText();
-			this.moveText(p.targetWidth() - 35f, 595f - p.targetHeight());
+			this.moveText(p.targetWidth() - 30f, 595f - p.targetHeight());
 			this.showText(p.potential().prettyName() + " /" + String.valueOf(p.target()) );
 			this.endText();
 		}

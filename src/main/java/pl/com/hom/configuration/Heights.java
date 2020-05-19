@@ -16,10 +16,12 @@ public final class Heights {
 
 		heights.put("spaceUp", 5f);
 		heights.put("spaceDown", 5f);
+		heights.put("mklSpace", 20f);
+
 		heights.put("softstart", 150f);
 		heights.put("plc", 150f);
 		heights.put("coilSeparator", 300f);
-		heights.put("steeringContact", 100f);
+		heights.put("steeringContact", 70f);
 
 		heights.put("steeringPot", 150f);
 
@@ -30,8 +32,9 @@ public final class Heights {
 
 		heights.put("errorsStart", Measures.scaled(370));
 
-		heights.put("plcSignal", 300f);
+		heights.put("plcSignal", 250f);
 
+		heights.put("mkl", 350f);
 		heights.put("mks", 380f);
 
 		heights.put("ckf", 350f);

@@ -4,7 +4,6 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 
 import pl.com.hom.page.Page;
 
-import static pl.com.hom.configuration.Measures.scaled;
 import static pl.com.hom.configuration.Sequences.sequence;
 import static pl.com.hom.configuration.Resource.getImage;
 import static pl.com.hom.configuration.Heights.y;

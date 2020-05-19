@@ -8,6 +8,7 @@ public final class Widths {
 	private static HashMap<String, Float> widths = new HashMap<String, Float>();
 
 	public static void initialize() {
+		widths.put("0", 35f);
 		widths.put("1", 80f);
 		widths.put("colSpace", 80f);
 		widths.put("2", x("1") + x("colSpace"));
@@ -18,22 +19,21 @@ public final class Widths {
 		widths.put("coilsBegin", 480f);
 		widths.put("coilSpace", 70f);
 
-		widths.put("pageBegin", 40f);
+		widths.put("pageBegin", x("0"));
 		widths.put("pageEnd", 800f);
 		widths.put("steeringBegin", x("coilsBegin") - 5f);
 		widths.put("steeringEnd", x("pageEnd"));
 
 		widths.put("mks", x("5"));
+		widths.put("mkl", x("1"));
 		widths.put("softstart", x("3"));
 
-		widths.put("errorsStart", x("pageBegin"));
+		widths.put("errorsStart", x("0"));
 
-		widths.put("plcCpu", x("pageBegin"));
-		widths.put("plcCpuWidth", scaled(1000f));
-		widths.put("plcModuleBegin", x("plcCpu") + x("plcCpuWidth"));
-		widths.put("plcModuleWidth", scaled(480f));
-		widths.put("plcSignalBegin", x("pageBegin"));
-		widths.put("plcSignalWidth", scaled(500f));
+		widths.put("plcBegin", x("0"));
+		widths.put("plcModuleWidth", scaled(520f));
+		widths.put("plcSignalBegin", x("0"));
+		widths.put("plcSignalWidth", scaled(570f));
 	}
 
 	public static float x(String name) {

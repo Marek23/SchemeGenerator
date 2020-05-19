@@ -45,18 +45,18 @@ public class SteeringContact extends Element {
 		points = new ArrayList<Point>();
 
 		points.add(Point.up(page, this, 100f, false, "MAINL10"));
-		points.add(Point.down(page, this, 100f, false, signal.steeringName()));
+		points.add(Point.down(page, this, 100f, false, signal.signal()));
 
 		page.add(this);
 
 		this.parent = parent;
 
-		float xSter = this.x + scaled(400f);
+		float xSter = this.x + scaled(200f);
 		float ySter = y("steeringPot");;
 
-		Point.upRight(page, this.x + scaled(100f), ySter, false, signal.steeringName());
+		Point.upRight(page, this.x + scaled(100f), ySter, false, signal.signal());
 
-		page.end(Point.leftRight(page, xSter, ySter, signal.steeringName()));
+		page.end(Point.leftRight(page, xSter, ySter, signal.signal()));
 
 //		TODO
 //		new ContactMksPointer(this, parent);

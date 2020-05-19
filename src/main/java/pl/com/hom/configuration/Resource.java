@@ -27,6 +27,7 @@ public final class Resource {
 		"Coil.wmf",
 		"Point.wmf",
 		"Mks.wmf",
+		"Mkl.wmf",
 		"MksContact.wmf",
 		"ContactMksPointer.wmf",
 		"MotorFuse3.wmf",

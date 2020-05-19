@@ -8,7 +8,7 @@ import pl.com.hom.element.Element;
 import pl.com.hom.element.secondary.PlcSignal;
 import pl.com.hom.page.Page;
 
-import static pl.com.hom.configuration.Measures.scaled;
+import static pl.com.hom.configuration.Widths.x;
 import static pl.com.hom.configuration.Heights.y;
 import static pl.com.hom.configuration.Resource.getImage;
 
@@ -19,6 +19,8 @@ public class Plc extends Element {
 	private ArrayList<PlcSignal>  inputs;
 	private ArrayList<PlcSignal> outputs;
 
+	private String signal;
+
 	private int MAX_INPUTS = 8;
 	private int MAX_OUTPUTS;
 
@@ -28,7 +30,7 @@ public class Plc extends Element {
 		this.image      = getImage(name, page);
 
 		if (type.equalsIgnoreCase("Cpu"))
-			this.x = scaled(500f);
+			this.x = x("plcBegin");
 		else
 			this.x = x;
 
@@ -86,9 +88,15 @@ public class Plc extends Element {
 	}
 
 	public void add(PlcSignal signal, String type){
-		if (type.equals("Y"))
+		if (type.equals("Y")) {
 			outputs.add(signal);
-		if (type.equals("X"))
+			signal.number("Y" + String.valueOf(outputs.size() - 1));
+			page.addPlcY(symbol + ": Y" + (outputs.size() - 1) + " " + signal.signal());
+		}
+		if (type.equals("X")) {
 			inputs.add(signal);
+			signal.number("X" + String.valueOf(inputs.size() - 1));
+			page.addPlcX(symbol + ": X" + (inputs.size() - 1) + " " + signal.signal());
+		}
 	}
 }

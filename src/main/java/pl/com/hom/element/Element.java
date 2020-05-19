@@ -16,6 +16,10 @@ public abstract class Element {
 	protected String symbol;
 	protected Page   page;
 
+	protected float  numberX;
+	protected float  numberY;
+	protected String number;
+
 	protected String steering;
 
 	protected Image   image;
@@ -115,6 +119,18 @@ public abstract class Element {
 
 	public int parentPageNr() {
 		return parentPageNr;
+	}
+
+	public float numberWidthPos() {
+		return numberX;
+	}
+
+	public float numberHeightPos() {
+		return numberY;
+	}
+
+	public String number() {
+		return number;
 	}
 
 	public Element parent() {

@@ -36,6 +36,8 @@ public class Page extends PdfPage{
 	protected ArrayList<Element>  elements;
 	protected ArrayList<Pointer>  pointers;
 	protected ArrayList<Terminal> terminals;
+	protected ArrayList<String>   plcInputs;
+	protected ArrayList<String>   plcOutputs;
 
 	protected int nr;
 
@@ -58,6 +60,9 @@ public class Page extends PdfPage{
 		this.elements  = new ArrayList<Element>();
 		this.pointers  = new ArrayList<Pointer>();
 		this.terminals = new ArrayList<Terminal>();
+
+		this.plcInputs  = new ArrayList<String>();
+		this.plcOutputs = new ArrayList<String>();
 
 		this.printer = new Printer(this);
 	}
@@ -168,6 +173,12 @@ public class Page extends PdfPage{
 
 		for (Terminal t : terminals)
 			printer.addTerminal(t);
+
+		for (String t : plcInputs)
+			printer.addPlcInput(t);
+
+		for (String t : plcOutputs)
+			printer.addPlcOutput(t);
 	}
 
 	public void addAll(ArrayList<Point> points) {
@@ -176,6 +187,14 @@ public class Page extends PdfPage{
 
 	public void add(Point point) {
 		this.points.add(point);
+	}
+
+	public void addPlcX(String x) {
+		this.plcInputs.add(x);
+	}
+
+	public void addPlcY(String y) {
+		this.plcOutputs.add(y);
 	}
 
 	private void addMainPoints(Element element) {
@@ -326,7 +345,7 @@ public class Page extends PdfPage{
 	}
 
 	protected float plcModuleX() {
-		return x("plcModuleBegin") + x("plcModuleWidth") * (sequence0(board.name() + "PAGE" + String.valueOf(this.nr) + "PLC"));
+		return x("plcBegin") + x("plcModuleWidth") * (sequence0(board.name() + "PAGE" + String.valueOf(this.nr) + "PLC"));
 	}
 
 	protected float plcSignalX() {

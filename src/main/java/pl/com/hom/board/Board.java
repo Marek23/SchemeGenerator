@@ -9,23 +9,28 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 
 import pl.com.hom.connections.Point;
 import pl.com.hom.data.Reader;
-import pl.com.hom.data.Signal;
+import pl.com.hom.data.SapIn;
+import pl.com.hom.data.SapOut;
+import pl.com.hom.page.Mkl;
 import pl.com.hom.page.MksErrors;
 import pl.com.hom.page.Page;
-import pl.com.hom.page.Plc;
+import pl.com.hom.page.PlcCpu;
+import pl.com.hom.page.PlcModules;
 import pl.com.hom.page.Steering;
 
 public class Board extends PdfDocument {
 	private static final long serialVersionUID = 1L;
 	
-	private static final long MAX_PLC_SIGNALS_AT_PAGE = 10;
+	private static final int MAX_PLC_SIGNALS_AT_PAGE = 10;
+	private static final int MKL_INPUTS = 4;
+	private static final float MAX_MODULES_AT_PAGE = 1;
 	private String name;
 
 	private MksErrors mksErr;
 
 	private ArrayList<Receiver> receivers;
-	private ArrayList<Signal>   sapInput;
-	private ArrayList<Signal>   sapOutput;
+	private ArrayList<SapIn>    sapInput;
+	private ArrayList<SapOut>   sapOutput;
 	private ArrayList<Page>     pages;
 
 	private ArrayList<pl.com.hom.element.main.Plc> plcs;
@@ -36,10 +41,10 @@ public class Board extends PdfDocument {
 		this.name = name;
 
 		this.receivers = new ArrayList<Receiver>();
-		this.sapInput  = new ArrayList<Signal>();
-		this.sapOutput = new ArrayList<Signal>();
-		this.pages = new ArrayList<Page>();
-		this.plcs  = new ArrayList<pl.com.hom.element.main.Plc>();
+		this.sapInput  = new ArrayList<SapIn>();
+		this.sapOutput = new ArrayList<SapOut>();
+		this.pages     = new ArrayList<Page>();
+		this.plcs      = new ArrayList<pl.com.hom.element.main.Plc>();
 	}
 
 	public String name() {
@@ -66,10 +71,29 @@ public class Board extends PdfDocument {
 			temp += 8;
 		}
 
-		Plc plcPage = new Plc(this, modules);
-		this.plcs = plcPage.plcs();
+		PlcCpu plcPage = new PlcCpu(this);
+		this.plcs.add(plcPage.cpu());
 		pages.add(plcPage);
 
+		temp = 0;
+		int curr = 0;
+		while(temp < modules) {
+			temp++;
+			curr++;
+			if (curr == MAX_MODULES_AT_PAGE) {
+				PlcModules modulesPage = new PlcModules(this, curr);
+				this.plcs.addAll(modulesPage.modules());
+				pages.add(modulesPage);
+
+				curr = 0;
+			}
+		}
+
+		if (curr > 0) {
+			PlcModules modulesPage = new PlcModules(this, curr);
+			this.plcs.addAll(modulesPage.modules());
+			pages.add(modulesPage);
+		}
 		
 		Iterator<String> s = Reader.steerings(this.name).iterator();
 
@@ -84,6 +108,21 @@ public class Board extends PdfDocument {
 			}
 
 			pages.add(new Steering(this, patch));
+		}
+		
+		Iterator<SapIn> sapIn = sapInput.iterator();
+
+		while(sapIn.hasNext()) {
+			ArrayList<SapIn> patch = new ArrayList<SapIn>();
+
+			for (int i = 0; i < MKL_INPUTS; i++) {
+				if (sapIn.hasNext())
+					patch.add(sapIn.next());
+				else
+					break;
+			}
+
+			pages.add(new Mkl(this, patch));
 		}
 
 		for (Receiver r: receivers)
@@ -111,11 +150,11 @@ public class Board extends PdfDocument {
 		this.close();
 	}
 
-	public void addSapInput(Signal signal) {
+	public void addSapInput(SapIn signal) {
 		this.sapInput.add(signal);
 	}
 
-	public void addSapOutput(Signal signal) {
+	public void addSapOutput(SapOut signal) {
 		this.sapOutput.add(signal);
 	}
 
