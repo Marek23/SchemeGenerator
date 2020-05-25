@@ -82,7 +82,11 @@ public class PlcSignal extends Element {
 	}
 
 	public void addSteeringCoil() {
-		new SteeringCoil(this.page, this);
+		SteeringCoil.steering(this.page, this);
+	}
+
+	public void addSapOutCoil(float contactPos) {
+		SteeringCoil.sapOut(this.page, this, contactPos);
 	}
 
 	public float coilWidthPos() {

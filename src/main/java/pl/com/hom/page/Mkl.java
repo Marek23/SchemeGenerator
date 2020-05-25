@@ -13,15 +13,13 @@ import static pl.com.hom.configuration.Measures.scaled;
 public class Mkl extends Page {
 	private static final long serialVersionUID = 1L;
 
-	private final int limit = 8;
-
 	public Mkl(Board board, ArrayList<SapIn> sapInputs) {
 		super(board);
 
 		// ommiting first input positions
 		plcSignalX(); plcSignalX();
 
-		pl.com.hom.element.main.Mkl mkl = new pl.com.hom.element.main.Mkl(this);
+		pl.com.hom.element.main.Mkl mkl = new pl.com.hom.element.main.Mkl(this, sapInputs);
 
 		int i = 0;
 		for(SapIn in: sapInputs) {
@@ -33,33 +31,17 @@ public class Mkl extends Page {
 			Point.downRight(this, mkl.nextOutputX(), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
 
 			i++;
+
 			widthPos = plcSignalX();
 
-			new PlcSignal(this, board.nextInput(), "X", "Awaria " + in.function(), widthPos, y("plcSignal"), false);
+			new PlcSignal(this, board.nextInput(), "X", "Awaria linii: " + in.function(), widthPos, y("plcSignal"), false);
 
 			Point.upLeft(this, widthPos + scaled(200f), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
 			Point.downRight(this, mkl.nextOutputX(), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
 
 			i++;
-		}
 
-		for (;i<limit;) {
-			float widthPos = plcSignalX();
-
-			new PlcSignal(this, board.nextInput(), "X", "rezerwa", widthPos, y("plcSignal"), false);
-
-			Point.upLeft(this, widthPos + scaled(200f), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
-			Point.downRight(this, mkl.nextOutputX(), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
-
-			i++;
-			widthPos = plcSignalX();
-
-			new PlcSignal(this, board.nextInput(), "X", "Awaria rezerwa", widthPos, y("plcSignal"), false);
-
-			Point.upLeft(this, widthPos + scaled(200f), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
-			Point.downRight(this, mkl.nextOutputX(), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
-
-			i++;
+			new pl.com.hom.element.receiver.SapIn(this, in, mkl.nextInputX());
 		}
 	}
 }

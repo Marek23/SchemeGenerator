@@ -34,6 +34,9 @@ public final class Widths {
 		widths.put("plcModuleWidth", scaled(520f));
 		widths.put("plcSignalBegin", x("0"));
 		widths.put("plcSignalWidth", scaled(570f));
+
+		widths.put("sapOutBegin", x("0") + 30f);
+		widths.put("sapOutSpace", scaled(500f));
 	}
 
 	public static float x(String name) {

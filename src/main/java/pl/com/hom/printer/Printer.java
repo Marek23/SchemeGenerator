@@ -10,6 +10,9 @@ import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.BaseFont;
 
 import pl.com.hom.connections.Line;
 import pl.com.hom.connections.Point;
@@ -31,15 +34,22 @@ public class Printer extends PdfCanvas{
 	private int small  = 9;
 	private int normal = 12;
 
+	private boolean firstInput;
+	private boolean firstOutput;
+
 	private PdfFont f;
+	private BaseFont b;
 
 	public Printer(PdfPage page){
 		super(page);
 
 		try {
-			f = PdfFontFactory.createFont("src\\main\\resources\\fonts\\ShareTech-Regular.ttf");
+			f = PdfFontFactory.createFont("src\\main\\resources\\fonts\\ShareTech-Regular.ttf", "Cp1250");
+			b = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.CACHED);
+		} catch (DocumentException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-		e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		canvas = new Canvas(this, page.getDocument(), page.getPageSize());
@@ -120,9 +130,20 @@ public class Printer extends PdfCanvas{
 	}
 
 	public void addPlcInput(String text) {
+		if (!firstInput) {
+			this.setFontAndSize(this.f, normal);
+			this.beginText();
+			this.moveText(270f, 495f - yRow);
+			this.showText("Wejścia sterownika:");
+			this.endText();
+			
+			yRow += 15f;
+			firstInput = true;
+		}
+
 		this.setFontAndSize(this.f, small);
 		this.beginText();
-		this.moveText(270f, 595f - yRow);
+		this.moveText(270f, 495f - yRow);
 		this.showText(text);
 		this.endText();
 
@@ -130,9 +151,62 @@ public class Printer extends PdfCanvas{
 	}
 
 	public void addPlcOutput(String text) {
+		if (!firstOutput) {
+			this.setFontAndSize(this.f, normal);
+			this.beginText();
+			this.moveText(550f, 495f - xRow);
+			this.showText("Wyjścia sterownika:");
+			this.endText();
+			
+			xRow += 15f;
+			firstOutput = true;
+		}
+		
 		this.setFontAndSize(this.f, small);
 		this.beginText();
-		this.moveText(550f, 595f - xRow);
+		this.moveText(550f, 495f - xRow);
+		this.showText(text);
+		this.endText();
+
+		xRow += 10f;
+	}
+
+	public void addSapInput(String text) {
+		if (!firstInput) {
+			this.setFontAndSize(this.f, normal);
+			this.beginText();
+			this.moveText(400f, 195f - yRow);
+			this.showText("Opis sygnałów listwy zaciskowej:");
+			this.endText();
+			
+			yRow += 15f;
+			firstInput = true;
+		}
+
+		this.setFontAndSize(this.f, small);
+		this.beginText();
+		this.moveText(400f, 195f - yRow);
+		this.showText(text);
+		this.endText();
+
+		yRow += 10f;
+	}
+
+	public void addSapOutput(String text) {
+		if (!firstOutput) {
+			this.setFontAndSize(this.f, normal);
+			this.beginText();
+			this.moveText(400f, 195f - xRow);
+			this.showText("Opis sygnałów listwy zaciskowej:");
+			this.endText();
+			
+			xRow += 15f;
+			firstOutput = true;
+		}
+		
+		this.setFontAndSize(this.f, small);
+		this.beginText();
+		this.moveText(400f, 195f - xRow);
 		this.showText(text);
 		this.endText();
 

@@ -19,8 +19,6 @@ public class Plc extends Element {
 	private ArrayList<PlcSignal>  inputs;
 	private ArrayList<PlcSignal> outputs;
 
-	private String signal;
-
 	private int MAX_INPUTS = 8;
 	private int MAX_OUTPUTS;
 

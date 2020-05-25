@@ -15,6 +15,8 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.connections.Potential;
 import pl.com.hom.connections.Terminal;
 import pl.com.hom.connections.VerticalLine;
+import pl.com.hom.data.SapIn;
+import pl.com.hom.data.SapOut;
 import pl.com.hom.element.pointer.Pointer;
 import pl.com.hom.element.Element;
 import pl.com.hom.element.main.Mks;
@@ -38,6 +40,8 @@ public class Page extends PdfPage{
 	protected ArrayList<Terminal> terminals;
 	protected ArrayList<String>   plcInputs;
 	protected ArrayList<String>   plcOutputs;
+	protected ArrayList<String>   sapInputs;
+	protected ArrayList<String>   sapOutputs;
 
 	protected int nr;
 
@@ -63,6 +67,9 @@ public class Page extends PdfPage{
 
 		this.plcInputs  = new ArrayList<String>();
 		this.plcOutputs = new ArrayList<String>();
+
+		this.sapInputs  = new ArrayList<String>();
+		this.sapOutputs = new ArrayList<String>();
 
 		this.printer = new Printer(this);
 	}
@@ -179,6 +186,12 @@ public class Page extends PdfPage{
 
 		for (String t : plcOutputs)
 			printer.addPlcOutput(t);
+
+		for (String si : sapInputs)
+			printer.addSapInput(si);
+
+		for (String so : sapOutputs)
+			printer.addSapOutput(so);
 	}
 
 	public void addAll(ArrayList<Point> points) {
@@ -187,6 +200,15 @@ public class Page extends PdfPage{
 
 	public void add(Point point) {
 		this.points.add(point);
+	}
+
+	public void addSapIn(ArrayList<SapIn> inputs) {
+		for (SapIn si: inputs)
+			this.sapInputs.add("SAP IN: " + si.symbol() + " - " + si.function());
+	}
+
+	public void addSapOut(SapOut out) {
+		this.sapInputs.add("SAP OUT: " + out.symbol() + " - " + out.function());
 	}
 
 	public void addPlcX(String x) {
@@ -344,6 +366,11 @@ public class Page extends PdfPage{
 		return x("coilsBegin") + x("coilSpace") * sequence0(board.name() + "PAGE" + String.valueOf(this.nr) + "COIL");
 	}
 
+	protected float nextSapOutput() {
+		return x("sapOutBegin") + x("sapOutSpace") * sequence0(board.name() + "PAGE" + String.valueOf(this.nr) + "SAPOUT");
+	}
+	
+	
 	protected float plcModuleX() {
 		return x("plcBegin") + x("plcModuleWidth") * (sequence0(board.name() + "PAGE" + String.valueOf(this.nr) + "PLC"));
 	}

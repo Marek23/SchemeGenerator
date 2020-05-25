@@ -7,6 +7,7 @@ import pl.com.hom.connections.Point;
 import pl.com.hom.element.pointer.Pointer;
 import pl.com.hom.element.secondary.PlcSignal;
 import pl.com.hom.element.secondary.SteeringContact;
+import pl.com.hom.element.secondary.SapOutContact;
 import pl.com.hom.page.Page;
 import pl.com.hom.element.Element;
 
@@ -17,7 +18,19 @@ public class SteeringCoil extends Element {
 	private static float xSymbolMargin = 20f;
 	private static float ySymbolMargin;
 
-	public SteeringCoil (Page page, PlcSignal signal) {
+	public static SteeringCoil steering(Page page, PlcSignal signal) {
+		SteeringCoil c = new SteeringCoil(page, signal);
+		new SteeringContact(page, c, signal);
+		return c;
+	}
+
+	public static SteeringCoil sapOut(Page page, PlcSignal signal, float contactPos) {
+		SteeringCoil c = new SteeringCoil(page, signal);
+		new SapOutContact(page, c, contactPos);
+		return c;
+	}
+
+	private SteeringCoil (Page page, PlcSignal signal) {
 		this.name       = "Coil";
 		this.visibility = true;
 		this.image      = getImage(name, page);
@@ -42,7 +55,5 @@ public class SteeringCoil extends Element {
 		points.add(Point.down(page, this, 100f, false, "GROUNDDC"));
 
 		page.add(this);
-
-		new SteeringContact(page, this, signal);
 	}
 }

@@ -24,6 +24,8 @@ public class Board extends PdfDocument {
 	private static final int MAX_PLC_SIGNALS_AT_PAGE = 10;
 	private static final int MKL_INPUTS = 4;
 	private static final float MAX_MODULES_AT_PAGE = 1;
+	private static final float SAP_OUTPUTS_AT_PAGE = 5;
+
 	private String name;
 
 	private MksErrors mksErr;
@@ -109,7 +111,11 @@ public class Board extends PdfDocument {
 
 			pages.add(new Steering(this, patch));
 		}
-		
+
+		int toFetch = MKL_INPUTS - sapInput.size() % MKL_INPUTS;
+		for (int i = 0; i < toFetch; i++)
+			new SapIn(this, "Rezerwa");
+
 		Iterator<SapIn> sapIn = sapInput.iterator();
 
 		while(sapIn.hasNext()) {
@@ -123,6 +129,21 @@ public class Board extends PdfDocument {
 			}
 
 			pages.add(new Mkl(this, patch));
+		}
+
+		Iterator<SapOut> sapOut = sapOutput.iterator();
+
+		while(sapOut.hasNext()) {
+			ArrayList<SapOut> patch = new ArrayList<SapOut>();
+
+			for (int i = 0; i < SAP_OUTPUTS_AT_PAGE; i++) {
+				if (sapOut.hasNext())
+					patch.add(sapOut.next());
+				else
+					break;
+			}
+
+			pages.add(new pl.com.hom.page.SapOut(this, patch));
 		}
 
 		for (Receiver r: receivers)

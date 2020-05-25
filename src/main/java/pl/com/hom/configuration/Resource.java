@@ -42,7 +42,9 @@ public final class Resource {
 		"Ckf.wmf",
 		"SingleContactor.wmf",
 		"SingleContactorPointer.wmf",
-		"SteeringContact.wmf"
+		"SteeringContact.wmf",
+		"SapIn.wmf",
+		"SapOut.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

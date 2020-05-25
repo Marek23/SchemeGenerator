@@ -22,6 +22,8 @@ public final class Heights {
 		heights.put("plc", 150f);
 		heights.put("coilSeparator", 300f);
 		heights.put("steeringContact", 70f);
+		heights.put("sapOutContact", 380f);
+		heights.put("sapOutPot", y("sapOutContact") - y("spaceUp"));
 
 		heights.put("steeringPot", 150f);
 
