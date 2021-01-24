@@ -25,7 +25,7 @@ public class MklPage extends Page {
 		for(SapInput in: sapInputs) {
 			float widthPos = plcSignalX();
 
-			new PlcChild(this, board.nextInput(), "X", in.function(), widthPos, y("plcSignal"), false);
+			new PlcChild(this, board.nextPlcMainForInput(), "X", in.function(), widthPos, y("plcSignal"), false);
 
 			Point.upLeft(this, widthPos + scaled(200f), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
 			Point.downRight(this, mkl.nextOutputX(), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
@@ -34,7 +34,7 @@ public class MklPage extends Page {
 
 			widthPos = plcSignalX();
 
-			new PlcChild(this, board.nextInput(), "X", "Awaria linii: " + in.function(), widthPos, y("plcSignal"), false);
+			new PlcChild(this, board.nextPlcMainForInput(), "X", "Awaria linii: " + in.function(), widthPos, y("plcSignal"), false);
 
 			Point.upLeft(this, widthPos + scaled(200f), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");
 			Point.downRight(this, mkl.nextOutputX(), y("plcSignal") + mkl.height() + i*y("spaceDown"), false, "DC24");

@@ -25,7 +25,8 @@ public class MotorSoftstartPage extends Page {
 
 		new FuseSwitchMain(this, x("3"), y("mainPhuse"), fuse);
 
-		new CkfMain(this, x("1"), y("ckf"));
+		var ckf = new CkfMain(this, x("1"), y("ckf"));
+		ckf.addCkfFuse("L1", "L2", "L3");
 
 		new SoftstartMain(this, "L10");
 

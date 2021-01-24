@@ -44,7 +44,10 @@ public final class Images {
 		"SingleContactorPointer.wmf",
 		"SteeringContact.wmf",
 		"SapIn.wmf",
-		"SapOut.wmf"
+		"SapOut.wmf",
+		"Disconnector4P.wmf",
+		"Overvoltage.wmf",
+		"ThermalFuse1.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

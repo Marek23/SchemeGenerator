@@ -293,7 +293,6 @@ public class Point {
 
 
 
-
 	private Point(Page page, Drawable parent, Potential potential, float x, float y, EnumMap<Direction, Boolean> dirs, boolean visibility) {
 		this.x = x;
 		this.y = y;

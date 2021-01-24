@@ -24,6 +24,7 @@ public class PlcChild extends Drawable {
 		else
 			this.name = "PlcSignalDown";
 
+		this.main       = main;
 		this.visibility = true;
 		this.image      = getImage(name, page);
 		this.page       = page;
@@ -42,7 +43,6 @@ public class PlcChild extends Drawable {
 
 		this.mainX = this.widthPos();
 		this.mainY = this.symbolY + yParentMargin;
-		this.mainPageNr = main.page().nr();
 
 		this.numberX = this.widthPos();
 		this.numberY = this.mainY + yNumberMargin;
@@ -57,9 +57,7 @@ public class PlcChild extends Drawable {
 		else
 			points.add(Point.down(page, this, connectionPointWidth, false, "DC24"));
 
-		this.main = main;
 		main.add(this, type);
-
 		page.add(this);
 	}
 
@@ -85,5 +83,9 @@ public class PlcChild extends Drawable {
 
 	public float contactWidthPos() {
 		return this.x + scaled(connectionPointWidth) - scaled(100f);
+	}
+
+	public void updateMainNr() {
+		this.mainPageNr = main.page().nr();
 	}
 }

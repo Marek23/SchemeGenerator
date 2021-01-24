@@ -14,6 +14,7 @@ import pl.com.cs.schema.Point;
 import pl.com.cs.schema.Potential;
 import pl.com.cs.schema.Potentials;
 import pl.com.cs.schema.main.PlcMain;
+import pl.com.cs.schema.page.FirstPage;
 import pl.com.cs.schema.page.MklPage;
 import pl.com.cs.schema.page.MksChildsPage;
 import pl.com.cs.schema.page.Page;
@@ -66,8 +67,12 @@ public class Fps extends PdfDocument {
 
 	public void draw() {
 		int mkls       = (int) Math.ceil(sapInputs.size() / 4); // 4 sygnały SAP to 8 w PLC
-		int plcInputs  = mkls * 8;
-		int plcOutputs = sapOutputs.size() + this.prettyPrintSteerings.size();
+
+		//TODO rozszerzenie o kolejne pola z głównej strony
+		int plcInputs  = mkls * 8 + 8;
+
+		//TODO rozszerzenie o kolejne pola z głównej strony
+		int plcOutputs = sapOutputs.size() + this.prettyPrintSteerings.size() + 8;
 
 		int plcMainsNumber = 0;
 		int temp = 4;
@@ -82,16 +87,23 @@ public class Fps extends PdfDocument {
 			temp += 8;
 		}
 
-		PlcMainPage plcPage = new PlcMainPage(this, "Cpu");
-		this.plcMains.add(plcPage.plcMain());
-		pages.add(plcPage);
+		this.plcMains.add(new PlcMain("Cpu"));
 
 		temp = 0;
 		while (temp < plcMainsNumber) {
-			PlcMainPage page = new PlcMainPage(this, "Module");
-			this.plcMains.add(page.plcMain());
-			pages.add(page);
+			this.plcMains.add(new PlcMain("Module"));
 			temp++;
+		}
+
+		var firstPage = new FirstPage(this);
+		pages.add(firstPage);
+
+		PlcMainPage plcPage = new PlcMainPage(this, this.plcMains.get(0));
+		pages.add(plcPage);
+
+		for (int i = 1; i < this.plcMains.size(); i++) {
+			PlcMainPage page = new PlcMainPage(this, this.plcMains.get(i));
+			pages.add(page);
 		}
 
 		Iterator<String> s = this.steerings().iterator();
@@ -162,6 +174,9 @@ public class Fps extends PdfDocument {
 
 		targets();
 
+		for (var plc: this.plcMains)
+			plc.updateChildsByMainNr();
+
 		for(Page p: pages)
 			p.draw();
 
@@ -201,17 +216,17 @@ public class Fps extends PdfDocument {
 			p.clearPendingEdges();
 	}
 
-	public pl.com.cs.schema.main.PlcMain nextInput() {
-		for (pl.com.cs.schema.main.PlcMain p: plcMains)
-			if (p.input() > 0)
+	public PlcMain nextPlcMainForInput() {
+		for (var p: this.plcMains)
+			if (p.nextInputNumber() > 0)
 				return p;
 
 		throw new RuntimeException("Run out of plc's for inputs.");
 	}
 
-	public pl.com.cs.schema.main.PlcMain nextOutput() {
-		for (pl.com.cs.schema.main.PlcMain p: plcMains)
-			if (p.output() > 0)
+	public PlcMain nextPlcMainForOutput() {
+		for (var p: this.plcMains)
+			if (p.nextOutputNumber() > 0)
 				return p;
 
 		throw new RuntimeException("Run out of plc's for outputs.");

@@ -21,7 +21,7 @@ public class SapOutputsPage extends Page {
 		for(SapOutput out: sapOutputs) {
 			float widthPos = nextSapOutput();
 			this.addSapOutput(out);
-			new PlcChild(this, fps.nextOutput(), "Y", out.function(), plcSignalX(), y("plcSignal"), false)
+			new PlcChild(this, fps.nextPlcMainForOutput(), "Y", out.function(), plcSignalX(), y("plcSignal"), false)
 				.addCoilSapOutput(widthPos);
 
 			new pl.com.cs.schema.out.SapOutput(this, out, widthPos);

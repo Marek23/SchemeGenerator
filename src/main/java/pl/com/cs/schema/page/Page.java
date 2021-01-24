@@ -1,6 +1,7 @@
 package pl.com.cs.schema.page;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class Page extends PdfPage{
 	public void add(Drawable d) {
 		this.drawables.add(d);
 
-		addMainPoints(d);
+		addMainPoints(d.points());
 	}
 
 	public void add(Pointer p) {
@@ -215,6 +216,12 @@ public class Page extends PdfPage{
 		this.points.add(point);
 	}
 
+	public void createMainForPoint(Point point) {
+		var tmp = new ArrayList<Point>();
+		tmp.add(point);
+		addMainPoints(tmp);
+	}
+
 	public void addSapInputs(ArrayList<SapInput> inputs) {
 		for (SapInput si: inputs)
 			this.sapInputs.add("SAP IN: " + si.symbol() + " - " + si.function());
@@ -236,8 +243,8 @@ public class Page extends PdfPage{
 		this.plcOutputs.add(y);
 	}
 
-	private void addMainPoints(Drawable d) {
-		for (Point point : d.points()) {
+	private void addMainPoints(ArrayList<Point> points) {
+		for (Point point : points) {
 			String name = point.potential().name();
 
 			float width  = point.widthPos();

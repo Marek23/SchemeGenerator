@@ -10,6 +10,9 @@ import pl.com.cs.schema.pointer.Pointer;
 import static pl.com.cs.config.Images.getImage;
 
 public class CkfMain extends Drawable {
+	private static final float yFuseMargin = 50f;
+	private static final String ckfFuse    = "GG6A";
+
 	public CkfMain(Page page, float x, float y) {
 		this.name       = "Ckf";
 		this.visibility = true;
@@ -37,5 +40,13 @@ public class CkfMain extends Drawable {
 		points.add(Point.down(page, this, 200f, false, "GROUNDN"));
 
 		page.add(this);
+	}
+
+	public void addCkfFuse(String ...potential) {
+		new FuseSwitchMain(this.page, this.x, this.y - yFuseMargin, ckfFuse, potential[0], potential[1], potential[2]);
+	}
+
+	public void addCkfFuse() {
+		new FuseSwitchMain(this.page, this.x, this.y - yFuseMargin, ckfFuse);
 	}
 }

@@ -13,7 +13,7 @@ public class MotorsSteeringsPage extends Page {
 		super(fps);
 
 		for (String s: steerings)
-			new PlcChild(this, fps.nextOutput(), "Y", s, plcSignalX(), y("plcSignal"), false)
+			new PlcChild(this, fps.nextPlcMainForOutput(), "Y", s, plcSignalX(), y("plcSignal"), false)
 				.addCoilMotorSteering();
 	}
 }

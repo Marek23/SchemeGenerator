@@ -24,7 +24,8 @@ public class MotorDolPage extends Page {
 
 		FuseFactory.fuse(this, x("3"), y("mainPhuse"), motor.fuse2().toUpperCase());
 
-		new CkfMain(this, x("1"), y("ckf"));
+		var ckf = new CkfMain(this, x("1"), y("ckf"));
+		ckf.addCkfFuse("L1", "L2", "L3");
 
 		// new SoftstartMain(this, "L10"); na stycznik i sterowanie
 

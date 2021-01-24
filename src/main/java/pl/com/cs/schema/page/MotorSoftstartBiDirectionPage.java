@@ -27,7 +27,8 @@ public class MotorSoftstartBiDirectionPage extends Page {
 
 		new FuseSwitchMain(this, x("3"), y("mainPhuse"), fuse);
 
-		new CkfMain(this, x("1"), y("ckf"));
+		var ckf = new CkfMain(this, x("1"), y("ckf"));
+		ckf.addCkfFuse("L1", "L2", "L3");
 
 		ContactorMain cl = new ContactorMain(this, coilX(), sterL);
 		ContactorMain cr = new ContactorMain(this, coilX(), sterR);
