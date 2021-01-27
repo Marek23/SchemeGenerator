@@ -49,14 +49,14 @@ public class PlcMain extends Drawable {
 			return -1;
 	}
 
-	public void add(PlcChild signal, String type){
+	public void add(PlcChild child, String type){
 		if (type.equals("Y")) {
-			outputs.add(signal);
-			signal.number("Y" + String.valueOf(outputs.size() - 1));
+			this.outputs.add(child);
+			child.number("Y" + String.valueOf(outputs.size() - 1));
 		}
 		if (type.equals("X")) {
-			inputs.add(signal);
-			signal.number("X" + String.valueOf(inputs.size() - 1));
+			this.inputs.add(child);
+			child.number("X" + String.valueOf(inputs.size() - 1));
 		}
 	}
 
@@ -83,9 +83,6 @@ public class PlcMain extends Drawable {
 			new Terminal(page, a, "XT");
 			new Terminal(page, b, "XT");
 		}
-
-		this.outputs = new ArrayList<PlcChild>();
-		this.inputs  = new ArrayList<PlcChild>();
 
 		this.page = page;
 		page.add(this);

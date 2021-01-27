@@ -1,15 +1,13 @@
 package pl.com.cs.schema.page;
 
-import static pl.com.cs.config.Measures.scaled;
 import static pl.com.cs.config.Widths.x;
 
 import static pl.com.cs.config.Heights.y;
 
 import pl.com.cs.fps.MotorDol;
 import pl.com.cs.schema.FuseFactory;
-import pl.com.cs.schema.bridge.DownRightPhases;
-import pl.com.cs.schema.bridge.UpDownLeftPhases;
 import pl.com.cs.schema.main.CkfMain;
+import pl.com.cs.schema.main.ContactorMain;
 import pl.com.cs.schema.main.MksMain;
 import pl.com.cs.schema.out.Motor;
 
@@ -19,18 +17,19 @@ public class MotorDolPage extends Page {
 	public MotorDolPage(MotorDol motor) {
 		super(motor.fps());
 
-		new UpDownLeftPhases(this, x("softstart"), y("softstart") - y("spaceUp") - scaled(300f));
-		new DownRightPhases(this, x("1"), y("softstart") - y("spaceUp") - scaled(300f));
-
-		FuseFactory.fuse(this, x("3"), y("mainPhuse"), motor.fuse2().toUpperCase());
+		FuseFactory.fuse(this, x("3"), y("mainPhuse"), motor.fuse2());
 
 		var ckf = new CkfMain(this, x("1"), y("ckf"));
 		ckf.addCkfFuse("L1", "L2", "L3");
 
-		// new SoftstartMain(this, "L10"); na stycznik i sterowanie
+		var c = new ContactorMain(this, coilX(), motor.steeringMain());
+
+		c.mainOrLeft(this,  x("softstart"), "direction");
 
 		new MksMain(this).control(this);
-
 		new Motor(this);
+
+		FuseFactory.fuse(this, x("3"), y("mainPhuse"), motor.fuse2());
+
 	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import pl.com.cs.schema.Drawable;
 import pl.com.cs.schema.Point;
-import pl.com.cs.schema.pointer.CkfChildPointer;
 import pl.com.cs.schema.pointer.Pointer;
 import pl.com.cs.schema.page.Page;
 
@@ -13,8 +12,8 @@ import static pl.com.cs.config.Images.getImage;
 public class CkfChild extends Drawable {
 	private static final float yParentMargin = 6f;
 
-	public CkfChild (Page page, Drawable main, float x, float y) {
-		this.name       = "CkfContact";
+	public CkfChild(Page page, Drawable main, float x, float y) {
+		this.name       = "CkfChild";
 		this.visibility = true;
 		this.image      = getImage(name, page);
 		this.main       = main;
@@ -37,10 +36,13 @@ public class CkfChild extends Drawable {
 		points   = new ArrayList<Point>();
 		pointers = new ArrayList<Pointer>();
 
-		points.add(Point.up(page, this, 100f, false,   "CONTROL"));
-		points.add(Point.down(page, this, 100f, false, "CONTROL"));
+		points.add(Point.up(page, this, 100f, false,   "MAINDCPLC"));
+		points.add(Point.down(page, this, 100f, false, "DC24"));
+
+		page.add(this);
 
 		this.main = main;
-		new CkfChildPointer(main, this);
+		//TODO
+		// new CkfChildPointer(main, this);
 	}
 }

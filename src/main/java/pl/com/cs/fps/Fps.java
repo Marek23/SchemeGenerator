@@ -15,6 +15,7 @@ import pl.com.cs.schema.Potential;
 import pl.com.cs.schema.Potentials;
 import pl.com.cs.schema.main.PlcMain;
 import pl.com.cs.schema.page.FirstPage;
+import pl.com.cs.schema.page.FuseChildsPage;
 import pl.com.cs.schema.page.MklPage;
 import pl.com.cs.schema.page.MksChildsPage;
 import pl.com.cs.schema.page.Page;
@@ -32,14 +33,19 @@ public class Fps extends PdfDocument {
 
 	private String name;
 
-	private MksChildsPage mksErr;
+	private MksChildsPage mksChildsPage;
 
-	private ArrayList<Motor>     motors;
-	private ArrayList<SapInput>  sapInputs;
-	private ArrayList<SapOutput> sapOutputs;
-	private ArrayList<Page>      pages;
+	private ArrayList<Executable> executables;
+	private ArrayList<SapInput>   sapInputs;
+	private ArrayList<SapOutput>  sapOutputs;
+	private ArrayList<Page>       pages;
+	private ArrayList<Page>       plcPages;
+	private ArrayList<Page>       motorSteeringsPages;
+	private ArrayList<Page>       mklPages;
 
-	public HashMap<String, ArrayList<Motor>> steeringsWithMotors;
+	private ArrayList<FuseChildsPage> fuseChildsPages;
+
+	public HashMap<String, ArrayList<Executable>> steeringsWithMotors;
 	public HashMap<String, String> prettyPrintSteerings;
 
 	private ArrayList<PlcMain> plcMains;
@@ -49,13 +55,20 @@ public class Fps extends PdfDocument {
 
 		this.name = name;
 
-		this.motors     = new ArrayList<Motor>();
+		this.executables = new ArrayList<Executable>();
 		this.sapInputs  = new ArrayList<SapInput>();
 		this.sapOutputs = new ArrayList<SapOutput>();
 		this.pages      = new ArrayList<Page>();
+		this.plcPages   = new ArrayList<Page>();
 		this.plcMains   = new ArrayList<PlcMain>();
 
-		this.steeringsWithMotors  = new HashMap<String, ArrayList<Motor>>();
+		this.motorSteeringsPages = new ArrayList<Page>();
+		this.mklPages            = new ArrayList<Page>();
+
+		this.mksChildsPage   = new MksChildsPage(this);
+		this.fuseChildsPages = new ArrayList<FuseChildsPage>();
+
+		this.steeringsWithMotors  = new HashMap<String, ArrayList<Executable>>();
         this.prettyPrintSteerings = new HashMap<String, String>();
 
 		System.out.println("Utworzono rozdzielnice: " + name);
@@ -66,48 +79,12 @@ public class Fps extends PdfDocument {
 	}
 
 	public void draw() {
-		int mkls       = (int) Math.ceil(sapInputs.size() / 4); // 4 sygnały SAP to 8 w PLC
-
-		//TODO rozszerzenie o kolejne pola z głównej strony
-		int plcInputs  = mkls * 8 + 8;
-
-		//TODO rozszerzenie o kolejne pola z głównej strony
-		int plcOutputs = sapOutputs.size() + this.prettyPrintSteerings.size() + 8;
-
-		int plcMainsNumber = 0;
-		int temp = 4;
-		while (temp < plcOutputs) {
-			plcMainsNumber++;
-			temp += 8;
-		}
-
-		temp = plcMainsNumber * 8;
-		while (temp < plcInputs) {
-			plcMainsNumber++;
-			temp += 8;
-		}
+		var firstPage = new FirstPage(this);
 
 		this.plcMains.add(new PlcMain("Cpu"));
-
-		temp = 0;
-		while (temp < plcMainsNumber) {
-			this.plcMains.add(new PlcMain("Module"));
-			temp++;
-		}
-
-		var firstPage = new FirstPage(this);
-		pages.add(firstPage);
-
-		PlcMainPage plcPage = new PlcMainPage(this, this.plcMains.get(0));
-		pages.add(plcPage);
-
-		for (int i = 1; i < this.plcMains.size(); i++) {
-			PlcMainPage page = new PlcMainPage(this, this.plcMains.get(i));
-			pages.add(page);
-		}
+		this.plcPages.add(new PlcMainPage(this, this.plcMains.get(0)));
 
 		Iterator<String> s = this.steerings().iterator();
-
 		while (s.hasNext()) {
 			ArrayList<String> patch = new ArrayList<String>();
 
@@ -118,15 +95,14 @@ public class Fps extends PdfDocument {
 					break;
 			}
 
-			pages.add(new MotorsSteeringsPage(this, patch));
+			motorSteeringsPages.add(new MotorsSteeringsPage(this, patch));
 		}
 
-		int toFetch = MKL_INPUTS - sapInputs.size() % MKL_INPUTS;
-		for (int i = 0; i < toFetch; i++)
+		int freeInputs = MKL_INPUTS - sapInputs.size() % MKL_INPUTS;
+		for (int i = 0; i < freeInputs; i++)
 			new SapInput(this, "Rezerwa");
 
 		Iterator<SapInput> sapIn = sapInputs.iterator();
-
 		while (sapIn.hasNext()) {
 			ArrayList<SapInput> patch = new ArrayList<SapInput>();
 
@@ -137,7 +113,7 @@ public class Fps extends PdfDocument {
 					break;
 			}
 
-			pages.add(new MklPage(this, patch));
+			mklPages.add(new MklPage(this, patch));
 		}
 
 		Iterator<SapOutput> sapOut = sapOutputs.iterator();
@@ -155,27 +131,32 @@ public class Fps extends PdfDocument {
 			pages.add(new SapOutputsPage(this, patch));
 		}
 
-		for (Motor m: motors)
-			if (m.steering1 == null || m.steering2 == null)
+		for (Executable m: executables)
+			if ((m.runMethod.equals("TWOGEAR") && (m.steering1 == null || m.steering2 == null)) ||
+			   (!m.runMethod.equals("TWOGEAR") && m.steeringMain == null))
+			{
 				throw new RuntimeException("Brak sterowania dla  " + m.name + " w matrycy sterowań.");
+			}
 			else
 				pages.add(m.page());
 
-		for(Page p: pages) {
-			if (p.mks() != null) {
-				if (mksErr == null)
-					mksErr = new MksChildsPage(this);
-
-				mksErr.addMksChild(p.mks());
-			}
-		}
-
-		pages.add(mksErr);
 
 		targets();
 
 		for (var plc: this.plcMains)
 			plc.updateChildsByMainNr();
+
+		for(Page p: pages)
+			if (p.mks() != null)
+				mksChildsPage.addMksChild(p.mks());
+
+		pages.add(firstPage);
+		pages.addAll(plcPages);
+		pages.addAll(mklPages);
+		pages.addAll(motorSteeringsPages);
+
+		if (!mksChildsPage.isEmpty())				
+			pages.add(mksChildsPage);
 
 		for(Page p: pages)
 			p.draw();
@@ -191,8 +172,8 @@ public class Fps extends PdfDocument {
 		this.sapOutputs.add(signal);
 	}
 
-	public void add(Motor m) {
-		this.motors.add(m);
+	public void add(Executable m) {
+		this.executables.add(m);
 	}
 
 	private void targets() {
@@ -221,7 +202,11 @@ public class Fps extends PdfDocument {
 			if (p.nextInputNumber() > 0)
 				return p;
 
-		throw new RuntimeException("Run out of plc's for inputs.");
+		var plc = new PlcMain("Module");
+		this.plcMains.add(plc);
+		this.plcPages.add(new PlcMainPage(this, plc));
+
+		return plc;
 	}
 
 	public PlcMain nextPlcMainForOutput() {
@@ -229,7 +214,11 @@ public class Fps extends PdfDocument {
 			if (p.nextOutputNumber() > 0)
 				return p;
 
-		throw new RuntimeException("Run out of plc's for outputs.");
+				var plc = new PlcMain("Module");
+		this.plcMains.add(plc);
+		this.plcPages.add(new PlcMainPage(this, plc));
+
+		return plc;
 	}
 
 	public int nextValueOf(String g) {
@@ -241,49 +230,61 @@ public class Fps extends PdfDocument {
 		return group.get(g);
 	}
 
-	public void addSteering1B(Motor m, String k) {
+	public void addSteering1B(Executable m, String k) {
 		String key = pretty1B(k);
 
 		if (steeringsWithMotors.containsKey(key))
 			steeringsWithMotors.get(key).add(m);
 		else
-			steeringsWithMotors.put(key, new ArrayList<Motor>(Arrays.asList(m)));
+			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
 
 		Potentials.add(new Potential(key, 100f, 1800f));
 		m.steering1(key);
 	}
 
-	public void addSteering2B(Motor m, String k) {
+	public void addSteering2B(Executable m, String k) {
 		String key = pretty2B(k);
 
 		if (steeringsWithMotors.containsKey(key))
 			steeringsWithMotors.get(key).add(m);
 		else
-			steeringsWithMotors.put(key, new ArrayList<Motor>(Arrays.asList(m)));
+			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
 
 		Potentials.add(new Potential(key, 100f, 1900f));
 		m.steering2(key);
 	}
 
-	public void addSteeringL(Motor m, String k) {
+	public void addMainSteering(Executable m, String k) {
+		String key = prettyMain(k);
+
+		if (steeringsWithMotors.containsKey(key))
+			steeringsWithMotors.get(key).add(m);
+		else
+			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
+
+		Potentials.add(new Potential(key, 100f, 1900f));
+		m.steeringMain(key);
+	}
+
+	public void addSteeringL(Executable m, String k) {
 		String key = prettyL(k);
 
 		if (steeringsWithMotors.containsKey(key))
 			steeringsWithMotors.get(key).add(m);
 		else
-			steeringsWithMotors.put(key, new ArrayList<Motor>(Arrays.asList(m)));
+			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
 
 		Potentials.add(new Potential(key, 100f, 2000f));
 		m.steeringL(key);
 	}
 
-	public void addSteeringR(Motor m, String k) {
+	public void addSteeringR(Executable m, String k) {
 		String key = prettyR(k);
 
 		if (steeringsWithMotors.containsKey(key))
 			steeringsWithMotors.get(key).add(m);
 		else
-			steeringsWithMotors.put(key, new ArrayList<Motor>(Arrays.asList(m)));
+			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
 
 		Potentials.add(new Potential(key, 100f, 2100f));
 		m.steeringR(key);
@@ -305,7 +306,14 @@ public class Fps extends PdfDocument {
 		return prettyPrintSteerings.get(key);
 	}
 
-	
+	private String prettyMain(String key) {
+		if (!prettyPrintSteerings.containsKey(key)) {
+			prettyPrintSteerings.put(key, "Z" + nextValueOf("Z"));
+		}
+
+		return prettyPrintSteerings.get(key);
+	}
+
 	private String prettyL(String key) {
 		if (!prettyPrintSteerings.containsKey(key)) {
 			prettyPrintSteerings.put(key, "LEW" + nextValueOf("LEW"));

@@ -40,6 +40,7 @@ public final class Images {
 		"ContactorPointer.wmf",
 		"Softstart.wmf",
 		"Ckf.wmf",
+		"CkfChild.wmf",
 		"SingleContactor.wmf",
 		"SingleContactorPointer.wmf",
 		"SteeringContact.wmf",
@@ -47,7 +48,8 @@ public final class Images {
 		"SapOut.wmf",
 		"Disconnector4P.wmf",
 		"Overvoltage.wmf",
-		"ThermalFuse1.wmf"
+		"ThermalFuse1.wmf",
+		"OvervoltageChild.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

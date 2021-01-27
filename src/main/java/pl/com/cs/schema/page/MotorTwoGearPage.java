@@ -5,29 +5,27 @@ import static pl.com.cs.config.Widths.x;
 
 import static pl.com.cs.config.Heights.y;
 
-import pl.com.cs.fps.Fps;
+import pl.com.cs.fps.MotorTwoGear;
+import pl.com.cs.schema.FuseFactory;
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.Potential;
 import pl.com.cs.schema.Potentials;
 import pl.com.cs.schema.child.ContactorSingleChild;
 import pl.com.cs.schema.main.ContactorMain;
-import pl.com.cs.schema.main.FuseMotorMain;
-import pl.com.cs.schema.main.FuseThermalMotor;
 import pl.com.cs.schema.main.MksMain;
-import pl.com.cs.schema.out.MotorTwoGear;
 
 public class MotorTwoGearPage extends Page {
 	private static final long serialVersionUID = 1L;
 
-	public MotorTwoGearPage(Fps fps, String firstGearPot, String secGearPot, String fuse1, String fuse2) {
-		super(fps);
+	public MotorTwoGearPage(MotorTwoGear motor) {
+		super(motor.fps());
 
-		Potential origin = Potentials.potential(secGearPot);
-		Potentials.add(new Potential("INTER" + secGearPot, origin.width(), origin.height()));
+		Potential origin = Potentials.potential(motor.steering2());
+		Potentials.add(new Potential(motor.steering2() + "INTER", origin.width(), origin.height()));
 
-		ContactorMain coil1 = new ContactorMain(this, coilX(), firstGearPot);
-		ContactorMain coil2 = new ContactorMain(this, coilX(), secGearPot);
-		ContactorMain coil3 = new ContactorMain(this, coilX(), "INTER" + secGearPot);
+		ContactorMain coil1 = new ContactorMain(this, coilX(), motor.steering1());
+		ContactorMain coil2 = new ContactorMain(this, coilX(), motor.steering2());
+		ContactorMain coil3 = new ContactorMain(this, coilX(), motor.steering2() + "INTER");
 
 		new ContactorSingleChild(this, coil2, coil1);
 		new ContactorSingleChild(this, coil1, coil2);
@@ -36,16 +34,22 @@ public class MotorTwoGearPage extends Page {
 		coil2.secondGear(this);
 		coil3.secondGearBridge(this);
 
-		Point.downLeft(this, coil3.widthPos() + scaled(100f), y("coil") - 30f, false, "INTER" + secGearPot);
-		Point.upDownRight(this, coil2.widthPos() + scaled(100f), y("coil") - 30f, true, "INTER" + secGearPot);
+		Point.downLeft(this, coil3.widthPos() + scaled(100f), y("coil") - 30f, false, motor.steering2() + "INTER");
+		Point.upDownRight(this, coil2.widthPos() + scaled(100f), y("coil") - 30f, true, motor.steering2() + "INTER");
 
 		boolean directional = false;
-		new FuseMotorMain(this, x("1"), y("mainPhuse"), fuse2, directional);
-		new FuseThermalMotor(this, x("3"), y("mainPhuse"), fuse1);
+		var fuse1B = FuseFactory.fuse(this, x("1"), y("mainPhuse"), motor.fuse2().toUpperCase(), directional);
+		var fuse2B = FuseFactory.fuse(this, x("3"), y("mainPhuse"), motor.fuse1().toUpperCase());
 
 		MksMain mks = new MksMain(this);
 		mks.control(this);
 
-		new MotorTwoGear(this);
+		this.addNonFireFuse(fuse1B);
+		if (motor.fireMode())
+			this.addFireFuse(fuse2B);
+		else
+			this.addNonFireFuse(fuse2B);
+
+		new pl.com.cs.schema.out.MotorTwoGear(this);
 	}
 }

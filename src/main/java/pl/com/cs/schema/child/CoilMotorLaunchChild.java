@@ -46,7 +46,7 @@ public class CoilMotorLaunchChild extends Drawable {
 		this.main = main;
 
 		float xSter = this.x + scaled(200f);
-		float ySter = y("steeringPot");;
+		float ySter = y("steeringPot");
 
 		Point.upRight(page, this.x + scaled(100f), ySter, false, signal.signal());
 

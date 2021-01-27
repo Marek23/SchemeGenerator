@@ -1,6 +1,5 @@
 package pl.com.cs.schema.page;
 
-
 import pl.com.cs.fps.Fps;
 import pl.com.cs.schema.main.MksMain;
 
@@ -15,6 +14,8 @@ public class MksChildsPage extends ErrorsPage {
 	}
 
 	public void addMksChild(MksMain mks) {
+		this.isEmpty = false;
+
 		float x = x("errorsStart") + col * colDist;
 		float y = y("errorsStart") + row * rowDist;
 

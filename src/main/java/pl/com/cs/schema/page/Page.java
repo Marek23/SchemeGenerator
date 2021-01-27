@@ -1,7 +1,6 @@
 package pl.com.cs.schema.page;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,6 +21,7 @@ import pl.com.cs.schema.main.MksMain;
 import pl.com.cs.schema.Line;
 import pl.com.cs.schema.VerticalLine;
 import pl.com.cs.schema.Drawable;
+import pl.com.cs.schema.Fuse;
 import pl.com.cs.Printer;
 
 import static pl.com.cs.config.Widths.x;
@@ -43,6 +43,10 @@ public class Page extends PdfPage{
 	protected ArrayList<String>   sapInputs;
 	protected ArrayList<String>   sapOutputs;
 	protected List<String>        motorDescription;
+
+	protected MksMain mksMain;
+	protected ArrayList<Fuse> fireFuses;
+	protected ArrayList<Fuse> nonFireFuses;
 
 	protected int nr;
 
@@ -72,7 +76,8 @@ public class Page extends PdfPage{
 		this.sapInputs  = new ArrayList<String>();
 		this.sapOutputs = new ArrayList<String>();
 
-		this.motorDescription = new ArrayList<String>();
+		this.fireFuses    = new ArrayList<Fuse>();
+		this.nonFireFuses = new ArrayList<Fuse>();
 
 		this.printer = new Printer(this);
 	}
@@ -81,6 +86,22 @@ public class Page extends PdfPage{
 		this.drawables.add(d);
 
 		addMainPoints(d.points());
+	}
+
+	public void addFireFuse(Fuse s) {
+		this.fireFuses.add(s);
+	}
+
+	public void addNonFireFuse(Fuse s) {
+		this.nonFireFuses.add(s);
+	}
+
+	public ArrayList<Fuse> getFireFuses(Fuse s) {
+		return this.fireFuses;
+	}
+
+	public ArrayList<Fuse> getNonFireFuses(Fuse s) {
+		return this.nonFireFuses;
 	}
 
 	public void add(Pointer p) {
@@ -409,5 +430,13 @@ public class Page extends PdfPage{
 
 	public Fps fps() {
 		return fps;
+	}
+
+	public MksMain mksMain() {
+		return mksMain;
+	}
+
+	public void mksMain(MksMain mksMain) {
+		this.mksMain = mksMain;
 	}
 }

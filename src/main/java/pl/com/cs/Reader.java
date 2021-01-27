@@ -1,6 +1,6 @@
 package pl.com.cs;
 
-import java.io.File; 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +16,9 @@ import pl.com.cs.fps.SapOutput;
 import pl.com.cs.fps.SapInput;
 import pl.com.cs.fps.MotorDol;
 import pl.com.cs.fps.MotorJet;
-import pl.com.cs.fps.Motor;
+import pl.com.cs.fps.Executable;
 import pl.com.cs.fps.MotorSoftstart;
+import pl.com.cs.fps.MotorStar;
 import pl.com.cs.fps.MotorTwoGear;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -35,7 +36,7 @@ public final class Reader {
 
 	public static HashMap<String, Fps> fpss;
 
-	public static ArrayList<Motor>  motors;
+	public static ArrayList<Executable>  executables;
 	public static ArrayList<String> scenarios;
 
 	public static void readFiles(String balance, String matrix, String signals) throws IOException
@@ -67,6 +68,7 @@ public final class Reader {
 
         ArrayList<String> balanceCols = new ArrayList<String>(Arrays.asList(
         	"ODBIORNIK",
+        	"FUNKCJA",
         	"ZASILANIE / SPOSÓB ROZRUCHU",
         	"NAPIĘCIE [V]",
         	"PRĄD I BIEG [A]",
@@ -80,7 +82,8 @@ public final class Reader {
         ));
 
         ArrayList<String> matrixMainCols = new ArrayList<String>(Arrays.asList(
-       		"ODBIORNIK"
+       		"ODBIORNIK",
+       		"STEROWANIE"
         ));
 
         ArrayList<String> matrixCols = new ArrayList<String>(Arrays.asList(
@@ -96,7 +99,7 @@ public final class Reader {
             "FUNKCJA"
         ));
 
-        motors    = new ArrayList<Motor>();
+        executables    = new ArrayList<Executable>();
         scenarios = new ArrayList<String>();
 
 		for (Row r: workbookB.getSheetAt(0))
@@ -179,12 +182,15 @@ public final class Reader {
 							lp = Integer.valueOf(fcell.getStringCellValue());
 					}catch (NumberFormatException canHapp){}
 
+					Executable e    = null;
+					String fireMode = "";
 					if(isNumber || lp > -1)
 					{
 						Cell nameCell = r.getCell(atIn(colB, "ODBIORNIK"));
+						Cell fireCell = r.getCell(atIn(colB, "FUNKCJA"));
 						if (nameCell != null && nameCell.getCellType() == CellType.STRING && !nameCell.getStringCellValue().equals("Sterowanie"))
 						{
-							String name    = nameCell.getStringCellValue();
+							String name     = nameCell.getStringCellValue();
 							Cell current1  = r.getCell(atIn(colB, "PRĄD I BIEG [A]"));
 							Cell current2  = r.getCell(atIn(colB, "PRĄD II BIEG [A]"));
 							Cell power1    = r.getCell(atIn(colB, "MOC I BIEG [KW]"));
@@ -193,11 +199,13 @@ public final class Reader {
 							Cell fuse2     = r.getCell(atIn(colB, "ZABEZPIECZENIE"));
 							Cell cable     = r.getCell(atIn(colB, "PRZEKRÓJ"));
 
+							fireMode = fireCell.getStringCellValue();
+
 							String runMethod = r.getCell(atIn(colB, "ZASILANIE / SPOSÓB ROZRUCHU")).getStringCellValue();
 
 							if (current1.getNumericCellValue() > 0d && power1.getNumericCellValue() > 0d) {
 								if (power2.getNumericCellValue() > 2)
-									motors.add(new MotorTwoGear(
+									e = new MotorTwoGear(
 										fps,
 										name,
 										String.valueOf(current1.getNumericCellValue()),
@@ -208,9 +216,9 @@ public final class Reader {
 										String.valueOf(fuse2.getStringCellValue()),
 										cable.getStringCellValue(),
 										s.getSheetName()
-									));
+									);
 								else
-									motors.add(new MotorJet(
+									e = new MotorJet(
 											fps,
 											name,
 											String.valueOf(current1.getNumericCellValue()),
@@ -221,11 +229,11 @@ public final class Reader {
 											String.valueOf(fuse2.getStringCellValue()),
 											cable.getStringCellValue(),
 											s.getSheetName()
-										));
+										);
 							}
 							else if (current2.getNumericCellValue() > 0d && power2.getNumericCellValue() > 0d) {
 								if (runMethod.equalsIgnoreCase("Rozruch bezpośredni")) {
-									motors.add(new MotorDol(
+									e = new MotorDol(
 										fps,
 										name,
 										String.valueOf(current2.getNumericCellValue()),
@@ -233,11 +241,11 @@ public final class Reader {
 										String.valueOf(fuse2.getStringCellValue()),
 										cable.getStringCellValue(),
 										s.getSheetName()
-									));
+									);
 								}
 
 								if (runMethod.equalsIgnoreCase("Rozruch softstart")) {
-									motors.add(new MotorSoftstart(
+									e = new MotorSoftstart(
 										fps,
 										name,
 										String.valueOf(current2.getNumericCellValue()),
@@ -245,10 +253,24 @@ public final class Reader {
 										String.valueOf(fuse2.getStringCellValue()),
 										cable.getStringCellValue(),
 										s.getSheetName()
-									));
+									);
+								}
+
+								if (runMethod.equalsIgnoreCase("Rozruch gwiazda/trójkąt")) {
+									e = new MotorStar(
+										fps,
+										name,
+										String.valueOf(current2.getNumericCellValue()),
+										String.valueOf(power2.getNumericCellValue()),
+										String.valueOf(fuse2.getStringCellValue()),
+										cable.getStringCellValue(),
+										s.getSheetName()
+									);
 								}
 							}
 						}
+						if (e != null)
+							e.fireMode(fireMode.toUpperCase().contains("POŻAROWA"));
 					}
 				}
 			}
@@ -258,19 +280,32 @@ public final class Reader {
 	private static void readMatrix() {
 		for (Row r: workbookM.getSheetAt(0))
 		{
-			Cell receiver = r.getCell(atIn(colM, "ODBIORNIK"));
-			if (receiver != null)
+			Cell executable = r.getCell(atIn(colM, "ODBIORNIK"));
+			Cell steering   = r.getCell(atIn(colM, "STEROWANIE"));
+
+			if (executable != null)
 			{
-				boolean isString = receiver.getCellType() == CellType.STRING;
+				var isString         = executable.getCellType() == CellType.STRING;
+				var steeringIsString = steering.getCellType() == CellType.STRING;
+				var isSeparated      = false;
 
 				if (isString) {
-					String recName = receiver.getStringCellValue();
-					Motor rec   = motor(recName);
+					if (steeringIsString) {
+						String steeringType = steering.getStringCellValue();
+						if (steeringType != null && steeringType.equalsIgnoreCase("S")) {
+							isSeparated = true;
+						}
+					}
 
-					if (rec != null) {
-						Fps fps = rec.fps();
-						String key1B = "1B";
-						String key2B = "2B";
+					var eName = executable.getStringCellValue();
+					var e = executable(eName);
+
+					if (e != null) {
+						Fps fps = e.fps();
+
+						String key1B   = "1B";
+						String key2B   = "2B";
+						String keyMain = "Z";
 
 						int scenariosCounter  = 0;
 						int directionsCounter = 0;
@@ -285,7 +320,7 @@ public final class Reader {
 
 							boolean valid = scenario != null && scenario.getCellType() == CellType.STRING && !scenario.getStringCellValue().isEmpty();
 
-							if (!valid) throw new RuntimeException("Błąd dla urządzenia: " + recName + " w scenariuszu " + s + " w matrycy sterowań.");
+							if (!valid) throw new RuntimeException("Błąd dla urządzenia: " + eName + " w scenariuszu " + s + " w matrycy sterowań.");
 
 							String scenName = scenario.getStringCellValue();
 
@@ -307,12 +342,12 @@ public final class Reader {
 	
 									boolean valid = scenario != null && scenario.getCellType() == CellType.STRING && !scenario.getStringCellValue().isEmpty();
 	
-									if (!valid) throw new RuntimeException("Błąd dla urządzenia: " + recName + " w scenariuszu " + s + " w matrycy sterowań.");
+									if (!valid) throw new RuntimeException("Błąd dla urządzenia: " + eName + " w scenariuszu " + s + " w matrycy sterowań.");
 	
 									String scenName = scenario.getStringCellValue();
 	
 									if (!scenName.toUpperCase().trim().startsWith("WY") && (!scenName.toUpperCase().contains("L") && !scenName.toUpperCase().contains("P")))
-										throw new RuntimeException("Dla urządzenia: " + recName + " brak definicji kierunku w scenariuszu " + s + " matrycy sterowań.");
+										throw new RuntimeException("Dla urządzenia: " + eName + " brak definicji kierunku w scenariuszu " + s + " matrycy sterowań.");
 								}
 							
 						}
@@ -323,19 +358,32 @@ public final class Reader {
 
 							String scenName = scenario.getStringCellValue();
 
-							if (scenName.toUpperCase().trim().startsWith("1B")) key1B += s;
-							if (scenName.toUpperCase().trim().startsWith("2B")) key2B += s;
+							if (scenName.toUpperCase().trim().startsWith("1B")) key1B   += s;
+							if (scenName.toUpperCase().trim().startsWith("2B")) key2B   += s;
+							if (scenName.toUpperCase().trim().startsWith("Z"))  keyMain += s;
 
 							if (scenName.toUpperCase().contains("LEW")) keyLeft  += s;
 							if (scenName.toUpperCase().contains("PRA")) keyRight += s;
 						}
 
-						fps.addSteering1B(rec, key1B);
-						fps.addSteering2B(rec, key2B);
+						if (isSeparated) {
+							key1B    += e.name();
+							key2B    += e.name();
+							keyMain  += e.name();
+							keyLeft  += e.name();
+							keyRight += e.name();
+						}
 
+						if (e.runMethod().equals("TWOGEAR")) {
+							fps.addSteering1B(e, key1B);
+							fps.addSteering2B(e, key2B);
+						}
+						else {
+							fps.addMainSteering(e, keyMain);
+						}
 						if (hasDirection) {
-							fps.addSteeringL(rec, keyLeft);
-							fps.addSteeringR(rec, keyRight);
+							fps.addSteeringL(e, keyLeft);
+							fps.addSteeringR(e, keyRight);
 						}
 					}
 				}
@@ -390,8 +438,8 @@ public final class Reader {
 		return col.get(name);
 	}
 
-	private static Motor motor(String name) {
-		for (Motor r: motors)
+	private static Executable executable(String name) {
+		for (Executable r: executables)
 			if (r.name().equalsIgnoreCase(name))
 				return r;
 

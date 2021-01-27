@@ -25,7 +25,7 @@ public class CkfMain extends Drawable {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "CKF");
+		this.symbol = symbol(page, "KF");
 
 		this.symbolX = x;
 		this.symbolY = y + this.height/2;

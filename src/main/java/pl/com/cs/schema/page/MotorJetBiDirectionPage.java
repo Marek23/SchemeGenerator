@@ -32,7 +32,7 @@ public class MotorJetBiDirectionPage extends Page {
 		ContactorMain cl = new ContactorMain(this, coilX(), motor.steeringL());
 		ContactorMain cr = new ContactorMain(this, coilX(), motor.steeringR());
 
-		cl.left(this, x("1"), "softstart");
+		cl.mainOrLeft(this, x("1"), "softstart");
 		cr.right(this, x("2"), "softstart");
 
 		new ContactorSingleChild(this, cl, cr);
@@ -43,12 +43,17 @@ public class MotorJetBiDirectionPage extends Page {
 
 		boolean directional = true;
 
-
-		FuseFactory.fuse(this, x("1"), y("directionPhuse"), motor.fuse1().toUpperCase(), directional);
-		FuseFactory.fuse(this, x("1"), y("mainPhuse"),      motor.fuse2().toUpperCase());
+		var fuse1B = FuseFactory.fuse(this, x("1"), y("directionPhuse"), motor.fuse1().toUpperCase(), directional);
+		var fuse2B = FuseFactory.fuse(this, x("1"), y("mainPhuse"),      motor.fuse2().toUpperCase());
 
 		new MksMain(this).control(this);
 
 		new MotorTwoGear(this);
+
+		this.addNonFireFuse(fuse1B);
+		if (motor.fireMode())
+			this.addFireFuse(fuse2B);
+		else
+			this.addNonFireFuse(fuse2B);
 	}
 }

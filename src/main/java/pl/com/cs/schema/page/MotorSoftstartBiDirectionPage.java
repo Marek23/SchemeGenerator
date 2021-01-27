@@ -33,7 +33,7 @@ public class MotorSoftstartBiDirectionPage extends Page {
 		ContactorMain cl = new ContactorMain(this, coilX(), sterL);
 		ContactorMain cr = new ContactorMain(this, coilX(), sterR);
 
-		cl.left(this,  x("softstart"), "direction");
+		cl.mainOrLeft(this,  x("softstart"), "direction");
 		cr.right(this, x("softstart") + x("colSpace"), "direction");
 
 		new ContactorSingleChild(this, cl, cr);

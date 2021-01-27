@@ -86,7 +86,7 @@ public class ContactorMain extends Drawable {
 		new ContactorBridgeChild(page, this, x("2"), y("gear"));
 	}
 	
-	public void left(Page page, float x, String y) {
+	public void mainOrLeft(Page page, float x, String y) {
 		ContactorChild c = new ContactorChild(page, this, x, y(y), false);
 		
 		new UpDownRightPhases(page, x, y(y) - y("spaceUp") - scaled(300f), false);

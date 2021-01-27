@@ -27,7 +27,7 @@ public final class Heights {
 
 		heights.put("steeringPot", 150f);
 
-		heights.put("mainPhuse", 50f);
+		heights.put("mainPhuse", 55f);
 		heights.put("directionPhuse", 280f);
 
 		heights.put("receiver", 510f);
