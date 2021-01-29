@@ -2,7 +2,7 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Drawable;
+import pl.com.cs.schema.Main;
 import pl.com.cs.schema.child.CoilMotorLaunchChild;
 import pl.com.cs.schema.child.CoilSapOutputChild;
 import pl.com.cs.schema.child.PlcChild;
@@ -13,7 +13,7 @@ import pl.com.cs.schema.pointer.Pointer;
 import static pl.com.cs.config.Heights.y;
 import static pl.com.cs.config.Images.getImage;
 
-public class CoilMain extends Drawable {
+public class CoilMain extends Main {
 	public static CoilMain coilMotorSteeringChild(Page page, PlcChild signal) {
 		CoilMain c = new CoilMain(page, signal);
 		new CoilMotorLaunchChild(page, c, signal);
@@ -38,7 +38,7 @@ public class CoilMain extends Drawable {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "K");
+		this.symbol = symbol("K");
 
 		this.symbolX = x;
 		this.symbolY = y + this.height/2;

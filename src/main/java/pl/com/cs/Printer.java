@@ -13,6 +13,7 @@ import com.itextpdf.layout.property.VerticalAlignment;
 
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.out.Terminal;
+import pl.com.cs.schema.pointer.FusePointer;
 import pl.com.cs.schema.pointer.Pointer;
 import pl.com.cs.schema.Line;
 import pl.com.cs.schema.Drawable;
@@ -74,7 +75,7 @@ public class Printer extends PdfCanvas{
 	public void addElement(Drawable d) {
 		if (d.symbol() != null) {
 			canvas.setFontSize(normal);
-			canvas.showTextAligned(d.symbol(), d.symbolWidthPos(), 595.0f - d.symbolHeightPos(), TextAlignment.RIGHT);
+			canvas.showTextAligned(d.symbol().value(), d.symbolWidthPos(), 595.0f - d.symbolHeightPos(), TextAlignment.RIGHT);
 		}
 
 		if (d.mainPageNr() > 0) {
@@ -98,7 +99,10 @@ public class Printer extends PdfCanvas{
 
 	public void addPointer(Pointer p) {
 		canvas.setFontSize(small);
-		canvas.showTextAligned("/" + String.valueOf(p.mainPage()), p.mainWidthPos(), 595.0f - p.mainHeightPos(), TextAlignment.RIGHT);
+		if (p instanceof FusePointer)
+			canvas.showTextAligned("/" + String.valueOf(p.mainPage()), p.mainWidthPos(), 595.0f - p.mainHeightPos(), TextAlignment.LEFT, VerticalAlignment.TOP, 0f);
+		else
+			canvas.showTextAligned("/" + String.valueOf(p.mainPage()), p.mainWidthPos(), 595.0f - p.mainHeightPos(), TextAlignment.RIGHT);
 
 		this.addXObject(p.image(), new Rectangle(p.widthPos(), 595.0f - p.heightPos() - p.height(), scale,scale));
 	}

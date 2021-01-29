@@ -12,6 +12,8 @@ import static pl.com.cs.config.Heights.y;
 import static pl.com.cs.config.Measures.scaled;
 
 public class MklPage extends Page {
+	private static final long serialVersionUID = -8654850660766924625L;
+
 	public MklPage(Fps fps, ArrayList<SapInput> sapInputs) {
 		super(fps);
 

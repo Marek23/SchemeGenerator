@@ -4,7 +4,6 @@ import pl.com.cs.schema.Drawable;
 import pl.com.cs.schema.page.Page;
 import pl.com.cs.util.Image;
 
-import static pl.com.cs.config.Measures.scaled;
 import static pl.com.cs.config.Images.getImage;
 
 public abstract class Pointer {
@@ -20,12 +19,13 @@ public abstract class Pointer {
 
 	protected float mainX;
 	protected float mainY;
-	protected int   mainPage;
-	protected int   childPage;
+	protected Page   mainPage;
+	protected Page   childPage;
 
 	protected float width;
 	protected float height;
 
+	public Pointer() {};
 	public Pointer(Drawable main, Drawable child, String name) {
 		this.name  = name;
 		this.main  = main;
@@ -42,8 +42,8 @@ public abstract class Pointer {
 		this.mainX = x;
 		this.mainY = this.y + this.height/2;
 
-		this.mainPage  = main.page().nr();
-		this.childPage = child.page().nr();
+		this.mainPage  = main.page();
+		this.childPage = child.page();
 
 		page.add(this);
 		main.add(this);
@@ -78,10 +78,10 @@ public abstract class Pointer {
 	}
 
 	public int mainPage() {
-		return this.mainPage;
+		return this.mainPage.nr();
 	}
 
 	public int childPage() {
-		return this.childPage;
+		return this.childPage.nr();
 	}
 }

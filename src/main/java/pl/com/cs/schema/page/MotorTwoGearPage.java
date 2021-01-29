@@ -38,8 +38,8 @@ public class MotorTwoGearPage extends Page {
 		Point.upDownRight(this, coil2.widthPos() + scaled(100f), y("coil") - 30f, true, motor.steering2() + "INTER");
 
 		boolean directional = false;
-		var fuse1B = FuseFactory.fuse(this, x("1"), y("mainPhuse"), motor.fuse2().toUpperCase(), directional);
-		var fuse2B = FuseFactory.fuse(this, x("3"), y("mainPhuse"), motor.fuse1().toUpperCase());
+		var fuse1B = FuseFactory.fuse(this, x("1"), y("mainPhuse"), motor.fuse1().toUpperCase(), directional);
+		var fuse2B = FuseFactory.fuse(this, x("3"), y("mainPhuse"), motor.fuse2().toUpperCase());
 
 		MksMain mks = new MksMain(this);
 		mks.control(this);

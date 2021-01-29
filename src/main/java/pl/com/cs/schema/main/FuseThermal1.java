@@ -9,11 +9,11 @@ import pl.com.cs.schema.page.Page;
 
 import static pl.com.cs.config.Images.getImage;
 
-public class FuseThermalMotor extends FuseMain {
+public class FuseThermal1 extends FuseMain {
 	private static final float yFuseMargin = 6f;
 
-	public FuseThermalMotor(Page page, float x, float y, String fuse) {
-		this.name       = "ThermalFuse3";
+	public FuseThermal1(Page page, float x, float y, String potentialUp, String fuse) {
+		this.name       = "ThermalFuse1";
 		this.visibility = true;
 		this.image      = getImage(name, page);
 
@@ -37,13 +37,9 @@ public class FuseThermalMotor extends FuseMain {
 
 		points = new ArrayList<Point>();
 
-		points.add(Point.up(page, this, 100f, false, "MAINL1"));
-		points.add(Point.up(page, this, 200f, false, "MAINL2"));
-		points.add(Point.up(page, this, 300f, false, "MAINL3"));
+		points.add(Point.up(page, this, 100f, false, potentialUp));
 
-		points.add(Point.down(page, this, 100f, false, "L1"));
-		points.add(Point.down(page, this, 200f, false, "L2"));
-		points.add(Point.down(page, this, 300f, false, "L3"));
+		points.add(Point.down(page, this, 100f, false, "L10"));
 		
 		page.add(this);
 	}

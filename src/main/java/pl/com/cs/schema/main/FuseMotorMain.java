@@ -2,14 +2,15 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Fuse;
+import pl.com.cs.schema.pointer.FusePointer;
+import pl.com.cs.schema.FuseMain;
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.page.Page;
 
 import static pl.com.cs.config.Measures.scaled;
 import static pl.com.cs.config.Images.getImage;
 
-public class FuseMotorMain extends Fuse {
+public class FuseMotorMain extends FuseMain {
 	private static final float yFuseMargin = 6f;
 	private static final float centralization = scaled(50f); // bo przesuniety obraz
 
@@ -25,7 +26,7 @@ public class FuseMotorMain extends Fuse {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "F");
+		this.symbol = symbol("F");
 		this.fuse   = fuse;
 
 		this.symbolX = x - centralization;
@@ -33,6 +34,8 @@ public class FuseMotorMain extends Fuse {
 
 		this.fuseX   = this.symbolX;
 		this.fuseY   = this.symbolY + yFuseMargin;
+
+		this.fusePointers = new ArrayList<FusePointer>();
 
 		points = new ArrayList<Point>();
 

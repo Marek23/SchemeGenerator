@@ -2,8 +2,9 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Drawable;
+import pl.com.cs.schema.Main;
 import pl.com.cs.schema.Point;
+import pl.com.cs.schema.Symbol;
 import pl.com.cs.schema.child.PlcChild;
 import pl.com.cs.schema.out.Terminal;
 import pl.com.cs.schema.page.Page;
@@ -12,7 +13,7 @@ import static pl.com.cs.config.Widths.x;
 import static pl.com.cs.config.Heights.y;
 import static pl.com.cs.config.Images.getImage;
 
-public class PlcMain extends Drawable {
+public class PlcMain extends Main {
 	private ArrayList<PlcChild>  inputs;
 	private ArrayList<PlcChild> outputs;
 
@@ -64,7 +65,7 @@ public class PlcMain extends Drawable {
 		this.image  = getImage(name, page);
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
-		this.symbol = symbol(page, "S");
+		this.symbol = new Symbol("S1");
 		this.symbolX = x;
 		this.symbolY = y + this.height/2;
 

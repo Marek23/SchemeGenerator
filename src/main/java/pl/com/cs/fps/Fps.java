@@ -13,6 +13,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.Potential;
 import pl.com.cs.schema.Potentials;
+import pl.com.cs.schema.Symbol;
 import pl.com.cs.schema.main.PlcMain;
 import pl.com.cs.schema.page.FirstPage;
 import pl.com.cs.schema.page.FuseChildsPage;
@@ -41,7 +42,8 @@ public class Fps extends PdfDocument {
 	private ArrayList<Page>       pages;
 	private ArrayList<Page>       plcPages;
 	private ArrayList<Page>       motorSteeringsPages;
-	private ArrayList<Page>       mklPages;
+	private ArrayList<Page>       sapPages;
+	private ArrayList<Page>       executablePages;
 
 	private ArrayList<FuseChildsPage> fuseChildsPages;
 
@@ -58,12 +60,13 @@ public class Fps extends PdfDocument {
 		this.executables = new ArrayList<Executable>();
 		this.sapInputs  = new ArrayList<SapInput>();
 		this.sapOutputs = new ArrayList<SapOutput>();
-		this.pages      = new ArrayList<Page>();
-		this.plcPages   = new ArrayList<Page>();
 		this.plcMains   = new ArrayList<PlcMain>();
 
+		this.pages      = new ArrayList<Page>();
+		this.plcPages   = new ArrayList<Page>();
+		this.sapPages   = new ArrayList<Page>();
 		this.motorSteeringsPages = new ArrayList<Page>();
-		this.mklPages            = new ArrayList<Page>();
+		this.executablePages     = new ArrayList<Page>();
 
 		this.mksChildsPage   = new MksChildsPage(this);
 		this.fuseChildsPages = new ArrayList<FuseChildsPage>();
@@ -81,8 +84,9 @@ public class Fps extends PdfDocument {
 	public void draw() {
 		var firstPage = new FirstPage(this);
 
-		this.plcMains.add(new PlcMain("Cpu"));
-		this.plcPages.add(new PlcMainPage(this, this.plcMains.get(0)));
+		var plc = new PlcMain("Cpu");
+		this.plcMains.add(plc);
+		this.plcPages.add(new PlcMainPage(this, plc));
 
 		Iterator<String> s = this.steerings().iterator();
 		while (s.hasNext()) {
@@ -113,7 +117,7 @@ public class Fps extends PdfDocument {
 					break;
 			}
 
-			mklPages.add(new MklPage(this, patch));
+			sapPages.add(new MklPage(this, patch));
 		}
 
 		Iterator<SapOutput> sapOut = sapOutputs.iterator();
@@ -128,35 +132,77 @@ public class Fps extends PdfDocument {
 					break;
 			}
 
-			pages.add(new SapOutputsPage(this, patch));
+			sapPages.add(new SapOutputsPage(this, patch));
 		}
 
-		for (Executable m: executables)
+		for (Executable m: executables) {
 			if ((m.runMethod.equals("TWOGEAR") && (m.steering1 == null || m.steering2 == null)) ||
 			   (!m.runMethod.equals("TWOGEAR") && m.steeringMain == null))
 			{
 				throw new RuntimeException("Brak sterowania dla  " + m.name + " w matrycy sterowań.");
 			}
 			else
-				pages.add(m.page());
+				executablePages.add(m.page());
+		}
 
+		var addNonFireFusesChildsPage = false;
+		for(Page p: executablePages)
+			if (p.nonFireFuses().size() > 0)
+				addNonFireFusesChildsPage = true;
 
-		targets();
+		var addFireFusesChildsPage = false;
+		for(Page p: executablePages)
+			if (p.fireFuses().size() > 0)
+				addFireFusesChildsPage = true;
 
-		for (var plc: this.plcMains)
-			plc.updateChildsByMainNr();
+		if (addNonFireFusesChildsPage) {
+			var page = new FuseChildsPage(this);
+			for(Page p: executablePages)
+				p.nonFireFuses().forEach(f -> {
+					page.addFuseChild(f);
+				});
 
-		for(Page p: pages)
+			fuseChildsPages.add(page);
+		}
+
+		if (addFireFusesChildsPage) {
+			var page = new FuseChildsPage(this);
+			for(Page p: executablePages)
+				p.fireFuses().forEach(f -> {
+					page.addFuseChild(f);
+				});
+
+			fuseChildsPages.add(page);
+		}
+
+		for(Page p: executablePages)
 			if (p.mks() != null)
 				mksChildsPage.addMksChild(p.mks());
 
 		pages.add(firstPage);
 		pages.addAll(plcPages);
-		pages.addAll(mklPages);
+		pages.addAll(sapPages);
 		pages.addAll(motorSteeringsPages);
+		pages.addAll(executablePages);
+		if (!mksChildsPage.isEmpty()) pages.add(mksChildsPage);
+		pages.addAll(fuseChildsPages);
 
-		if (!mksChildsPage.isEmpty())				
-			pages.add(mksChildsPage);
+		for (var i = 0; i < pages.size(); ) {
+			var page = pages.get(i);
+			page.setNr(++i);
+			this.addPage(page);
+		}
+
+		pages.forEach(p -> {
+			p.mainDrawables().forEach(m -> {
+				m.updateSymbolByPageNr();
+			});
+		});
+
+		for (var p: this.plcMains)
+			p.updateChildsByMainNr();
+
+		linkPagesMainPotentials();
 
 		for(Page p: pages)
 			p.draw();
@@ -176,7 +222,7 @@ public class Fps extends PdfDocument {
 		this.executables.add(m);
 	}
 
-	private void targets() {
+	private void linkPagesMainPotentials() {
 		for (int i = 0; i < pages.size()-1; i++) {
 			Page from = pages.get(i);
 
@@ -214,20 +260,11 @@ public class Fps extends PdfDocument {
 			if (p.nextOutputNumber() > 0)
 				return p;
 
-				var plc = new PlcMain("Module");
+		var plc = new PlcMain("Module");
 		this.plcMains.add(plc);
 		this.plcPages.add(new PlcMainPage(this, plc));
 
 		return plc;
-	}
-
-	public int nextValueOf(String g) {
-		if (group.containsKey(g))
-			group.put(g, group.get(g)+1);
-		else
-			group.put(g, 1);
-
-		return group.get(g);
 	}
 
 	public void addSteering1B(Executable m, String k) {
@@ -238,6 +275,7 @@ public class Fps extends PdfDocument {
 		else
 			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
 
+		System.out.println(m.name + " " + key);
 		Potentials.add(new Potential(key, 100f, 1800f));
 		m.steering1(key);
 	}
@@ -250,6 +288,7 @@ public class Fps extends PdfDocument {
 		else
 			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
 
+		System.out.println(m.name + " " + key);
 		Potentials.add(new Potential(key, 100f, 1900f));
 		m.steering2(key);
 	}
@@ -262,6 +301,7 @@ public class Fps extends PdfDocument {
 		else
 			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
 
+		System.out.println(m.name + " " + key);
 		Potentials.add(new Potential(key, 100f, 1900f));
 		m.steeringMain(key);
 	}
@@ -274,6 +314,7 @@ public class Fps extends PdfDocument {
 		else
 			steeringsWithMotors.put(key, new ArrayList<Executable>(Arrays.asList(m)));
 
+		System.out.println(m.name + " " + key);
 		Potentials.add(new Potential(key, 100f, 2000f));
 		m.steeringL(key);
 	}
@@ -336,5 +377,18 @@ public class Fps extends PdfDocument {
 			out.add(e.getValue());
 
 		return out;
+	}
+
+	public int nextValueOf(String g) {
+		if (group.containsKey(g))
+			group.put(g, group.get(g)+1);
+		else
+			group.put(g, 1);
+
+		return group.get(g);
+	}
+
+	public Symbol symbol(String g) {
+		return new Symbol(g + String.valueOf(nextValueOf(g)));
 	}
 }

@@ -12,7 +12,7 @@ public abstract class Drawable {
 	protected String id;
 	protected String desc;
 	protected String name;
-	protected String symbol;
+	protected Symbol symbol;
 	protected Page   page;
 
 	protected float  numberX;
@@ -86,18 +86,12 @@ public abstract class Drawable {
 		return this.image;
 	}
 
-	public String symbol() {
+	public Symbol symbol() {
 		return this.symbol;
 	}
 
 	public Page page() {
 		return page;
-	}
-
-	protected String symbol(Page page, String type) {
-		String pageNr = String.valueOf(page.nr());
-
-		return  pageNr + type + String.valueOf(page.fps().nextValueOf(page + type));
 	}
 
 	public float pointerHeightPos() {

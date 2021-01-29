@@ -2,7 +2,7 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Drawable;
+import pl.com.cs.schema.Main;
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.page.Page;
 
@@ -11,7 +11,7 @@ import static pl.com.cs.config.Heights.y;
 import static pl.com.cs.config.Measures.scaled;
 import static pl.com.cs.config.Images.getImage;
 
-public class SoftstartMain extends Drawable {
+public class SoftstartMain extends Main {
 	public SoftstartMain(Page page, String steerPotential) {
 		this.name       = "Softstart";
 		this.visibility = true;
@@ -25,7 +25,7 @@ public class SoftstartMain extends Drawable {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "TR");
+		this.symbol = symbol("TR");
 
 		this.symbolX = x;
 		this.symbolY = y + this.height/2;

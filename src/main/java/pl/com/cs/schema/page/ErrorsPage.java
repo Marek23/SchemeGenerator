@@ -9,7 +9,7 @@ import pl.com.cs.fps.Fps;
 import static pl.com.cs.config.Heights.y;
 import static pl.com.cs.config.Measures.scaled;
 
-public class ErrorsPage extends Page {
+public abstract class ErrorsPage extends Page {
 	protected boolean isEmpty;
 	protected enum Direction {Up, Down};
 	protected Direction dir = Direction.Down;

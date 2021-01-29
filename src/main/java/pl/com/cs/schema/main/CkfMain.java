@@ -2,14 +2,14 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Drawable;
+import pl.com.cs.schema.Main;
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.page.Page;
 import pl.com.cs.schema.pointer.Pointer;
 
 import static pl.com.cs.config.Images.getImage;
 
-public class CkfMain extends Drawable {
+public class CkfMain extends Main {
 	private static final float yFuseMargin = 50f;
 	private static final String ckfFuse    = "GG6A";
 
@@ -25,7 +25,7 @@ public class CkfMain extends Drawable {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "KF");
+		this.symbol = symbol("KF");
 
 		this.symbolX = x;
 		this.symbolY = y + this.height/2;

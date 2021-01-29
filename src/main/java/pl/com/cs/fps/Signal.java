@@ -1,9 +1,11 @@
 package pl.com.cs.fps;
 
-public abstract class Signal{
+import pl.com.cs.schema.Symbol;
+
+public abstract class Signal {
 	private String function;
 	protected Fps fps;
-	protected String symbol;
+	protected Symbol symbol;
 
 	public Signal(Fps fps, String function) {
 		this.fps = fps;
@@ -14,7 +16,7 @@ public abstract class Signal{
 		return function;
 	}
 
-	public String symbol() {
+	public Symbol symbol() {
 		return this.symbol;
 	}
 }

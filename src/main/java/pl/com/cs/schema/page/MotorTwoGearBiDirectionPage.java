@@ -42,8 +42,8 @@ public class MotorTwoGearBiDirectionPage extends Page {
 		new DownLeftPhases(this, x("3"), y("directionPhuse") - scaled(400f));
 
 		boolean directional = true;
-		var fuse1B = FuseFactory.fuse(this, x("1"), y("directionPhuse"), motor.fuse2().toUpperCase(), directional);
-		var fuse2B = FuseFactory.fuse(this, x("1"), y("mainPhuse"), motor.fuse1().toUpperCase());
+		var fuse1B = FuseFactory.fuse(this, x("1"), y("directionPhuse"), motor.fuse1().toUpperCase(), directional);
+		var fuse2B = FuseFactory.fuse(this, x("1"), y("mainPhuse"), motor.fuse2().toUpperCase());
 
 		new MksMain(this).control(this);
 

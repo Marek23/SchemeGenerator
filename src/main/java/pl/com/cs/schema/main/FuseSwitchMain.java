@@ -2,13 +2,13 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Fuse;
+import pl.com.cs.schema.FuseMain;
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.page.Page;
 
 import static pl.com.cs.config.Images.getImage;
 
-public class FuseSwitchMain extends Fuse {
+public class FuseSwitchMain extends FuseMain {
 	private static final float yFuseMargin = 6f;
 
 	public FuseSwitchMain(Page page, float x, float y, String fuse) {
@@ -23,7 +23,7 @@ public class FuseSwitchMain extends Fuse {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "F");
+		this.symbol = symbol("F");
 		this.fuse   = fuse;
 
 		this.symbolX = x;
@@ -57,7 +57,7 @@ public class FuseSwitchMain extends Fuse {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "F");
+		this.symbol = symbol("F");
 		this.fuse   = fuse;
 
 		this.symbolX = x;

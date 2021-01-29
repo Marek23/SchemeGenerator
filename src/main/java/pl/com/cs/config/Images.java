@@ -49,7 +49,9 @@ public final class Images {
 		"Disconnector4P.wmf",
 		"Overvoltage.wmf",
 		"ThermalFuse1.wmf",
-		"OvervoltageChild.wmf"
+		"OvervoltageChild.wmf",
+		"FuseChild.wmf",
+		"FuseChildPointer.wmf"
 	));
 
 	public static HashMap<String,WmfImageData> graphics;

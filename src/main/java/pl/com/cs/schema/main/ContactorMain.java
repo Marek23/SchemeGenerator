@@ -2,7 +2,7 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Drawable;
+import pl.com.cs.schema.Main;
 import pl.com.cs.schema.page.Page;
 
 import pl.com.cs.schema.Point;
@@ -19,7 +19,7 @@ import static pl.com.cs.config.Widths.x;
 import static pl.com.cs.config.Heights.y;
 import static pl.com.cs.config.Measures.scaled;
 
-public class ContactorMain extends Drawable {
+public class ContactorMain extends Main {
 	public ContactorMain (Page page, float x, String steering) {
 		this.name       = "Coil";
 		this.visibility = true;
@@ -33,7 +33,7 @@ public class ContactorMain extends Drawable {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "Q");
+		this.symbol = symbol("Q");
 
 		this.symbolX  = x;
 		this.symbolY  = y  + this.height/2;

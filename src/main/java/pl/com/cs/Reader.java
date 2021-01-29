@@ -99,8 +99,8 @@ public final class Reader {
             "FUNKCJA"
         ));
 
-        executables    = new ArrayList<Executable>();
-        scenarios = new ArrayList<String>();
+        executables = new ArrayList<Executable>();
+        scenarios   = new ArrayList<String>();
 
 		for (Row r: workbookB.getSheetAt(0))
 			for(Cell c: r)
@@ -155,6 +155,7 @@ public final class Reader {
 
 	public static void generate() {
 		for (Fps f: fpss.values()) {
+			System.out.println("drawing " + f.name());
 			f.draw();
 		}
 	}
@@ -182,14 +183,13 @@ public final class Reader {
 							lp = Integer.valueOf(fcell.getStringCellValue());
 					}catch (NumberFormatException canHapp){}
 
-					Executable e    = null;
-					String fireMode = "";
 					if(isNumber || lp > -1)
 					{
 						Cell nameCell = r.getCell(atIn(colB, "ODBIORNIK"));
 						Cell fireCell = r.getCell(atIn(colB, "FUNKCJA"));
 						if (nameCell != null && nameCell.getCellType() == CellType.STRING && !nameCell.getStringCellValue().equals("Sterowanie"))
 						{
+
 							String name     = nameCell.getStringCellValue();
 							Cell current1  = r.getCell(atIn(colB, "PRĄD I BIEG [A]"));
 							Cell current2  = r.getCell(atIn(colB, "PRĄD II BIEG [A]"));
@@ -199,10 +199,10 @@ public final class Reader {
 							Cell fuse2     = r.getCell(atIn(colB, "ZABEZPIECZENIE"));
 							Cell cable     = r.getCell(atIn(colB, "PRZEKRÓJ"));
 
-							fireMode = fireCell.getStringCellValue();
-
+							String fireMode  = fireCell.getStringCellValue();
 							String runMethod = r.getCell(atIn(colB, "ZASILANIE / SPOSÓB ROZRUCHU")).getStringCellValue();
 
+							Executable e = null;
 							if (current1.getNumericCellValue() > 0d && power1.getNumericCellValue() > 0d) {
 								if (power2.getNumericCellValue() > 2)
 									e = new MotorTwoGear(
@@ -268,9 +268,11 @@ public final class Reader {
 									);
 								}
 							}
+							if (e != null) {
+								e.fireMode(fireMode.toUpperCase().contains("POŻAROWA"));
+								executables.add(e);
+							}
 						}
-						if (e != null)
-							e.fireMode(fireMode.toUpperCase().contains("POŻAROWA"));
 					}
 				}
 			}

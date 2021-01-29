@@ -2,7 +2,7 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Drawable;
+import pl.com.cs.schema.Main;
 import pl.com.cs.fps.SapInput;
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.pointer.Pointer;
@@ -13,7 +13,7 @@ import static pl.com.cs.config.Measures.scaled;
 import static pl.com.cs.config.Widths.x;
 import static pl.com.cs.config.Heights.y;
 
-public class MklMain extends Drawable {
+public class MklMain extends Main {
 	private float output;
 	private float input;
 
@@ -32,7 +32,7 @@ public class MklMain extends Drawable {
 		this.width  = image.getWidth();
 		this.height = image.getHeight();
 		
-		this.symbol = symbol(page, "MKL");
+		this.symbol = symbol("MKL");
 
 		this.symbolX = x;
 		this.symbolY = y + this.height/2;

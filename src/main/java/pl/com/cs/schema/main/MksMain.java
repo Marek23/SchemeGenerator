@@ -2,7 +2,7 @@ package pl.com.cs.schema.main;
 
 import java.util.ArrayList;
 
-import pl.com.cs.schema.Drawable;
+import pl.com.cs.schema.Main;
 import pl.com.cs.schema.Point;
 import pl.com.cs.schema.pointer.Pointer;
 import pl.com.cs.schema.bridge.UpDownRightPhases;
@@ -13,7 +13,7 @@ import static pl.com.cs.config.Widths.x;
 import static pl.com.cs.config.Heights.y;
 import static pl.com.cs.config.Images.getImage;
 
-public class MksMain extends Drawable {
+public class MksMain extends Main {
 	public MksMain(Page page) {
 		this.name = "Mks";
 		this.visibility = true;
@@ -26,7 +26,7 @@ public class MksMain extends Drawable {
 		this.width = image.getWidth();
 		this.height = image.getHeight();
 
-		this.symbol = symbol(page, "MKS");
+		this.symbol = symbol("MKS");
 
 		this.symbolX = x;
 		this.symbolY = y + this.height/2;

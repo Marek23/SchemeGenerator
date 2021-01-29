@@ -1,6 +1,7 @@
 package pl.com.cs.schema.page;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,15 +20,17 @@ import pl.com.cs.schema.pointer.Pointer;
 import pl.com.cs.schema.HorizontalLine;
 import pl.com.cs.schema.main.MksMain;
 import pl.com.cs.schema.Line;
+import pl.com.cs.schema.Main;
 import pl.com.cs.schema.VerticalLine;
 import pl.com.cs.schema.Drawable;
-import pl.com.cs.schema.Fuse;
+import pl.com.cs.schema.FuseMain;
 import pl.com.cs.Printer;
 
 import static pl.com.cs.config.Widths.x;
 
 public class Page extends PdfPage{
 	protected static final long serialVersionUID = 7351148506505896070L;
+	protected HashMap<String, Integer> group = new HashMap<String, Integer>();
 
 	protected Fps fps;
 
@@ -44,9 +47,8 @@ public class Page extends PdfPage{
 	protected ArrayList<String>   sapOutputs;
 	protected List<String>        motorDescription;
 
-	protected MksMain mksMain;
-	protected ArrayList<Fuse> fireFuses;
-	protected ArrayList<Fuse> nonFireFuses;
+	protected ArrayList<FuseMain> fireFuses;
+	protected ArrayList<FuseMain> nonFireFuses;
 
 	protected int nr;
 
@@ -55,11 +57,8 @@ public class Page extends PdfPage{
 	public Page(Fps fps) {
 		super(fps, PageSize.A4.rotate());
 
-		fps.addPage(this);
-
 		this.fps = fps;
 
-		this.nr  = fps.nextValueOf("page");
 		this.printer = new Printer(this);
 
 		this.points    = new ArrayList<Point>();
@@ -76,8 +75,10 @@ public class Page extends PdfPage{
 		this.sapInputs  = new ArrayList<String>();
 		this.sapOutputs = new ArrayList<String>();
 
-		this.fireFuses    = new ArrayList<Fuse>();
-		this.nonFireFuses = new ArrayList<Fuse>();
+		this.fireFuses    = new ArrayList<FuseMain>();
+		this.nonFireFuses = new ArrayList<FuseMain>();
+
+		this.motorDescription = new ArrayList<String>();
 
 		this.printer = new Printer(this);
 	}
@@ -88,19 +89,19 @@ public class Page extends PdfPage{
 		addMainPoints(d.points());
 	}
 
-	public void addFireFuse(Fuse s) {
+	public void addFireFuse(FuseMain s) {
 		this.fireFuses.add(s);
 	}
 
-	public void addNonFireFuse(Fuse s) {
+	public void addNonFireFuse(FuseMain s) {
 		this.nonFireFuses.add(s);
 	}
 
-	public ArrayList<Fuse> getFireFuses(Fuse s) {
+	public ArrayList<FuseMain> fireFuses() {
 		return this.fireFuses;
 	}
 
-	public ArrayList<Fuse> getNonFireFuses(Fuse s) {
+	public ArrayList<FuseMain> nonFireFuses() {
 		return this.nonFireFuses;
 	}
 
@@ -245,7 +246,7 @@ public class Page extends PdfPage{
 
 	public void addSapInputs(ArrayList<SapInput> inputs) {
 		for (SapInput si: inputs)
-			this.sapInputs.add("SAP IN: " + si.symbol() + " - " + si.function());
+			this.sapInputs.add("SAP IN: " + si.symbol().value() + " - " + si.function());
 	}
 
 	public void addMotorDescription(List<String> desc) {
@@ -253,7 +254,7 @@ public class Page extends PdfPage{
 	}
 
 	public void addSapOutput(SapOutput out) {
-		this.sapInputs.add("SAP OUT: " + out.symbol() + " - " + out.function());
+		this.sapInputs.add("SAP OUT: " + out.symbol().value() + " - " + out.function());
 	}
 
 	public void addPlcX(String x) {
@@ -408,20 +409,20 @@ public class Page extends PdfPage{
 	}
 
 	protected float coilX() {
-		return x("coilsBegin") + x("coilSpace") * (fps.nextValueOf("PAGE" + String.valueOf(this.nr) + "COIL") - 1);
+		return x("coilsBegin") + x("coilSpace") * (nextValueOf("PAGE" + String.valueOf(this.nr) + "COIL") - 1);
 	}
 
 	protected float nextSapOutput() {
-		return x("sapOutBegin") + x("sapOutSpace") * (fps.nextValueOf("PAGE" + String.valueOf(this.nr) + "SAPOUT") - 1);
+		return x("sapOutBegin") + x("sapOutSpace") * (nextValueOf("PAGE" + String.valueOf(this.nr) + "SAPOUT") - 1);
 	}
 	
 	
 	protected float plcModuleX() {
-		return x("plcBegin") + x("plcModuleWidth") * (fps.nextValueOf("PAGE" + String.valueOf(this.nr) + "PLC") - 1);
+		return x("plcBegin") + x("plcModuleWidth") * (nextValueOf("PAGE" + String.valueOf(this.nr) + "PLC") - 1);
 	}
 
 	protected float plcSignalX() {
-		return x("plcSignalBegin") + x("plcSignalWidth") * (fps.nextValueOf("PAGE" + String.valueOf(this.nr) + "PLCSIGNAL") - 1);
+		return x("plcSignalBegin") + x("plcSignalWidth") * (nextValueOf("PAGE" + String.valueOf(this.nr) + "PLCSIGNAL") - 1);
 	}
 
 	public void end(Point p) {
@@ -432,11 +433,26 @@ public class Page extends PdfPage{
 		return fps;
 	}
 
-	public MksMain mksMain() {
-		return mksMain;
+	public void setNr(int nr) {
+		this.nr = nr;
 	}
 
-	public void mksMain(MksMain mksMain) {
-		this.mksMain = mksMain;
+	public ArrayList<Main> mainDrawables() {
+		var out = new ArrayList<Main>();
+		drawables.forEach(d -> {
+			if (d instanceof Main)
+				out.add((Main)d);
+		});
+
+		return out;
+	}
+
+	public int nextValueOf(String g) {
+		if (group.containsKey(g))
+			group.put(g, group.get(g)+1);
+		else
+			group.put(g, 1);
+
+		return group.get(g);
 	}
 }
